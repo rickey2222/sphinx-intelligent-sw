@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>智能软件系统数据库 &mdash; Intelligent Software Design v1 文档</title>
+  <title>智能软件平台数据库 &mdash; Intelligent Software Design v1 文档</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -42,9 +42,9 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
               <p class="caption" role="heading"><span class="caption-text">目录:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../%E7%AE%80%E4%BB%8B/index.html">智能软件系统简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../%E7%AE%80%E4%BB%8B/index.html">智能软件平台介绍</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C/index.html">智能软件系统用户手册</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">智能软件系统数据库</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">智能软件平台数据库</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../%E7%AE%97%E6%B3%95/index.html">智能软件系统算法</a></li>
 </ul>
 
@@ -62,9 +62,9 @@
           <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a></li>
-      <li class="breadcrumb-item active">智能软件系统数据库</li>
+      <li class="breadcrumb-item active">智能软件平台数据库</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/数据库/index.rst.txt" rel="nofollow"> 查看页面源码</a>
+            <a href="../_sources/数据库/index.md.txt" rel="nofollow"> 查看页面源码</a>
       </li>
   </ul>
   <hr/>
@@ -73,7 +73,12 @@
            <div itemprop="articleBody">
              
   <section id="id1">
-<h1>智能软件系统数据库<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<h1>智能软件平台数据库<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<p>基本单元数据库存储了一些常见超表面的设计参数和光学响应参数。设计参数字段包括材料、几何结构和工作频段，材料主要包括超表面和微纳加工中常用的介质材料（硅、氧化硅等）和金属材料（金、铝等）；几何结构包括一些常见的谐振子结构的参数化描述，如方形、圆形、环形、十字形、领结形等，也包括自由结构的谐振子，自由结构谐振子可以通过离散化表示为二维图形或者三维体结构。由于设计目标需求主要集中在红外波段，因此工作频段字段覆盖从近红外到长波红外的红外波段，与材料特性相一致，也可以根据实际需求进行扩展。</p>
+<p><img alt="1.1.png" src="https://s2.loli.net/2022/12/19/sJxD1tKh49HbEFm.png" /></p>
+<center>图1.1 数据库展示窗口</center>
+<p>在光学响应参数中，主要字段包括电磁场近场分布、透射谱、反射谱和极化特性等。电磁场近场分布是描述超表面响应最直观、最基本的表征方法，可以通过对应设计单元的离散化坐标点保存相应的电场、磁场各个分量，这些近场数据可用于远场响应的近似计算、也是核心算法模块中深度学习模型训练的基础之一。反射谱和透射谱等谱线信息往往是超表面设计中最终的设计目标，将通过离散化处理以数组的方式进行储存。极化特征描述了远场中不同分量电磁场的响应，作为谱线的补充，可以方便地描述超表面对三维空间中不同方向电磁场分量的调制作用。</p>
+<p>基本单元数据库的核心思路是将已经设计完成的微纳光子结构及其光学响应特征通过结构化的数据进行保存，可进一步分为存量数据和增量数据。存量数据主要保存的是用于深度学习模型训练的基础数据和一些基本单元结构的设计，增量数据是指在模型运行中产生的新数据，如深度生成模型生成的数据、拓扑优化过程中产生的中间数据和实验测试中得到测试数据等，这些增量数据经过筛选后选择性写入存量数据库中，如严格的数值求解后性能优异的设计结果在写入存量数据库后可以为核心算法模块提供额外的数据支持，实验测试的数据写入存量数据后可以为算法平台提供真实可靠的实验修正。</p>
 </section>
 
 
