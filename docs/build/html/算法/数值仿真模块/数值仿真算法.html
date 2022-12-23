@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>数值仿真算法 &mdash; Intelligent Software Design v1 文档</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Intelligent Software Design
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">目录:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../%E7%AE%80%E4%BB%8B/index.html">智能软件平台介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C/index.html">智能软件系统用户手册</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E6%95%B0%E6%8D%AE%E5%BA%93/index.html">智能软件平台数据库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">智能软件系统算法</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Intelligent Software Design</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">数值仿真算法</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/算法/数值仿真模块/数值仿真算法.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>数值仿真算法<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="fdtd">
+<h2>1. 时域有限差分法（FDTD）<a class="headerlink" href="#fdtd" title="此标题的永久链接"></a></h2>
+<p>  FDTD在空间和时间上均对麦克斯韦方程组进行离散化处理，可以求解波的传播问题，是最为广泛应用的数值仿真方法。我们智能软件平台的FDTD数值仿真模块分为两种方式，一种是基于meep开源软件包，另一种是基于商业软件Lumerical FDTD进行时域有限差分方法进行电磁仿真。
+时域电磁仿真只是在有限的计算量内随时间演化麦克斯韦方程组，本质是执行一种数值实验。这可用于计算各种有用的数量，主要应用包括：</p>
+<ul class="simple">
+<li><p>透射率和反射率光谱–通过对短脉冲的相应进行傅里叶变换，一次模拟就可以产生宽带光谱上的散射振幅</p></li>
+<li><p>谐振模式和频率–通过分析系统对短脉冲的相应，可以提取有损和无损系统（包括博导和腔模式）的谐振模式的频率、衰减率和场模式。</p></li>
+<li><p>场模式–通过连续波输入响应任意源。</p></li>
+</ul>
+</section>
+<section id="fdfd">
+<h2>2. 有限差分频域法（FDFD）<a class="headerlink" href="#fdfd" title="此标题的永久链接"></a></h2>
+<p>  FDFD认为待求解的系统由时谐信号激励，仅在空间上进行离散化处理求解稳态下的频率响应。软件采用的有限差分频域求解器是基于SPINS开源软件包，其中二维仿真采用求解器FDFD Local Matrix Solver，这是一个基于CPU的求解器，该求解器只需设置适当的矩阵方程并使用BLAS运行直接矩阵求解即可求解。因此，它对于小型2D问题快速且有效，但对于大型2D或3D问题却很慢。
+三维求解器采用Maxwell-B求解器，它是基于GPU的有限差分频域求解器，这个求解器必须安装在至少具有一个NVIDIA GPU的机器上。对于使用者只关心几个波长的问题十分有效。</p>
+</section>
+<section id="rcwa">
+<h2>3. 严格耦合波分析（RCWA）<a class="headerlink" href="#rcwa" title="此标题的永久链接"></a></h2>
+<p>  RCWA是一种适用于求解周期性电磁场的算法，电磁波被展开为空间谐波（傅里叶级数），分立的空间谐波并不满足波动方程，但它们的叠加结果满足波动方程，主要可以用于研究各种周期性结构衍射特性分析。相比于FDTD和FDFD等其他数值方法，RCWA在速度上有明显优势。我们软件的RCWA数值仿真模块主要是基于rcwa_tf的开源包进行仿真求解的。</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2022, Rickey.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
