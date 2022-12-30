@@ -63,7 +63,7 @@
  
 #### 3.1.2 建立仿真模型
 
-meep中添加仿真所需要的模型结构，mp.Block是添加一个长方体模型，mp.Cylinder 是添加一个圆柱体，其中center属性为中心坐标点，size属性为中心坐标延展到x,y,z的尺寸，radius属性为半径，height属性为高度。关于更多形状的建模函数参考 https://meep.readthedocs.io/en/latest/Python_User_Interface/
+meep中添加仿真所需要的模型结构，mp.Block是添加一个长方体模型，mp.Cylinder 是添加一个圆柱体，其中center属性为中心坐标点，size属性为中心坐标延展到x,y,z的尺寸，radius属性为半径，height属性为高度。关于更多形状的建模函数参考 <https://meep.readthedocs.io/en/latest/Python_User_Interface/>
 
     c1 = mp.Block(size=mp.Vector3(dp, dp, dsub),
               center=mp.Vector3(0, 0, -1),
