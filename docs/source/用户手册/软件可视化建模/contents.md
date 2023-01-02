@@ -350,3 +350,593 @@ meep中添加仿真所需要的模型结构，mp.Block是添加一个长方体�
     fdtd = lumapi.FDTD(hide=False)  #调lumeircal仿真软件
     sim_wav(fdtd, "waveguide")
     fdtd.close()
+
+### 3.3 cst示例
+
+以十字形吸收器为例。
+
+Step1: 导入所需要的依赖包：
+
+```
+import sys
+
+cst_lib_path = r"D:\Program Files (x86)\CST_Studio_Suite_2020\AMD64\python_cst_libraries"
+sys.path.append(cst_lib_path)
+
+import cst
+from cst import interface, results
+
+import time
+import os
+os.environ['KMP_DUPLICATE_LIB_OK']='TRUE'
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+from cst.interface import Project
+import math
+from cst import results
+import numpy as np
+```
+
+
+
+Step2: 定义用到的函数：
+
++ 基本环境设置
+
+```
+def setup_base(modeler: Project.modeler):
+
+    # setup units
+    vba = '''
+    With Units
+        .Geometry "um"
+        .Frequency "THz"
+        .Voltage "V"
+        .Resistance "Ohm"
+        .Inductance "H"
+        .TemperatureUnit  "Kelvin"
+        .Time "ns"
+        .Current "A"
+        .Conductance "Siemens"
+        .Capacitance "F"
+    End With
+    '''
+    modeler.add_to_history('setup units', vba)
+
+    # set the wavelength range
+    vba = '''
+    Solver.WavelengthRange "2.5", "6"
+    '''
+    modeler.add_to_history('setup frequency range', vba)
+
+    # setup background
+    vba = '''
+    Plot.DrawBox True
+    With Background
+         .Type "Normal"
+         .Epsilon "1.0"
+         .Mu "1.0"
+         .Rho "1.204"
+         .ThermalType "Normal"
+         .ThermalConductivity "0.026"
+         .HeatCapacity "1.005"
+         .XminSpace "0.0"
+         .XmaxSpace "0.0"
+         .YminSpace "0.0"
+         .YmaxSpace "0.0"
+         .ZminSpace "0.0"
+         .ZmaxSpace "0.0"
+    End With
+    '''
+    modeler.add_to_history('setup background', vba)
+
+    # define Floquet port boundaries
+    vba = '''
+    With FloquetPort
+         .Reset
+         .SetDialogTheta "0"
+         .SetDialogPhi "0"
+         .SetSortCode "+beta/pw"
+         .SetCustomizedListFlag "False"
+         .Port "Zmin"
+         .SetNumberOfModesConsidered "2"
+         .Port "Zmax"
+         .SetNumberOfModesConsidered "2"
+    End With
+    '''
+    modeler.add_to_history('set Floquet port boundaries', vba)
+
+    # define parameters exist
+    vba = '''
+    MakeSureParameterExists "theta", "0"
+    SetParameterDescription "theta", "spherical angle of incident plane wave"
+    MakeSureParameterExists "phi", "0"
+    SetParameterDescription "phi", "spherical angle of incident plane wave"
+    '''
+    modeler.add_to_history('set parameters exist', vba)
+
+    # define boundaries, the open boundaries define floquet port
+    vba = '''
+    With Boundary
+         .Xmin "unit cell"
+         .Xmax "unit cell"
+         .Ymin "unit cell"
+         .Ymax "unit cell"
+         .Zmin "expanded open"
+         .Zmax "expanded open"
+         .Xsymmetry "none"
+         .Ysymmetry "none"
+         .Zsymmetry "none"
+         .XPeriodicShift "0.0"
+         .YPeriodicShift "0.0"
+         .ZPeriodicShift "0.0"
+         .PeriodicUseConstantAngles "False"
+         .SetPeriodicBoundaryAngles "theta", "phi"
+         .SetPeriodicBoundaryAnglesDirection "inward"
+         .UnitCellFitToBoundingBox "True"
+         .UnitCellDs1 "0.0"
+         .UnitCellDs2 "0.0"
+         .UnitCellAngle "90.0"
+    End With    
+    '''
+    modeler.add_to_history('set boundaries', vba)
+
+    # set tet mesh as default
+    vba = '''
+    With Mesh
+         .MeshType "Tetrahedral"
+    End With
+    '''
+    modeler.add_to_history('set mesh', vba)
+
+    # FD solver excitation with incoming plane wave at Zmax
+    vba = '''
+    With FDSolver
+         .Reset
+         .Stimulation "List", "List"
+         .ResetExcitationList
+         .AddToExcitationList "Zmax", "TE(0,0);TM(0,0)"
+         .LowFrequencyStabilization "False"
+    End With
+    '''
+    modeler.add_to_history('set FD solver', vba)
+
+    # change problem type
+    vba = '''
+    ChangeProblemType "Optical"
+    '''
+    modeler.add_to_history('change problem type', vba)
+
+    vba = '''
+    With MeshSettings
+         .SetMeshType "Tet"
+         .Set "Version", 1%
+    End With
+    '''
+    modeler.add_to_history('MeshSettings', vba)
+
+    vba = '''
+    With Mesh
+         .MeshType "Tetrahedral"
+    End With
+    '''
+    modeler.add_to_history('cset meshtype', vba)
+
+    # set the solver type
+    vba = '''
+    ChangeSolverType("HF Frequency Domain")
+    '''
+    modeler.add_to_history('set the solver type', vba)
+
+    # set component
+    vba = '''
+    Component.New "component1" 
+    '''
+    modeler.add_to_history('set component', vba)
+```
+
++ 定义金的Drude模型
+
+```
+def gold_drude(modeler):
+    vba = '''
+    With Material 
+         .Reset 
+         .Name "gold_drude"
+         .Folder ""
+         .Rho "0.0"
+         .ThermalType "Normal"
+         .ThermalConductivity "0"
+         .SpecificHeat "0", "J/K/kg"
+         .DynamicViscosity "0"
+         .Emissivity "0"
+         .MetabolicRate "0.0"
+         .VoxelConvection "0.0"
+         .BloodFlow "0"
+         .MechanicsType "Unused"
+         .FrqType "all"
+         .Type "Normal"
+         .MaterialUnit "Frequency", "THz"
+         .MaterialUnit "Geometry", "um"
+         .MaterialUnit "Time", "ns"
+         .MaterialUnit "Temperature", "Kelvin"
+         .Epsilon "1"
+         .Mu "1"
+         .Sigma "0"
+         .TanD "0.0"
+         .TanDFreq "0.0"
+         .TanDGiven "False"
+         .TanDModel "ConstTanD"
+         .EnableUserConstTanDModelOrderEps "False"
+         .ConstTanDModelOrderEps "1"
+         .SetElParametricConductivity "False"
+         .ReferenceCoordSystem "Global"
+         .CoordSystemType "Cartesian"
+         .SigmaM "0"
+         .TanDM "0.0"
+         .TanDMFreq "0.0"
+         .TanDMGiven "False"
+         .TanDMModel "ConstTanD"
+         .EnableUserConstTanDModelOrderMu "False"
+         .ConstTanDModelOrderMu "1"
+         .SetMagParametricConductivity "False"
+         .DispModelEps  "Drude"
+         .EpsInfinity "1.0"
+         .DispCoeff1Eps "6.28*2042e12"
+         .DispCoeff2Eps "71e12"
+         .DispCoeff3Eps "0.0"
+         .DispCoeff4Eps "0.0"
+         .DispModelMu "None"
+         .DispersiveFittingSchemeEps "Nth Order"
+         .MaximalOrderNthModelFitEps "10"
+         .ErrorLimitNthModelFitEps "0.1"
+         .UseOnlyDataInSimFreqRangeNthModelEps "False"
+         .DispersiveFittingSchemeMu "Nth Order"
+         .MaximalOrderNthModelFitMu "10"
+         .ErrorLimitNthModelFitMu "0.1"
+         .UseOnlyDataInSimFreqRangeNthModelMu "False"
+         .UseGeneralDispersionEps "False"
+         .UseGeneralDispersionMu "False"
+         .NLAnisotropy "False"
+         .NLAStackingFactor "1"
+         .NLADirectionX "1"
+         .NLADirectionY "0"
+         .NLADirectionZ "0"
+         .Colour "1", "1", "0.501961" 
+         .Wireframe "False" 
+         .Reflection "False" 
+         .Allowoutline "True" 
+         .Transparentoutline "False" 
+         .Transparency "0" 
+         .Create
+    End With
+    '''
+    modeler.add_to_history('define gold_drude', vba)
+```
+
++ 定义有耗材料Si
+
+```
+def Si_lossy(modeler):
+    vba = '''
+    With Material
+         .Reset
+         .Name "Silicon (lossy)"
+         .Folder ""
+    .FrqType "all"
+    .Type "Normal"
+    .SetMaterialUnit "GHz", "mm"
+    .Epsilon "11.9"
+    .Mu "1.0"
+    .Kappa "2.5e-004"
+    .TanD "0.00"
+    .TanDFreq "0.0"
+    .TanDGiven "False"
+    .TanDModel "ConstTanD"
+    .KappaM "0.0"
+    .TanDM "0.0"
+    .TanDMFreq "0.0"
+    .TanDMGiven "False"
+    .TanDMModel "ConstKappa"
+    .DispModelEps "None"
+    .DispModelMu "None"
+    .DispersiveFittingSchemeEps "General 1st"
+    .DispersiveFittingSchemeMu "General 1st"
+    .UseGeneralDispersionEps "False"
+    .UseGeneralDispersionMu "False"
+    .Rho "2330.0"
+    .ThermalType "Normal"
+    .ThermalConductivity "148"
+    .SpecificHeat "700", "J/K/kg"
+    .SetActiveMaterial "all"
+    .MechanicsType "Isotropic"
+    .YoungsModulus "112"
+    .PoissonsRatio "0.28"
+    .ThermalExpansionRate "5.1"
+    .Colour "0.94", "0.82", "0.76"
+    .Wireframe "False"
+    .Transparency "0"
+    .Create
+    End With 
+    '''
+    modeler.add_to_history('define Silicon (lossy)', vba)
+```
+
++ 定义材料SiO2
+
+```
+def SiO2(modeler):
+    vba = '''
+    With Material 
+         .Reset 
+         .Name "SiO2"
+         .Folder ""
+         .Rho "0.0"
+         .ThermalType "Normal"
+         .ThermalConductivity "0"
+         .SpecificHeat "0", "J/K/kg"
+         .DynamicViscosity "0"
+         .Emissivity "0"
+         .MetabolicRate "0.0"
+         .VoxelConvection "0.0"
+         .BloodFlow "0"
+         .MechanicsType "Unused"
+         .FrqType "all"
+         .Type "Normal"
+         .MaterialUnit "Frequency", "THz"
+         .MaterialUnit "Geometry", "um"
+         .MaterialUnit "Time", "ns"
+         .MaterialUnit "Temperature", "Kelvin"
+         .Epsilon "3.9"
+         .Mu "1"
+         .Sigma "0.0"
+         .TanD "0.025"
+         .TanDFreq "0.0"
+         .TanDGiven "True"
+         .TanDModel "ConstTanD"
+         .EnableUserConstTanDModelOrderEps "False"
+         .ConstTanDModelOrderEps "1"
+         .SetElParametricConductivity "False"
+         .ReferenceCoordSystem "Global"
+         .CoordSystemType "Cartesian"
+         .SigmaM "0"
+         .TanDM "0.0"
+         .TanDMFreq "0.0"
+         .TanDMGiven "False"
+         .TanDMModel "ConstTanD"
+         .EnableUserConstTanDModelOrderMu "False"
+         .ConstTanDModelOrderMu "1"
+         .SetMagParametricConductivity "False"
+         .DispModelEps "None"
+         .DispModelMu "None"
+         .DispersiveFittingSchemeEps "Nth Order"
+         .MaximalOrderNthModelFitEps "10"
+         .ErrorLimitNthModelFitEps "0.1"
+         .UseOnlyDataInSimFreqRangeNthModelEps "False"
+         .DispersiveFittingSchemeMu "Nth Order"
+         .MaximalOrderNthModelFitMu "10"
+         .ErrorLimitNthModelFitMu "0.1"
+         .UseOnlyDataInSimFreqRangeNthModelMu "False"
+         .UseGeneralDispersionEps "False"
+         .UseGeneralDispersionMu "False"
+         .NLAnisotropy "False"
+         .NLAStackingFactor "1"
+         .NLADirectionX "1"
+         .NLADirectionY "0"
+         .NLADirectionZ "0"
+         .Colour "0.752941", "0.752941", "0.752941" 
+         .Wireframe "False" 
+         .Reflection "False" 
+         .Allowoutline "True" 
+         .Transparentoutline "False" 
+         .Transparency "0" 
+         .Create
+    End With
+    '''
+    modeler.add_to_history('define SiO2', vba)
+
+    # change color
+    vba = '''
+    With Material 
+         .Name "SiO2"
+         .Folder ""
+         .Colour "0.752941", "0.752941", "0.752941" 
+         .Wireframe "False" 
+         .Reflection "False" 
+         .Allowoutline "True" 
+         .Transparentoutline "False" 
+         .Transparency "0" 
+         .ChangeColour 
+    End With
+    '''
+    modeler.add_to_history('change color of SiO2', vba)
+```
+
++ 定义brick
+
+``` 
+def brick(modeler, name, comp, material, Xrange, Yrange, Zrange):
+    vba = '''
+    With Brick
+     .Reset 
+     .Name "{0}" 
+     .Component "{1}" 
+     .Material "{2}" 
+     .Xrange "{3[0]}", "{3[1]}" 
+     .Yrange "{4[0]}", "{4[1]}" 
+     .Zrange "{5[0]}", "{5[1]}" 
+     .Create
+    End With
+    '''.format(name, comp, material, Xrange, Yrange, Zrange)
+    modeler.add_to_history(f'define brick {name}', vba)
+```
+
++ 定义旋转90°
+
+```
+def transform(modeler):
+    vba = '''
+    With Transform 
+         .Reset 
+         .Name "component1:line1" 
+         .Origin "CommonCenter" 
+         .Center "0", "0", "0" 
+         .Angle "0", "0", "90" 
+         .MultipleObjects "True" 
+         .GroupObjects "False" 
+         .Repetitions "1" 
+         .MultipleSelection "False" 
+         .Destination "" 
+         .Material "" 
+         .Transform "Shape", "Rotate" 
+    End With 
+    '''
+    modeler.add_to_history('rotate line1 90', vba)
+```
+
++ 定义布尔加操作
+
+```
+def boolean_add(modeler, name1, name2):
+    vba = '''
+    Solid.Add "component1:{0}", "component1:{1}" 
+    '''.format(name1, name2)
+    modeler.add_to_history(f'Add {name1} and {name2}', vba)
+```
+
++ 定义floquet边界条件
+
+```
+def floquet_boundary(modeler):
+    vba = '''
+    With FloquetPort
+         .Reset
+         .SetDialogTheta "0" 
+         .SetDialogPhi "0" 
+         .SetPolarizationIndependentOfScanAnglePhi "0.0", "False"  
+         .SetSortCode "+beta/pw" 
+         .SetCustomizedListFlag "False" 
+         .Port "Zmin" 
+         .SetNumberOfModesConsidered "1" 
+         .SetDistanceToReferencePlane "0.0" 
+         .SetUseCircularPolarization "False" 
+         .Port "Zmax" 
+         .SetNumberOfModesConsidered "1" 
+         .SetDistanceToReferencePlane "0.0" 
+         .SetUseCircularPolarization "False" 
+    End With
+    '''
+    modeler.add_to_history('set floquet boundary', vba)
+```
+
++ 定义S参数提取
+
+```
+def get_S(mws):
+    project = cst.results.ProjectFile(mws.filename(), allow_interactive=True)
+    wl = np.array(project.get_3d().get_result_item("1D Results\S-Parameters\SZmax(1),Zmax(1)").get_xdata())
+    s11 = np.array(project.get_3d().get_result_item("1D Results\S-Parameters\SZmax(1),Zmax(1)").get_ydata())
+
+    s11_norm = np.abs(s11)
+    s11_arg = np.angle(s11)
+    result = np.transpose(np.stack([wl, s11_norm, s11_arg]))
+    return result
+```
+
+
+
+Step3: 主函数：创建十字形的超表面结构，最终得到其吸收率的结果
+
+![1672394218872](assets/1672394218872.png)
+
+<center>图 创建的十字形超表面结构
+
+```
+tree = ModelTree('Model')
+save_path = os.getcwd()  # save for cst files
+save_name = 'demo.cst'
+save_name = os.path.join(save_path, save_name)
+print("Working file: {}".format(save_name))
+
+start_time = time.time()
+cstx = interface.DesignEnvironment()  # create new cst project and save it
+mws = cstx.new_mws()
+# mws.save(path=os.path.join(save_path, save_name))
+mws.save(path=save_name)
+
+mws.activate()
+modeler = mws.modeler  # define the modeler to create the unit cell structure
+
+# set base envs
+setup_base(modeler)
+
+# add materials
+gold_drude(modeler)
+SiO2(modeler)
+
+# create pattern
+# substrate
+name = 'substrate'
+comp = 'component1'
+material = 'SiO2'
+brick(modeler, name, comp, material, [-1, 1], [-1, 1], [-0.19/2, 0.19/2])
+create_model(size=(2, 2, 0.19), position=(0, 0, 0), type='Box', color='grey', opacity=0.8)
+tree.add_node('substrate')
+# ground
+name = 'ground'
+comp = 'component1'
+material = 'gold_drude'
+brick(modeler, name, comp, material, [-1, 1], [-1, 1], [-0.19/2-0.1, -0.19/2])
+create_model(size=(2, 2, 0.1), position=(0, 0, -0.145), type='Box', color='yellow', opacity=0.8)
+tree.add_node('ground')
+
+# # change color of gold_self
+# ss.change_color(modeler, 'gold_self', [1, 1, 0.501961])
+
+# line 1
+name = 'line1'
+comp = 'component1'
+material = 'gold_drude'
+brick(modeler, name, comp, material, [-0.5, 0.5], [-0.1, 0.1], [0.19/2, 0.19/2+0.06])
+transform(modeler)
+create_model(size=(1, 0.2, 0.06), position=(0, 0, 0.125), type='Box', color='yellow',opacity=0.8)
+tree.add_node('line1')
+
+# boolean add
+name1 = 'line1'
+name2 = 'line1_1'
+boolean_add(modeler, name1, name2)
+create_model(size=(0.2, 1, 0.06), position=(0, 0, 0.125), type='Box', color='yellow',opacity=0.8)
+tree.add_node('line2')
+floquet_boundary(modeler)
+# run
+modeler.run_solver()
+
+
+# get result
+# result = ss.get_R_A(mws)
+result = get_S(mws)
+
+mws.close()
+cstx.close()
+
+# end and save results
+end_time = time.time()
+# print("time elapse: {:.2f} s".format(end_time - start_time))
+np.savetxt('simulation result.txt', result)
+
+# plot Absorbance and Reflectance
+wl = 3*(10**2)/result[:, 0]
+s11 = result[:, 1]
+# A = result[:, 2]
+A = 1 - s11 ** 2
+plt.figure()
+plt.plot(wl, A, label='Absorbance')
+plt.legend()
+plt.xlabel('wavelength(um)')
+plt.savefig('Absorbance')
+device.save_fig('Absorbance', file_path="Absorbance.png")
+```
+
