@@ -8,7 +8,7 @@
 
 <center>图1.1 光谱预测模块初始化界面</center>
 
-本页面的各功能模块基于VAE模型开发（VAE模型介绍详见**深度生成模型** [注：此处链接到：[深度学习模块 — Intelligent Software Design v1 文档 (intelligent-software-design.readthedocs.io)](https://intelligent-software-design.readthedocs.io/zh_CN/latest/算法/深度学习模块/深度学习模型.html#id6)]）。
+本页面的各功能模块基于VAE模型开发（VAE模型介绍详见[深度学习模块](https://intelligent-software-design.readthedocs.io/zh_CN/latest/算法/深度学习模块/深度学习模型.html#id6)）。
 
 本页面可分有三个功能区域：输入区、模型区、结果展示区。
 
@@ -51,7 +51,7 @@
 
 ## 2. 光谱预测使用实例
 
-本节以自由形状结构超表面的VAE模型（链接：[深度学习模块 — Intelligent Software Design v1 文档 (intelligent-software-design.readthedocs.io)](https://intelligent-software-design.readthedocs.io/zh_CN/latest/算法/深度学习模块/深度学习模型.html#id8)）为例。
+本节以自由形状结构超表面的[VAE模型](https://intelligent-software-design.readthedocs.io/zh_CN/latest/算法/深度学习模块/深度学习模型.html#id8）。
 
 Step1: 选择模型：
 
