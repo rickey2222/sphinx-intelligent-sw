@@ -142,6 +142,7 @@ meep中添加仿真所需要的模型结构，mp.Block是添加一个长方体�
 
 
 添加反射监视器区域
+
     refl_fr = mp.FluxRegion(center=(0, 0, 0.8), size=mp.Vector3(0.8, 0.8, 0))
     refl = sim.add_flux(fcen, df, nfreq, refl_fr)
 
@@ -149,6 +150,7 @@ meep中添加仿真所需要的模型结构，mp.Block是添加一个长方体�
     node10 = tree.add_node('Reflection Area', 'area')
 
  添加透射监视器区域
+
     tran_fr = mp.FluxRegion(center=mp.Vector3(0, 0, -0.5), size=mp.Vector3(0.8, 0.8, 0))
     tran = sim.add_flux(fcen, df, nfreq, tran_fr)
 
@@ -157,6 +159,7 @@ meep中添加仿真所需要的模型结构，mp.Block是添加一个长方体�
 
 #### 3.1.4 仿真运行
 因为该meta示例为了计算反射率，透射率、吸收率谱线图，所以运行了两次仿真，第一次仿真是为了计算反射率，没有添加任何几何结构，第二次仿真添加了我们设计的超表面结构，最终仿真得出光谱图。其中，device.sav_fig()函数
+
     # 第一次运行
     sim.run(until_after_sources=mp.stop_when_fields_decayed(50, mp.Ey, pt, 5e-8))
     input_flux = mp.get_fluxes(inc)
@@ -200,6 +203,7 @@ meep中添加仿真所需要的模型结构，mp.Block是添加一个长方体�
     flux_freqs = mp.get_flux_freqs(refl)
 
 #### 3.1.5 后处理数据
+
     ez_data = sim.get_array(mp.Ez, mp.Volume(center=mp.Vector3(), size=mp.Vector3(dp, dp, 0)))  # 从仿真结果中提取某一截面的Ez电场分布图数据
 
     plt.imshow(np.flipud(np.transpose(ez_data)), interpolation='spline36', cmap='RdBu', alpha=0.9)
