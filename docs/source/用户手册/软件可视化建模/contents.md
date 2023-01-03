@@ -351,7 +351,7 @@ meep中添加仿真所需要的模型结构，mp.Block是添加一个长方体�
     sim_wav(fdtd, "waveguide")
     fdtd.close()
 
-### 3.3 cst示例
+### 3.3 cst 示例
 
 以十字形吸收器为例。
 
@@ -851,7 +851,7 @@ Step3: 主函数：创建十字形的超表面结构，最终得到其吸收率�
 
 ![1672394218872](assets/1672394218872.png)
 
-<center>图 创建的十字形超表面结构
+<center>创建的十字形超表面结构 </center>
 
 ```
 tree = ModelTree('Model')
