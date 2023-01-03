@@ -22,6 +22,7 @@
 
 运行该示例（器件库中的meta_em5)时，网页端的算法环境选择FDTD，
 以下是调用所需要的依赖包：
+
     import time
     import meep as mp
     import numpy as np
@@ -106,6 +107,7 @@ meep中添加仿真所需要的模型结构，mp.Block是添加一个长方体�
 #### 3.1.3 添加光源、仿真区域、监视器
 
 光源是由中心坐标为(0, 0, 0.65)构成的沿xy平面的矩形框，component为光源的分量参数。creat_model()函数是在前端展示的模型结构函数，可自定义颜色，透明度，位置坐标与前面仿真所建立的参数一直即可，后续会统一接口省略多余的参数定义，以下遇到的同样的定义类似。  
+
     sources = [mp.Source(mp.GaussianSource(fcen, fwidth=df),
                         component=mp.Ey,
                         center=mp.Vector3(0, 0, 0.65),
@@ -118,6 +120,7 @@ meep中添加仿真所需要的模型结构，mp.Block是添加一个长方体�
 
 
 添加fdtd仿真区域，仿真区域主要是由cell大小区域的长方体构成的，中心坐标为（0,0,0），x方向的长度为dp，y方向的长度为dp，z方向的长度为2+2*dpml。
+
     sim = mp.Simulation(resolution=resolution,
                         cell_size=cell_size,
                         boundary_layers=pml_layers,
@@ -130,6 +133,7 @@ meep中添加仿真所需要的模型结构，mp.Block是添加一个长方体�
 
 
 添加入射监视器区域
+
     inc_fr = mp.FluxRegion(center=(0, 0, 0.8), size=mp.Vector3(0.8, 0.8, 0))
     inc = sim.add_flux(fcen, df, nfreq, inc_fr)
 
@@ -237,10 +241,10 @@ meep中添加仿真所需要的模型结构，mp.Block是添加一个长方体�
 ### 3.2 lumerical 示例
 
 导入所需要的依赖包
+
     import sys, os, math
     import numpy as np
     import matplotlib.pyplot as plt
-
     sys.path.append("C:\\Program Files\\Lumerical\\v202\\api\\python\\")  # Default windows lumapi path
     # sys.path.append(os.path.dirname(__file__))  # Current directory
     import lumapi
