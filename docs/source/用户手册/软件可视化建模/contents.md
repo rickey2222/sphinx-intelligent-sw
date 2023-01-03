@@ -22,20 +22,20 @@
 
 运行该示例（器件库中的meta_em5)时，网页端的算法环境选择FDTD，
 以下是调用所需要的依赖包：
-    ```
     import time
     import meep as mp
     import numpy as np
     from matplotlib import pyplot as plt
+ 
 
 由于现在还没有统一接口，目前相关前端展示代码依然编写在编辑器中，后期会封装有统一的接口。
-
+ 
     tree = ModelTree('Model')  # 这是在前端创建要素预览
-    ```
+ 
 
 #### 3.1.1 参数定义
 建立仿真模型所需要的变量参数：
-    ```
+
     parameter = {'dmet': 0.27,
              'wl_max': 2.5,
              'wl_min': 1,
@@ -61,12 +61,12 @@
     k_point = mp.Vector3(0, 0, 0)
     pml_layers = [mp.PML(thickness=dpml, direction=mp.Z)]
     pt = mp.Vector3(0, 0, -0.6)
-    ```
+ 
  
 #### 3.1.2 建立仿真模型
 
 meep中添加仿真所需要的模型结构，mp.Block是添加一个长方体模型，mp.Cylinder 是添加一个圆柱体，其中center属性为中心坐标点，size属性为中心坐标延展到x,y,z的尺寸，radius属性为半径，height属性为高度。关于更多形状的建模函数参考 <https://meep.readthedocs.io/en/latest/Python_User_Interface/>
-    ```
+
     c1 = mp.Block(size=mp.Vector3(dp, dp, dsub),
               center=mp.Vector3(0, 0, -1),
               material=mp.Medium(index=n1)) # 添加一个材料为n1的长方体，中心坐标为(0，0，-1),x,y方向的长度为dp,z方向的长度为dsub
@@ -101,12 +101,11 @@ meep中添加仿真所需要的模型结构，mp.Block是添加一个长方体�
 
     c6_id = create_model(size=(0.2, 0.2, 0.27, 40), position=(-0.3, -0.3, 0.135), type='Cylinder', color='White')
     node6 = tree.add_node('c6 - Cylinder')
-    ```
+
 
 #### 3.1.3 添加光源、仿真区域、监视器
 
 光源是由中心坐标为(0, 0, 0.65)构成的沿xy平面的矩形框，component为光源的分量参数。creat_model()函数是在前端展示的模型结构函数，可自定义颜色，透明度，位置坐标与前面仿真所建立的参数一直即可，后续会统一接口省略多余的参数定义，以下遇到的同样的定义类似。  
-    ```
     sources = [mp.Source(mp.GaussianSource(fcen, fwidth=df),
                         component=mp.Ey,
                         center=mp.Vector3(0, 0, 0.65),
@@ -116,10 +115,9 @@ meep中添加仿真所需要的模型结构，mp.Block是添加一个长方体�
     source_id = create_model(position=(0, 0, 0.65), size=(0.8, 0.8, 0.01), type='Box', line='true', color='Red')
     arrow_id = create_model(source=(0, 0, 0.65), target=(0, 0, 0.1), type='Arrow', color='Red')
     node7 = tree.add_node('Light Source', 'source')
-    ```
+
 
 添加fdtd仿真区域，仿真区域主要是由cell大小区域的长方体构成的，中心坐标为（0,0,0），x方向的长度为dp，y方向的长度为dp，z方向的长度为2+2*dpml。
-    ```
     sim = mp.Simulation(resolution=resolution,
                         cell_size=cell_size,
                         boundary_layers=pml_layers,
@@ -129,38 +127,32 @@ meep中添加仿真所需要的模型结构，mp.Block是添加一个长方体�
 
     sim_id = create_model(position=(0, 0, 0), size=(dp, dp, 2 + 2 * dpml), type='Box', color='Orange', opacity=0.4)
     node8 = tree.add_node('Sim Area', 'area')
-    ```
+
 
 添加入射监视器区域
-    ```
     inc_fr = mp.FluxRegion(center=(0, 0, 0.8), size=mp.Vector3(0.8, 0.8, 0))
     inc = sim.add_flux(fcen, df, nfreq, inc_fr)
 
     monitor_id = create_model(position=(0, 0, 0.8), size=(0.8, 0.8, 0.01), type='Box', line='true', color='Red')
     node9 = tree.add_node('Monitor', 'area')
-    ```
+
 
 添加反射监视器区域
-    ```
     refl_fr = mp.FluxRegion(center=(0, 0, 0.8), size=mp.Vector3(0.8, 0.8, 0))
     refl = sim.add_flux(fcen, df, nfreq, refl_fr)
 
     refl_id = create_model(position=(0, 0, 0.8), size=(0.8, 0.8, 0.01), type='Box', line='true', color='Red')
     node10 = tree.add_node('Reflection Area', 'area')
-    ```
 
  添加透射监视器区域
-    ```
     tran_fr = mp.FluxRegion(center=mp.Vector3(0, 0, -0.5), size=mp.Vector3(0.8, 0.8, 0))
     tran = sim.add_flux(fcen, df, nfreq, tran_fr)
 
     tran_id = create_model(position=(0, 0, -0.5), size=(0.8, 0.8, 0.01), type='Box', line='true', color='Yellow')
     node11 = tree.add_node('Transparent Area', 'area')
-    ```
 
 #### 3.1.4 仿真运行
 因为该meta示例为了计算反射率，透射率、吸收率谱线图，所以运行了两次仿真，第一次仿真是为了计算反射率，没有添加任何几何结构，第二次仿真添加了我们设计的超表面结构，最终仿真得出光谱图。其中，device.sav_fig()函数
-    ```
     # 第一次运行
     sim.run(until_after_sources=mp.stop_when_fields_decayed(50, mp.Ey, pt, 5e-8))
     input_flux = mp.get_fluxes(inc)
@@ -202,10 +194,8 @@ meep中添加仿真所需要的模型结构，mp.Block是添加一个长方体�
     refl_flux = mp.get_fluxes(refl)
     tran_flux = mp.get_fluxes(tran)
     flux_freqs = mp.get_flux_freqs(refl)
-    ```
 
 #### 3.1.5 后处理数据
-    ```
     ez_data = sim.get_array(mp.Ez, mp.Volume(center=mp.Vector3(), size=mp.Vector3(dp, dp, 0)))  # 从仿真结果中提取某一截面的Ez电场分布图数据
 
     plt.imshow(np.flipud(np.transpose(ez_data)), interpolation='spline36', cmap='RdBu', alpha=0.9)
@@ -240,14 +230,13 @@ meep中添加仿真所需要的模型结构，mp.Block是添加一个长方体�
     plt.legend(loc="upper right")
     plt.savefig('meta5_refl_tran.png')
     device.save_fig('meta5_refl_tran.png', file_path='meta5_refl_tran.png')
-    ```
+
 
 
 
 ### 3.2 lumerical 示例
 
 导入所需要的依赖包
-    ```
     import sys, os, math
     import numpy as np
     import matplotlib.pyplot as plt
@@ -255,11 +244,9 @@ meep中添加仿真所需要的模型结构，mp.Block是添加一个长方体�
     sys.path.append("C:\\Program Files\\Lumerical\\v202\\api\\python\\")  # Default windows lumapi path
     # sys.path.append(os.path.dirname(__file__))  # Current directory
     import lumapi
-    ```
 
 定义的仿真模型函数，该示例仿真的是波导器件。
 
-    ```
     def sim_wav(fdtd, name):
         ## 创建预览要素
         tree = ModelTree('Model')
@@ -362,7 +349,7 @@ meep中添加仿真所需要的模型结构，mp.Block是添加一个长方体�
     fdtd = lumapi.FDTD(hide=False)  #调lumeircal仿真软件
     sim_wav(fdtd, "waveguide")
     fdtd.close()
-    ```
+
 
 ### 3.3 cst 示例
 
