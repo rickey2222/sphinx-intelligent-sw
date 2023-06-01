@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>智能软件系统用户手册 &mdash; Intelligent Software Design v1 文档</title>
+  <title>智能软件平台用户手册 &mdash; Intelligent Software Design v1 文档</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -43,14 +43,14 @@
               <p class="caption" role="heading"><span class="caption-text">目录:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../%E7%AE%80%E4%BB%8B/index.html">智能软件平台介绍</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">智能软件系统用户手册</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">智能软件平台用户手册</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="%E8%BD%AF%E4%BB%B6%E5%8F%AF%E8%A7%86%E5%8C%96%E5%BB%BA%E6%A8%A1/contents.html">智能软件可视化建模</a></li>
 <li class="toctree-l2"><a class="reference internal" href="%E8%BD%AF%E4%BB%B6%E6%95%B0%E6%8D%AE%E5%BA%93/contents.html">智能软件数据库</a></li>
 <li class="toctree-l2"><a class="reference internal" href="%E8%BD%AF%E4%BB%B6%E5%85%89%E8%B0%B1%E9%A2%84%E6%B5%8B/contents.html">智能软件光谱预测</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../%E6%95%B0%E6%8D%AE%E5%BA%93/index.html">智能软件平台数据库</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../%E7%AE%97%E6%B3%95/index.html">智能软件系统算法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../%E7%AE%97%E6%B3%95/index.html">智能软件平台算法</a></li>
 </ul>
 
         </div>
@@ -67,7 +67,7 @@
           <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a></li>
-      <li class="breadcrumb-item active">智能软件系统用户手册</li>
+      <li class="breadcrumb-item active">智能软件平台用户手册</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/用户手册/index.rst.txt" rel="nofollow"> 查看页面源码</a>
       </li>
@@ -78,12 +78,13 @@
            <div itemprop="articleBody">
              
   <section id="id1">
-<h1>智能软件系统用户手册<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<h1>智能软件平台用户手册<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="%E8%BD%AF%E4%BB%B6%E5%8F%AF%E8%A7%86%E5%8C%96%E5%BB%BA%E6%A8%A1/contents.html">智能软件可视化建模</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="%E8%BD%AF%E4%BB%B6%E5%8F%AF%E8%A7%86%E5%8C%96%E5%BB%BA%E6%A8%A1/contents.html#id2">1.可视化建模区块介绍</a></li>
 <li class="toctree-l2"><a class="reference internal" href="%E8%BD%AF%E4%BB%B6%E5%8F%AF%E8%A7%86%E5%8C%96%E5%BB%BA%E6%A8%A1/contents.html#id3">2. 可视化建模注意事项</a></li>
+<li class="toctree-l2"><a class="reference internal" href="%E8%BD%AF%E4%BB%B6%E5%8F%AF%E8%A7%86%E5%8C%96%E5%BB%BA%E6%A8%A1/contents.html#id4">3. 代码示例说明</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="%E8%BD%AF%E4%BB%B6%E6%95%B0%E6%8D%AE%E5%BA%93/contents.html">智能软件数据库</a><ul>
@@ -93,8 +94,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="%E8%BD%AF%E4%BB%B6%E5%85%89%E8%B0%B1%E9%A2%84%E6%B5%8B/contents.html">智能软件光谱预测</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="%E8%BD%AF%E4%BB%B6%E5%85%89%E8%B0%B1%E9%A2%84%E6%B5%8B/contents.html#id2">1.光谱预测功能介绍</a></li>
-<li class="toctree-l2"><a class="reference internal" href="%E8%BD%AF%E4%BB%B6%E5%85%89%E8%B0%B1%E9%A2%84%E6%B5%8B/contents.html#id3">2.光谱预测使用简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="%E8%BD%AF%E4%BB%B6%E5%85%89%E8%B0%B1%E9%A2%84%E6%B5%8B/contents.html#id2">1. 光谱预测模块功能简介</a></li>
+<li class="toctree-l2"><a class="reference internal" href="%E8%BD%AF%E4%BB%B6%E5%85%89%E8%B0%B1%E9%A2%84%E6%B5%8B/contents.html#id3">2. 光谱预测使用实例</a></li>
 </ul>
 </li>
 </ul>

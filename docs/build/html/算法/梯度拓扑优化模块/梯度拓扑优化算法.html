@@ -44,9 +44,9 @@
               <p class="caption" role="heading"><span class="caption-text">目录:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../%E7%AE%80%E4%BB%8B/index.html">智能软件平台介绍</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C/index.html">智能软件系统用户手册</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C/index.html">智能软件平台用户手册</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../%E6%95%B0%E6%8D%AE%E5%BA%93/index.html">智能软件平台数据库</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">智能软件系统算法</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">智能软件平台算法</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9D%97/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B.html">深度学习模块</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../%E6%95%B0%E5%80%BC%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9D%97/%E6%95%B0%E5%80%BC%E4%BB%BF%E7%9C%9F%E7%AE%97%E6%B3%95.html">数值仿真算法</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../%E5%85%A8%E5%B1%80%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96%E6%A8%A1%E5%9D%97/contents.html">全局搜索优化模块</a></li>
@@ -88,7 +88,7 @@
           <div role="navigation" aria-label="页面导航">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home"></a></li>
-          <li class="breadcrumb-item"><a href="../index.html">智能软件系统算法</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">智能软件平台算法</a></li>
       <li class="breadcrumb-item active">梯度拓扑优化算法</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/算法/梯度拓扑优化模块/梯度拓扑优化算法.md.txt" rel="nofollow"> 查看页面源码</a>
@@ -110,7 +110,7 @@
 在对输出结果进行优化时，通过多次改变设计区参数<span class="math notranslate nohighlight">\(ρ_n\)</span>（如粒子群优化算法），得到依据于初始参数的最优解。<br>
   如图1.1(b)所示，在逆向设计中，设计模型由方程组<span class="math notranslate nohighlight">\(F_n(x_n,ρ_n)=y_n\)</span>表示，已知输入<span class="math notranslate nohighlight">\(x_n\)</span>以及希望得到的输出<span class="math notranslate nohighlight">\(y_n\)</span>,对<span class="math notranslate nohighlight">\(F_n(x_n,ρ_n)=y_n\)</span>求解，得到设计区参数<span class="math notranslate nohighlight">\(\hat{p}_n\)</span>。
 在对输出结果进行优化时，通过多次比价输出<span class="math notranslate nohighlight">\(\hat{y}_n\)</span>与希望得到的输出<span class="math notranslate nohighlight">\(y_n\)</span>之间的差值，改变设计区参数<span class="math notranslate nohighlight">\(\hat{p}_n\)</span>，使输出结果接近输出<span class="math notranslate nohighlight">\(y_n\)</span>,得到设计参数<span class="math notranslate nohighlight">\(ρ_n\)</span>的最优解。</p>
-<p><img alt="1.1.png" src="../../_images/1.11.png" /></p>
+<p><img alt="1.1.png" src="../../_images/1.1.png" /></p>
 <center>图1.1(a)前向设计流程示意图；(b)逆向设计流程示意图</center>
 </section>
 <section id="id4">
@@ -119,7 +119,7 @@
   如图1.1.所示,在优化过程中，依据约束方程组<span class="math notranslate nohighlight">\(F_n(x_n,y_n)\)</span>构建度量函数<span class="math notranslate nohighlight">\(G_n(x_n,ρ_n)\)</span>，度量函数<span class="math notranslate nohighlight">\(G_n\)</span>用来描述设计参数<span class="math notranslate nohighlight">\(\hat{ρ}_n\)</span>时，对应的输出<span class="math notranslate nohighlight">\(\hat{y}_n\)</span>,与目标输出<span class="math notranslate nohighlight">\(y_n\)</span>的距离，当<span class="math notranslate nohighlight">\(G_n(x_n,ρ_n)\)</span>取最小值时，即可认为取得了涉及区域的最优解。<br>
   由于<span class="math notranslate nohighlight">\(G_n(x_n,ρ_n)=min\)</span>为不易求解的方程，考虑到其参数与约束条件<span class="math notranslate nohighlight">\(F_n(x_n,ρ_n)\)</span>相同，构建拉格朗日函数，对函数L关于<span class="math notranslate nohighlight">\(ρ_n\)</span>求解偏微分，当偏微分为零时，取得的含有拉格朗日乘子的等式即为伴随等式，伴随式在物理意义上等价于将所需的输出对场强的导数注入系统，并逆向运行系统得到的输出结果。<br>
   对<span class="math notranslate nohighlight">\(G_n(x_n,ρ_n)\)</span>关于<span class="math notranslate nohighlight">\(ρ_n\)</span>求解偏微分，可得当对设计区参数<span class="math notranslate nohighlight">\(ρ_n\)</span>进项微小扰动时对输出结果的影响程度，即梯度。梯度在数学上等价于前向仿真在设计区得到的数值与伴随仿真的数值乘积的实部。梯度对着迭代次数减小，即可得到<span class="math notranslate nohighlight">\(G_n(x_n,ρ_n)\)</span>的最小值。</p>
-<p><img alt="1.2.png" src="../../_images/1.21.png" /></p>
+<p><img alt="1.2.png" src="../../_images/1.2.png" /></p>
 <center>图1.2 基于梯度下降的伴随优化算法</center>
 </section>
 </section>

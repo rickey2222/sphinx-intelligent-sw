@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>智能软件可视化建模 &mdash; Intelligent Software Design v1 文档</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Intelligent Software Design
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">目录:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../%E7%AE%80%E4%BB%8B/index.html">智能软件平台介绍</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C/index.html">智能软件平台用户手册</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E6%95%B0%E6%8D%AE%E5%BA%93/index.html">智能软件平台数据库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E7%AE%97%E6%B3%95/index.html">智能软件平台算法</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Intelligent Software Design</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">智能软件可视化建模</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/软件模块介绍/器件仿真/contents.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>智能软件可视化建模<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="id2">
+<h2>1.可视化建模区块介绍<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>可视化建模需要用户提交模型python代码到网页的代码区中，前端采用CodeMirror在线代码编辑器使得用户可以在对应的算法环境中定义仿真模型。同时用户自定义模型会通过Three.js框架实现3D效果，通过编辑器中的模型定义可在模型展示区中XY view、YZ view、XZ view二维平面以及Perspective View三维视角显示模型的视图，并且通过鼠标可拖拽模型方向及显示大小。
+<img alt="图片1.png" src="https://s2.loli.net/2022/12/23/tYEC3496qyFvzn8.png" /></p>
+<center> 图1.1 可视化建模 </center>
+<p>现阶段软件可提供基于MEEP的FDTD算法以及与商业软件联动的CST算法背景，需要用户切换算法环境。</p>
+</section>
+<section id="id3">
+<h2>2. 可视化建模注意事项<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>因软件还在开发阶段，用户搭建模型需按照已给定的实例进行改写：</p>
+<ul class="simple">
+<li><p>用户在代码区定义器件后需点击上方运行按钮，软件会进行模型搭建，返回的结果可在解释去输出窗口读取，相应的性能结果保存在对应的性能图中，同时模型相关要素展示在要素预览区。</p></li>
+<li><p>模型解析完成后解释区会有FINISHED输出，如若计算中想停止运行可点击代码上方的暂停按钮。</p></li>
+</ul>
+</section>
+<section id="id4">
+<h2>3. 代码示例说明<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+<section id="meep">
+<h3>3.1 meep 示例<a class="headerlink" href="#meep" title="此标题的永久链接"></a></h3>
+<p>运行该示例（器件库中的meta_em5)时，网页端的算法环境选择FDTD，
+以下是调用所需要的依赖包：</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>import time
+import meep as mp
+import numpy as np
+from matplotlib import pyplot as plt
+</pre></div>
+</div>
+<p>由于现在还没有统一接口，目前相关前端展示代码依然编写在编辑器中，后期会封装有统一的接口。</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>tree = ModelTree(&#39;Model&#39;)  # 这是在前端创建要素预览
+</pre></div>
+</div>
+<section id="id5">
+<h4>3.1.1 参数定义<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h4>
+<p>建立仿真模型所需要的变量参数：</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>parameter = {&#39;dmet&#39;: 0.27,
+         &#39;wl_max&#39;: 2.5,
+         &#39;wl_min&#39;: 1,
+         &#39;dp&#39;: 0.8,
+         &#39;dsub&#39;: 2,
+         &#39;n1&#39;: 1.45,
+         &#39;n2&#39;:  3.67
+         }
+par = parameter
+dp = par[&quot;dp&quot;]
+dsub = par[&quot;dsub&quot;]
+n1 = par[&quot;n1&quot;]
+n2 = par[&quot;n2&quot;]
+fmax = 1 / par[&#39;wl_min&#39;]
+fmin = 1 / par[&#39;wl_max&#39;]
+fcen = (fmin + fmax) / 2
+df = fmax - fmin
+dpml = 1 / fcen / 2
+nfreq = 200
+starttime = time.time()
+resolution = 40
+cell_size = mp.Vector3(dp, dp, 2 + 2 * dpml)  # only Z-axis with PML
+k_point = mp.Vector3(0, 0, 0)
+pml_layers = [mp.PML(thickness=dpml, direction=mp.Z)]
+pt = mp.Vector3(0, 0, -0.6)
+</pre></div>
+</div>
+</section>
+<section id="id6">
+<h4>3.1.2 建立仿真模型<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h4>
+<p>meep中添加仿真所需要的模型结构，mp.Block是添加一个长方体模型，mp.Cylinder 是添加一个圆柱体，其中center属性为中心坐标点，size属性为中心坐标延展到x,y,z的尺寸，radius属性为半径，height属性为高度。关于更多形状的建模函数参考 <a class="reference external" href="https://meep.readthedocs.io/en/latest/Python_User_Interface/">https://meep.readthedocs.io/en/latest/Python_User_Interface/</a></p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>c1 = mp.Block(size=mp.Vector3(dp, dp, dsub),
+          center=mp.Vector3(0, 0, -1),
+          material=mp.Medium(index=n1)) # 添加一个材料为n1的长方体，中心坐标为(0，0，-1),x,y方向的长度为dp,z方向的长度为dsub
+
+c2 = mp.Block(size=mp.Vector3(0.6, 0.6, 0.27),
+            center=mp.Vector3(0, 0, 0.135),
+            material=mp.Medium(index=n2))
+
+c3 = mp.Cylinder(radius=0.2, center=(0.3, 0.3, 0.135), height=0.27) # 材料折射率默认为1
+c4 = mp.Cylinder(radius=0.2, center=(0.3, -0.3, 0.135), height=0.27)
+c5 = mp.Cylinder(radius=0.2, center=(-0.3, 0.3, 0.135), height=0.27)
+c6 = mp.Cylinder(radius=0.2, center=(-0.3, -0.3, 0.135), height=0.27)
+geometry = [c1, c2, c3, c4, c5, c6]
+
+
+# 以下是在前端需要展示的模型结构代码： （后续会统一接口可省略，前端展示模型结构坐标与仿真模型坐标同步）
+
+c1_id = create_model(size=(dp, dp, dsub), position=(0, 0, -1), type=&#39;Box&#39;, color=&#39;gray&#39;, opacity=0.5) # 创建模型id，颜色可通过color 属性自定义，模型透明度可通过opacity属性自定义，type属性定义模型类型
+node1 = tree.add_node(&#39;c1 - Block&#39;) # 创建要素预览
+
+c2_id = create_model(size=(0.6, 0.6, 0.27), position=(0, 0, 0.135), type=&#39;Box&#39;, color=&#39;Green&#39;)
+node2 = tree.add_node(&#39;c2 - Block&#39;)
+
+c3_id = create_model(size=(0.2, 0.2, 0.27, 40), position=(0.3, 0.3, 0.135), type=&#39;Cylinder&#39;, color=&#39;White&#39; )
+node3 = tree.add_node(&#39;c3 - Cylinder&#39;)
+
+c4_id = create_model(size=(0.2, 0.2, 0.27, 40), position=(0.3, -0.3, 0.135), type=&#39;Cylinder&#39;, color=&#39;White&#39;)
+node4 = tree.add_node(&#39;c4 - Cylinder&#39;)
+
+c5_id = create_model(size=(0.2, 0.2, 0.27, 40), position=(-0.3, 0.3, 0.135), type=&#39;Cylinder&#39;, color=&#39;White&#39;)
+node5 = tree.add_node(&#39;c5 - Cylinder&#39;)
+
+c6_id = create_model(size=(0.2, 0.2, 0.27, 40), position=(-0.3, -0.3, 0.135), type=&#39;Cylinder&#39;, color=&#39;White&#39;)
+node6 = tree.add_node(&#39;c6 - Cylinder&#39;)
+</pre></div>
+</div>
+</section>
+<section id="id7">
+<h4>3.1.3 添加光源、仿真区域、监视器<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h4>
+<p>光源是由中心坐标为(0, 0, 0.65)构成的沿xy平面的矩形框，component为光源的分量参数。creat_model()函数是在前端展示的模型结构函数，可自定义颜色，透明度，位置坐标与前面仿真所建立的参数一直即可，后续会统一接口省略多余的参数定义，以下遇到的同样的定义类似。</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sources = [mp.Source(mp.GaussianSource(fcen, fwidth=df),
+                    component=mp.Ey,
+                    center=mp.Vector3(0, 0, 0.65),
+                    size=mp.Vector3(0.8, 0.8, 0))]
+
+# 以下是在前端需要展示的光源结构代码： （后续会统一接口可省略，前端展示模型结构坐标与仿真模型坐标同步）
+source_id = create_model(position=(0, 0, 0.65), size=(0.8, 0.8, 0.01), type=&#39;Box&#39;, line=&#39;true&#39;, color=&#39;Red&#39;)
+arrow_id = create_model(source=(0, 0, 0.65), target=(0, 0, 0.1), type=&#39;Arrow&#39;, color=&#39;Red&#39;)
+node7 = tree.add_node(&#39;Light Source&#39;, &#39;source&#39;)
+</pre></div>
+</div>
+<p>添加fdtd仿真区域，仿真区域主要是由cell大小区域的长方体构成的，中心坐标为（0,0,0），x方向的长度为dp，y方向的长度为dp，z方向的长度为2+2*dpml。</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sim = mp.Simulation(resolution=resolution,
+                    cell_size=cell_size,
+                    boundary_layers=pml_layers,
+                    k_point=k_point,
+                    default_material=mp.Medium(index=1),
+                    sources=sources, )
+
+sim_id = create_model(position=(0, 0, 0), size=(dp, dp, 2 + 2 * dpml), type=&#39;Box&#39;, color=&#39;Orange&#39;, opacity=0.4)
+node8 = tree.add_node(&#39;Sim Area&#39;, &#39;area&#39;)
+</pre></div>
+</div>
+<p>添加入射监视器区域</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>inc_fr = mp.FluxRegion(center=(0, 0, 0.8), size=mp.Vector3(0.8, 0.8, 0))
+inc = sim.add_flux(fcen, df, nfreq, inc_fr)
+
+monitor_id = create_model(position=(0, 0, 0.8), size=(0.8, 0.8, 0.01), type=&#39;Box&#39;, line=&#39;true&#39;, color=&#39;Red&#39;)
+node9 = tree.add_node(&#39;Monitor&#39;, &#39;area&#39;)
+</pre></div>
+</div>
+<p>添加反射监视器区域</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>refl_fr = mp.FluxRegion(center=(0, 0, 0.8), size=mp.Vector3(0.8, 0.8, 0))
+refl = sim.add_flux(fcen, df, nfreq, refl_fr)
+
+refl_id = create_model(position=(0, 0, 0.8), size=(0.8, 0.8, 0.01), type=&#39;Box&#39;, line=&#39;true&#39;, color=&#39;Red&#39;)
+node10 = tree.add_node(&#39;Reflection Area&#39;, &#39;area&#39;)
+</pre></div>
+</div>
+<p>添加透射监视器区域</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>tran_fr = mp.FluxRegion(center=mp.Vector3(0, 0, -0.5), size=mp.Vector3(0.8, 0.8, 0))
+tran = sim.add_flux(fcen, df, nfreq, tran_fr)
+
+tran_id = create_model(position=(0, 0, -0.5), size=(0.8, 0.8, 0.01), type=&#39;Box&#39;, line=&#39;true&#39;, color=&#39;Yellow&#39;)
+node11 = tree.add_node(&#39;Transparent Area&#39;, &#39;area&#39;)
+</pre></div>
+</div>
+</section>
+<section id="id8">
+<h4>3.1.4 仿真运行<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h4>
+<p>因为该meta示例为了计算反射率，透射率、吸收率谱线图，所以运行了两次仿真，第一次仿真是为了计算反射率，没有添加任何几何结构，第二次仿真添加了我们设计的超表面结构，最终仿真得出光谱图。其中，device.sav_fig()函数</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># 第一次运行
+sim.run(until_after_sources=mp.stop_when_fields_decayed(50, mp.Ey, pt, 5e-8))
+input_flux = mp.get_fluxes(inc)
+refl_data = sim.get_flux_data(refl)
+sim.reset_meep()
+
+sim = mp.Simulation(resolution=resolution,
+                    cell_size=cell_size,
+                    boundary_layers=pml_layers,
+                    geometry=geometry,
+                    default_material=mp.Medium(index=1),
+                    k_point=k_point,
+                    sources=sources, )
+
+refl = sim.add_flux(fcen, df, nfreq, refl_fr)
+sim.load_minus_flux_data(refl, refl_data)
+
+# 添加透射监视器区域
+tran_fr = mp.FluxRegion(center=mp.Vector3(0, 0, -0.5), size=mp.Vector3(0.8, 0.8, 0))
+tran = sim.add_flux(fcen, df, nfreq, tran_fr)
+tran_id = create_model(position=(0, 0, -0.5), size=(0.8, 0.8, 0), type=&#39;Box&#39;, line=&#39;true&#39;, color=&#39;Red&#39;)
+node12 = tree.add_node(&#39;Flux Region&#39;, &#39;area&#39;)
+
+# 输出xz截面图
+f2 = plt.figure(dpi=120)
+sim.plot2D(ax=f2.gca(), output_plane=mp.Volume(center=mp.Vector3(), size=mp.Vector3(dp, 0, 2 + 2 * dpml)))
+plt.savefig(&#39;2D structrue(XZ).png&#39;)
+device.save_fig(&#39;2D structrue(XZ).png&#39;, file_path=&#39;2D structrue(XZ).png&#39;) # 这个是保存到前端命令，后续统一接口
+
+# 输出xy截面图
+f2 = plt.figure(dpi=120)
+sim.plot2D(ax=f2.gca(), output_plane=mp.Volume(center=mp.Vector3(), size=mp.Vector3(dp, dp, 0)))
+plt.savefig(&#39;2D structrue(XY).png&#39;)
+device.save_fig(&#39;2D structrue(XY).png&#39;, file_path=&#39;2D structrue(XY).png&#39;) # 这个是保存到前端命令，后续统一接口
+
+# 第二次运行
+sim.run(until_after_sources=mp.stop_when_fields_decayed(50, mp.Ey, pt, 5e-8))
+
+refl_flux = mp.get_fluxes(refl)
+tran_flux = mp.get_fluxes(tran)
+flux_freqs = mp.get_flux_freqs(refl)
+</pre></div>
+</div>
+</section>
+<section id="id9">
+<h4>3.1.5 后处理数据<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h4>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ez_data = sim.get_array(mp.Ez, mp.Volume(center=mp.Vector3(), size=mp.Vector3(dp, dp, 0)))  # 从仿真结果中提取某一截面的Ez电场分布图数据
+
+plt.imshow(np.flipud(np.transpose(ez_data)), interpolation=&#39;spline36&#39;, cmap=&#39;RdBu&#39;, alpha=0.9)
+a = np.flipud(np.transpose(ez_data))
+np.savetxt(&quot;data_meta5_Ez_field.txt&quot;, a)  # 导出Ez电场分布图二维数据
+plt.savefig(&quot;meta5_Ez_field.png&quot;)  # Ez电场分布图
+device.save_fig(&#39;meta5_Ez_field.png&#39;, file_path=&#39;meta5_Ez_field.png&#39;)
+
+wl = []
+Rs = []
+Ts = []
+endtime = time.time()
+total_time = endtime - starttime
+print(f&quot;Total Running Time : {total_time} (s)&quot;)
+
+for i in range(nfreq):
+    wl = np.append(wl, 1 / flux_freqs[i])
+    Rs = np.append(Rs, refl_flux[i] / input_flux[i])
+    Ts = np.append(Ts, -tran_flux[i] / input_flux[i])
+data = np.zeros((len(wl), 4))
+data[:, 0] = wl  # 波长 对应x轴
+data[:, 1] = Rs  # 反射率 对应y轴
+data[:, 2] = Ts  # 透射率 对应y轴
+data[:, 3] = 1 - Rs - Ts  # 吸收率 对应y轴
+np.savetxt(&quot;data_meta5_refl_tran.txt&quot;, data)  # 导出光谱图(透射率、反射率、吸收率)的数据
+
+plt.figure()
+plt.plot(wl, Rs, &#39;b&#39;, label=&#39;reflectance&#39;)
+plt.plot(wl, Ts, &#39;r&#39;, label=&#39;transmittance&#39;)
+plt.plot(wl, 1 - Rs - Ts, &#39;g&#39;, label=&#39;loss&#39;)
+plt.xlabel(&quot;wavelength (μm)&quot;)
+plt.legend(loc=&quot;upper right&quot;)
+plt.savefig(&#39;meta5_refl_tran.png&#39;)
+device.save_fig(&#39;meta5_refl_tran.png&#39;, file_path=&#39;meta5_refl_tran.png&#39;)
+</pre></div>
+</div>
+</section>
+</section>
+<section id="lumerical">
+<h3>3.2 lumerical 示例<a class="headerlink" href="#lumerical" title="此标题的永久链接"></a></h3>
+<p>导入所需要的依赖包</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>import sys, os, math
+import numpy as np
+import matplotlib.pyplot as plt
+sys.path.append(&quot;C:\\Program Files\\Lumerical\\v202\\api\\python\\&quot;)  # Default windows lumapi path
+# sys.path.append(os.path.dirname(__file__))  # Current directory
+import lumapi
+</pre></div>
+</div>
+<p>定义的仿真模型函数，该示例仿真的是波导器件。</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>def sim_wav(fdtd, name):
+    ## 创建预览要素
+    tree = ModelTree(&#39;Model&#39;)
+    # 添加波导器件:中心坐标为（0，0，0），尺寸为（10，0.5，0.22）的长方体 ，材料折射率为3.45 单位：μm
+    fdtd.addrect();
+    fdtd.set(&#39;name&#39;, &#39;wav&#39;);
+    fdtd.set(&#39;x span&#39;, 10e-6);
+    fdtd.set(&#39;y span&#39;, 0.5e-6);
+    fdtd.set(&#39;z span&#39;, 0.22e-6);
+    fdtd.set(&#39;x&#39;, 0);
+    fdtd.set(&#39;y&#39;, 0);
+    fdtd.set(&#39;z&#39;, 0);
+    fdtd.set(&#39;material&#39;, &quot;&lt;Object defined dielectric&gt;&quot;);
+    fdtd.set(&#39;index&#39;, 3.45)
+    c1_id = create_model(size=(10,  0.5, 0.22), position=(0, 0, 0), type=&#39;Box&#39;, color=&#39;green&#39;,opacity=0.8)
+    node1 = tree.add_node(&#39;wav&#39;)
+
+    # 添加 fdtd：中心坐标为（0，0，0），尺寸为（6，3.4，4.22）的长方体框，单位：μm
+    fdtd.addfdtd();
+    fdtd.set(&#39;dimension&#39;, &#39;3D&#39;);
+    fdtd.set(&#39;x span&#39;, 6e-6);
+    fdtd.set(&#39;y span&#39;, 3.4e-6);
+    fdtd.set(&#39;z span&#39;, 4.22e-6)
+    fdtd.set(&#39;x&#39;, 0);
+    fdtd.set(&#39;y&#39;, 0);
+    fdtd.set(&#39;z&#39;, 0)
+    fdtd.set(&quot;index&quot;, 1.44)
+
+    # 前端创建fdtd仿真域结构
+    create_model(position=(0, 0, 0), size=(6, 3.4, 4.22), type=&#39;Box&#39;, color=&#39;Orange&#39;,opacity=0.8)
+    tree.add_node(&#39;fdtd&#39;, &#39;area&#39;)
+
+    # add  mode sources
+    fdtd.addmode(name=&quot;TE&quot;, mode_selection=2, x=-2.5e-6, y=0, z=0, y_span=2e-6, z_span=4.22e-6, \
+                wavelength_start=1.26e-6, wavelength_stop=1.36e-6, number_of_trial_modes=20)
+    
+    # 前端创建光源结构
+    monitor_id = create_model(position=(-2.5, 0, 0), size=(0, 2, 4.22), type=&#39;Box&#39;, line=&#39;true&#39;, color=&#39;White&#39;)
+    arrow_id = create_model(source=(-2.5, 0, 0), target=(0.5, 0, 0), type=&#39;Arrow&#39;, color=&#39;Red&#39;)
+    node7 = tree.add_node(&#39;Light Source&#39;, &#39;source&#39;)
+
+    # add field monitor
+    fdtd.addpower(name=&quot;T&quot;, monitor_type=5, x=2.5e-6, y=0, z=0, y_span=1.5e-6, z_span=4.22e-6)
+    fdtd.addprofile(name=&quot;E_field&quot;, monitor_type=7, x=0, y=0, z=0, x_span=6e-6, y_span=3.4e-6)
+
+    # 前端创建监视器结构
+    create_model(position=(2.5, 0, 0), size=(0, 1.5, 4.22), type=&#39;Box&#39;, color=&#39;Yellow&#39;,opacity=0.8)
+    tree.add_node(&#39;T&#39;, &#39;area&#39;)
+    create_model(position=(0, 0, 0), size=(6, 3.4, 0), type=&#39;Box&#39;, color=&#39;Yellow&#39;,opacity=0.8)
+    tree.add_node(&#39;E_field&#39;, &#39;area&#39;)
+
+    # 添加模式分析器
+    fdtd.addmodeexpansion();
+    fdtd.set(&quot;name&quot;, &quot;mode_exp1&quot;);
+    fdtd.set(&quot;mode selection&quot;, &quot;fundamental TE mode&quot;);
+    fdtd.set(&quot;x&quot;, 2.5e-6);
+    fdtd.set(&quot;y&quot;, 0);
+    fdtd.set(&quot;z&quot;, 0);
+    fdtd.set(&quot;y span&quot;, 1.5e-6);
+    fdtd.set(&quot;z span&quot;, 4.22e-6);
+    # set the field monitor to be used by the expansion monitor
+    fdtd.select(&quot;mode_exp1&quot;);
+    fdtd.setexpansion(&quot;out_1&quot;, &quot;T&quot;);
+    create_model(position=(2.5, 0, 0), size=(0, 1.5, 4.22), type=&#39;Box&#39;, color=&#39;Yellow&#39;,opacity=0.8)
+    tree.add_node(&#39;mode_exp1&#39;, &#39;area&#39;)
+
+    # save
+    fdtd.save(&quot;D:\\%s&quot; % name)
+
+    # run
+    fdtd.run()
+
+    # 处理数据
+    expansion_1 = fdtd.getresult(&quot;mode_exp1&quot;, &quot;expansion for out_1&quot;)
+    T = fdtd.getattribute(expansion_1, &quot;T_forward&quot;)
+    f = fdtd.getdata(&quot;T&quot;, &quot;f&quot;)
+    fig, ax = plt.subplots(1, 1)
+    plt.plot(3 * 1e8 / f * 1e6, T)
+    # np.savetxt(&quot;wav_T.txt&quot;,T)
+    plt.savefig(&quot;wav_T.png&quot;)
+    device.save_fig(&#39;wav_T&#39;, file_path=&quot;wav_T.png&quot;)
+
+    E_total = [&quot;Ex&quot;, &quot;Ey&quot;, &quot;Ez&quot;]
+
+    for i in E_total:
+        fig, ax = plt.subplots(1, 1)
+        E = fdtd.getdata(&quot;E_field&quot;, i)
+        x = fdtd.getdata(&quot;E_field&quot;, &quot;x&quot;)
+        y = fdtd.getdata(&quot;E_field&quot;, &quot;y&quot;)
+        data_E = np.squeeze(np.array(np.real(E)))
+        plt.imshow(data_E[:, :, 0].T, origin=&quot;lower&quot;)
+        plt.colorbar()
+        ax.set_title(f&quot;{i}_field&quot;)
+        # np.savetxt(f&quot;wav_{i}.txt&quot;, data_E[:,:,0].T)
+        plt.savefig(f&quot;wav_{i}.png&quot;)
+        device.save_fig(f&quot;wav_{i}&quot;, file_path=f&quot;wav_{i}.png&quot;)   #前端保存图片
+    # plt.show()
+
+
+fdtd = lumapi.FDTD(hide=False)  #调lumeircal仿真软件
+sim_wav(fdtd, &quot;waveguide&quot;)
+fdtd.close()
+</pre></div>
+</div>
+</section>
+<section id="cst">
+<h3>3.3 cst 示例<a class="headerlink" href="#cst" title="此标题的永久链接"></a></h3>
+<p>以十字形吸收器为例。</p>
+<p>Step1: 导入所需要的依赖包：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">cst_lib_path</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;D:\Program Files (x86)\CST_Studio_Suite_2020\AMD64\python_cst_libraries&quot;</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cst_lib_path</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">cst</span>
+<span class="kn">from</span> <span class="nn">cst</span> <span class="kn">import</span> <span class="n">interface</span><span class="p">,</span> <span class="n">results</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;KMP_DUPLICATE_LIB_OK&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;TRUE&#39;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">cst.interface</span> <span class="kn">import</span> <span class="n">Project</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">cst</span> <span class="kn">import</span> <span class="n">results</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+<p>Step2: 定义用到的函数：</p>
+<ul class="simple">
+<li><p>基本环境设置</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">setup_base</span><span class="p">(</span><span class="n">modeler</span><span class="p">:</span> <span class="n">Project</span><span class="o">.</span><span class="n">modeler</span><span class="p">):</span>
+
+    <span class="c1"># setup units</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    With Units</span>
+<span class="s1">        .Geometry &quot;um&quot;</span>
+<span class="s1">        .Frequency &quot;THz&quot;</span>
+<span class="s1">        .Voltage &quot;V&quot;</span>
+<span class="s1">        .Resistance &quot;Ohm&quot;</span>
+<span class="s1">        .Inductance &quot;H&quot;</span>
+<span class="s1">        .TemperatureUnit  &quot;Kelvin&quot;</span>
+<span class="s1">        .Time &quot;ns&quot;</span>
+<span class="s1">        .Current &quot;A&quot;</span>
+<span class="s1">        .Conductance &quot;Siemens&quot;</span>
+<span class="s1">        .Capacitance &quot;F&quot;</span>
+<span class="s1">    End With</span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;setup units&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="c1"># set the wavelength range</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    Solver.WavelengthRange &quot;2.5&quot;, &quot;6&quot;</span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;setup frequency range&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="c1"># setup background</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    Plot.DrawBox True</span>
+<span class="s1">    With Background</span>
+<span class="s1">         .Type &quot;Normal&quot;</span>
+<span class="s1">         .Epsilon &quot;1.0&quot;</span>
+<span class="s1">         .Mu &quot;1.0&quot;</span>
+<span class="s1">         .Rho &quot;1.204&quot;</span>
+<span class="s1">         .ThermalType &quot;Normal&quot;</span>
+<span class="s1">         .ThermalConductivity &quot;0.026&quot;</span>
+<span class="s1">         .HeatCapacity &quot;1.005&quot;</span>
+<span class="s1">         .XminSpace &quot;0.0&quot;</span>
+<span class="s1">         .XmaxSpace &quot;0.0&quot;</span>
+<span class="s1">         .YminSpace &quot;0.0&quot;</span>
+<span class="s1">         .YmaxSpace &quot;0.0&quot;</span>
+<span class="s1">         .ZminSpace &quot;0.0&quot;</span>
+<span class="s1">         .ZmaxSpace &quot;0.0&quot;</span>
+<span class="s1">    End With</span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;setup background&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="c1"># define Floquet port boundaries</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    With FloquetPort</span>
+<span class="s1">         .Reset</span>
+<span class="s1">         .SetDialogTheta &quot;0&quot;</span>
+<span class="s1">         .SetDialogPhi &quot;0&quot;</span>
+<span class="s1">         .SetSortCode &quot;+beta/pw&quot;</span>
+<span class="s1">         .SetCustomizedListFlag &quot;False&quot;</span>
+<span class="s1">         .Port &quot;Zmin&quot;</span>
+<span class="s1">         .SetNumberOfModesConsidered &quot;2&quot;</span>
+<span class="s1">         .Port &quot;Zmax&quot;</span>
+<span class="s1">         .SetNumberOfModesConsidered &quot;2&quot;</span>
+<span class="s1">    End With</span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;set Floquet port boundaries&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="c1"># define parameters exist</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    MakeSureParameterExists &quot;theta&quot;, &quot;0&quot;</span>
+<span class="s1">    SetParameterDescription &quot;theta&quot;, &quot;spherical angle of incident plane wave&quot;</span>
+<span class="s1">    MakeSureParameterExists &quot;phi&quot;, &quot;0&quot;</span>
+<span class="s1">    SetParameterDescription &quot;phi&quot;, &quot;spherical angle of incident plane wave&quot;</span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;set parameters exist&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="c1"># define boundaries, the open boundaries define floquet port</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    With Boundary</span>
+<span class="s1">         .Xmin &quot;unit cell&quot;</span>
+<span class="s1">         .Xmax &quot;unit cell&quot;</span>
+<span class="s1">         .Ymin &quot;unit cell&quot;</span>
+<span class="s1">         .Ymax &quot;unit cell&quot;</span>
+<span class="s1">         .Zmin &quot;expanded open&quot;</span>
+<span class="s1">         .Zmax &quot;expanded open&quot;</span>
+<span class="s1">         .Xsymmetry &quot;none&quot;</span>
+<span class="s1">         .Ysymmetry &quot;none&quot;</span>
+<span class="s1">         .Zsymmetry &quot;none&quot;</span>
+<span class="s1">         .XPeriodicShift &quot;0.0&quot;</span>
+<span class="s1">         .YPeriodicShift &quot;0.0&quot;</span>
+<span class="s1">         .ZPeriodicShift &quot;0.0&quot;</span>
+<span class="s1">         .PeriodicUseConstantAngles &quot;False&quot;</span>
+<span class="s1">         .SetPeriodicBoundaryAngles &quot;theta&quot;, &quot;phi&quot;</span>
+<span class="s1">         .SetPeriodicBoundaryAnglesDirection &quot;inward&quot;</span>
+<span class="s1">         .UnitCellFitToBoundingBox &quot;True&quot;</span>
+<span class="s1">         .UnitCellDs1 &quot;0.0&quot;</span>
+<span class="s1">         .UnitCellDs2 &quot;0.0&quot;</span>
+<span class="s1">         .UnitCellAngle &quot;90.0&quot;</span>
+<span class="s1">    End With    </span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;set boundaries&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="c1"># set tet mesh as default</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    With Mesh</span>
+<span class="s1">         .MeshType &quot;Tetrahedral&quot;</span>
+<span class="s1">    End With</span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;set mesh&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="c1"># FD solver excitation with incoming plane wave at Zmax</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    With FDSolver</span>
+<span class="s1">         .Reset</span>
+<span class="s1">         .Stimulation &quot;List&quot;, &quot;List&quot;</span>
+<span class="s1">         .ResetExcitationList</span>
+<span class="s1">         .AddToExcitationList &quot;Zmax&quot;, &quot;TE(0,0);TM(0,0)&quot;</span>
+<span class="s1">         .LowFrequencyStabilization &quot;False&quot;</span>
+<span class="s1">    End With</span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;set FD solver&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="c1"># change problem type</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    ChangeProblemType &quot;Optical&quot;</span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;change problem type&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    With MeshSettings</span>
+<span class="s1">         .SetMeshType &quot;Tet&quot;</span>
+<span class="s1">         .Set &quot;Version&quot;, 1%</span>
+<span class="s1">    End With</span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;MeshSettings&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    With Mesh</span>
+<span class="s1">         .MeshType &quot;Tetrahedral&quot;</span>
+<span class="s1">    End With</span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;cset meshtype&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="c1"># set the solver type</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    ChangeSolverType(&quot;HF Frequency Domain&quot;)</span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;set the solver type&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="c1"># set component</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    Component.New &quot;component1&quot; </span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;set component&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>定义金的Drude模型</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gold_drude</span><span class="p">(</span><span class="n">modeler</span><span class="p">):</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    With Material </span>
+<span class="s1">         .Reset </span>
+<span class="s1">         .Name &quot;gold_drude&quot;</span>
+<span class="s1">         .Folder &quot;&quot;</span>
+<span class="s1">         .Rho &quot;0.0&quot;</span>
+<span class="s1">         .ThermalType &quot;Normal&quot;</span>
+<span class="s1">         .ThermalConductivity &quot;0&quot;</span>
+<span class="s1">         .SpecificHeat &quot;0&quot;, &quot;J/K/kg&quot;</span>
+<span class="s1">         .DynamicViscosity &quot;0&quot;</span>
+<span class="s1">         .Emissivity &quot;0&quot;</span>
+<span class="s1">         .MetabolicRate &quot;0.0&quot;</span>
+<span class="s1">         .VoxelConvection &quot;0.0&quot;</span>
+<span class="s1">         .BloodFlow &quot;0&quot;</span>
+<span class="s1">         .MechanicsType &quot;Unused&quot;</span>
+<span class="s1">         .FrqType &quot;all&quot;</span>
+<span class="s1">         .Type &quot;Normal&quot;</span>
+<span class="s1">         .MaterialUnit &quot;Frequency&quot;, &quot;THz&quot;</span>
+<span class="s1">         .MaterialUnit &quot;Geometry&quot;, &quot;um&quot;</span>
+<span class="s1">         .MaterialUnit &quot;Time&quot;, &quot;ns&quot;</span>
+<span class="s1">         .MaterialUnit &quot;Temperature&quot;, &quot;Kelvin&quot;</span>
+<span class="s1">         .Epsilon &quot;1&quot;</span>
+<span class="s1">         .Mu &quot;1&quot;</span>
+<span class="s1">         .Sigma &quot;0&quot;</span>
+<span class="s1">         .TanD &quot;0.0&quot;</span>
+<span class="s1">         .TanDFreq &quot;0.0&quot;</span>
+<span class="s1">         .TanDGiven &quot;False&quot;</span>
+<span class="s1">         .TanDModel &quot;ConstTanD&quot;</span>
+<span class="s1">         .EnableUserConstTanDModelOrderEps &quot;False&quot;</span>
+<span class="s1">         .ConstTanDModelOrderEps &quot;1&quot;</span>
+<span class="s1">         .SetElParametricConductivity &quot;False&quot;</span>
+<span class="s1">         .ReferenceCoordSystem &quot;Global&quot;</span>
+<span class="s1">         .CoordSystemType &quot;Cartesian&quot;</span>
+<span class="s1">         .SigmaM &quot;0&quot;</span>
+<span class="s1">         .TanDM &quot;0.0&quot;</span>
+<span class="s1">         .TanDMFreq &quot;0.0&quot;</span>
+<span class="s1">         .TanDMGiven &quot;False&quot;</span>
+<span class="s1">         .TanDMModel &quot;ConstTanD&quot;</span>
+<span class="s1">         .EnableUserConstTanDModelOrderMu &quot;False&quot;</span>
+<span class="s1">         .ConstTanDModelOrderMu &quot;1&quot;</span>
+<span class="s1">         .SetMagParametricConductivity &quot;False&quot;</span>
+<span class="s1">         .DispModelEps  &quot;Drude&quot;</span>
+<span class="s1">         .EpsInfinity &quot;1.0&quot;</span>
+<span class="s1">         .DispCoeff1Eps &quot;6.28*2042e12&quot;</span>
+<span class="s1">         .DispCoeff2Eps &quot;71e12&quot;</span>
+<span class="s1">         .DispCoeff3Eps &quot;0.0&quot;</span>
+<span class="s1">         .DispCoeff4Eps &quot;0.0&quot;</span>
+<span class="s1">         .DispModelMu &quot;None&quot;</span>
+<span class="s1">         .DispersiveFittingSchemeEps &quot;Nth Order&quot;</span>
+<span class="s1">         .MaximalOrderNthModelFitEps &quot;10&quot;</span>
+<span class="s1">         .ErrorLimitNthModelFitEps &quot;0.1&quot;</span>
+<span class="s1">         .UseOnlyDataInSimFreqRangeNthModelEps &quot;False&quot;</span>
+<span class="s1">         .DispersiveFittingSchemeMu &quot;Nth Order&quot;</span>
+<span class="s1">         .MaximalOrderNthModelFitMu &quot;10&quot;</span>
+<span class="s1">         .ErrorLimitNthModelFitMu &quot;0.1&quot;</span>
+<span class="s1">         .UseOnlyDataInSimFreqRangeNthModelMu &quot;False&quot;</span>
+<span class="s1">         .UseGeneralDispersionEps &quot;False&quot;</span>
+<span class="s1">         .UseGeneralDispersionMu &quot;False&quot;</span>
+<span class="s1">         .NLAnisotropy &quot;False&quot;</span>
+<span class="s1">         .NLAStackingFactor &quot;1&quot;</span>
+<span class="s1">         .NLADirectionX &quot;1&quot;</span>
+<span class="s1">         .NLADirectionY &quot;0&quot;</span>
+<span class="s1">         .NLADirectionZ &quot;0&quot;</span>
+<span class="s1">         .Colour &quot;1&quot;, &quot;1&quot;, &quot;0.501961&quot; </span>
+<span class="s1">         .Wireframe &quot;False&quot; </span>
+<span class="s1">         .Reflection &quot;False&quot; </span>
+<span class="s1">         .Allowoutline &quot;True&quot; </span>
+<span class="s1">         .Transparentoutline &quot;False&quot; </span>
+<span class="s1">         .Transparency &quot;0&quot; </span>
+<span class="s1">         .Create</span>
+<span class="s1">    End With</span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;define gold_drude&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>定义有耗材料Si</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">Si_lossy</span><span class="p">(</span><span class="n">modeler</span><span class="p">):</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    With Material</span>
+<span class="s1">         .Reset</span>
+<span class="s1">         .Name &quot;Silicon (lossy)&quot;</span>
+<span class="s1">         .Folder &quot;&quot;</span>
+<span class="s1">    .FrqType &quot;all&quot;</span>
+<span class="s1">    .Type &quot;Normal&quot;</span>
+<span class="s1">    .SetMaterialUnit &quot;GHz&quot;, &quot;mm&quot;</span>
+<span class="s1">    .Epsilon &quot;11.9&quot;</span>
+<span class="s1">    .Mu &quot;1.0&quot;</span>
+<span class="s1">    .Kappa &quot;2.5e-004&quot;</span>
+<span class="s1">    .TanD &quot;0.00&quot;</span>
+<span class="s1">    .TanDFreq &quot;0.0&quot;</span>
+<span class="s1">    .TanDGiven &quot;False&quot;</span>
+<span class="s1">    .TanDModel &quot;ConstTanD&quot;</span>
+<span class="s1">    .KappaM &quot;0.0&quot;</span>
+<span class="s1">    .TanDM &quot;0.0&quot;</span>
+<span class="s1">    .TanDMFreq &quot;0.0&quot;</span>
+<span class="s1">    .TanDMGiven &quot;False&quot;</span>
+<span class="s1">    .TanDMModel &quot;ConstKappa&quot;</span>
+<span class="s1">    .DispModelEps &quot;None&quot;</span>
+<span class="s1">    .DispModelMu &quot;None&quot;</span>
+<span class="s1">    .DispersiveFittingSchemeEps &quot;General 1st&quot;</span>
+<span class="s1">    .DispersiveFittingSchemeMu &quot;General 1st&quot;</span>
+<span class="s1">    .UseGeneralDispersionEps &quot;False&quot;</span>
+<span class="s1">    .UseGeneralDispersionMu &quot;False&quot;</span>
+<span class="s1">    .Rho &quot;2330.0&quot;</span>
+<span class="s1">    .ThermalType &quot;Normal&quot;</span>
+<span class="s1">    .ThermalConductivity &quot;148&quot;</span>
+<span class="s1">    .SpecificHeat &quot;700&quot;, &quot;J/K/kg&quot;</span>
+<span class="s1">    .SetActiveMaterial &quot;all&quot;</span>
+<span class="s1">    .MechanicsType &quot;Isotropic&quot;</span>
+<span class="s1">    .YoungsModulus &quot;112&quot;</span>
+<span class="s1">    .PoissonsRatio &quot;0.28&quot;</span>
+<span class="s1">    .ThermalExpansionRate &quot;5.1&quot;</span>
+<span class="s1">    .Colour &quot;0.94&quot;, &quot;0.82&quot;, &quot;0.76&quot;</span>
+<span class="s1">    .Wireframe &quot;False&quot;</span>
+<span class="s1">    .Transparency &quot;0&quot;</span>
+<span class="s1">    .Create</span>
+<span class="s1">    End With </span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;define Silicon (lossy)&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>定义材料SiO2</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">SiO2</span><span class="p">(</span><span class="n">modeler</span><span class="p">):</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    With Material </span>
+<span class="s1">         .Reset </span>
+<span class="s1">         .Name &quot;SiO2&quot;</span>
+<span class="s1">         .Folder &quot;&quot;</span>
+<span class="s1">         .Rho &quot;0.0&quot;</span>
+<span class="s1">         .ThermalType &quot;Normal&quot;</span>
+<span class="s1">         .ThermalConductivity &quot;0&quot;</span>
+<span class="s1">         .SpecificHeat &quot;0&quot;, &quot;J/K/kg&quot;</span>
+<span class="s1">         .DynamicViscosity &quot;0&quot;</span>
+<span class="s1">         .Emissivity &quot;0&quot;</span>
+<span class="s1">         .MetabolicRate &quot;0.0&quot;</span>
+<span class="s1">         .VoxelConvection &quot;0.0&quot;</span>
+<span class="s1">         .BloodFlow &quot;0&quot;</span>
+<span class="s1">         .MechanicsType &quot;Unused&quot;</span>
+<span class="s1">         .FrqType &quot;all&quot;</span>
+<span class="s1">         .Type &quot;Normal&quot;</span>
+<span class="s1">         .MaterialUnit &quot;Frequency&quot;, &quot;THz&quot;</span>
+<span class="s1">         .MaterialUnit &quot;Geometry&quot;, &quot;um&quot;</span>
+<span class="s1">         .MaterialUnit &quot;Time&quot;, &quot;ns&quot;</span>
+<span class="s1">         .MaterialUnit &quot;Temperature&quot;, &quot;Kelvin&quot;</span>
+<span class="s1">         .Epsilon &quot;3.9&quot;</span>
+<span class="s1">         .Mu &quot;1&quot;</span>
+<span class="s1">         .Sigma &quot;0.0&quot;</span>
+<span class="s1">         .TanD &quot;0.025&quot;</span>
+<span class="s1">         .TanDFreq &quot;0.0&quot;</span>
+<span class="s1">         .TanDGiven &quot;True&quot;</span>
+<span class="s1">         .TanDModel &quot;ConstTanD&quot;</span>
+<span class="s1">         .EnableUserConstTanDModelOrderEps &quot;False&quot;</span>
+<span class="s1">         .ConstTanDModelOrderEps &quot;1&quot;</span>
+<span class="s1">         .SetElParametricConductivity &quot;False&quot;</span>
+<span class="s1">         .ReferenceCoordSystem &quot;Global&quot;</span>
+<span class="s1">         .CoordSystemType &quot;Cartesian&quot;</span>
+<span class="s1">         .SigmaM &quot;0&quot;</span>
+<span class="s1">         .TanDM &quot;0.0&quot;</span>
+<span class="s1">         .TanDMFreq &quot;0.0&quot;</span>
+<span class="s1">         .TanDMGiven &quot;False&quot;</span>
+<span class="s1">         .TanDMModel &quot;ConstTanD&quot;</span>
+<span class="s1">         .EnableUserConstTanDModelOrderMu &quot;False&quot;</span>
+<span class="s1">         .ConstTanDModelOrderMu &quot;1&quot;</span>
+<span class="s1">         .SetMagParametricConductivity &quot;False&quot;</span>
+<span class="s1">         .DispModelEps &quot;None&quot;</span>
+<span class="s1">         .DispModelMu &quot;None&quot;</span>
+<span class="s1">         .DispersiveFittingSchemeEps &quot;Nth Order&quot;</span>
+<span class="s1">         .MaximalOrderNthModelFitEps &quot;10&quot;</span>
+<span class="s1">         .ErrorLimitNthModelFitEps &quot;0.1&quot;</span>
+<span class="s1">         .UseOnlyDataInSimFreqRangeNthModelEps &quot;False&quot;</span>
+<span class="s1">         .DispersiveFittingSchemeMu &quot;Nth Order&quot;</span>
+<span class="s1">         .MaximalOrderNthModelFitMu &quot;10&quot;</span>
+<span class="s1">         .ErrorLimitNthModelFitMu &quot;0.1&quot;</span>
+<span class="s1">         .UseOnlyDataInSimFreqRangeNthModelMu &quot;False&quot;</span>
+<span class="s1">         .UseGeneralDispersionEps &quot;False&quot;</span>
+<span class="s1">         .UseGeneralDispersionMu &quot;False&quot;</span>
+<span class="s1">         .NLAnisotropy &quot;False&quot;</span>
+<span class="s1">         .NLAStackingFactor &quot;1&quot;</span>
+<span class="s1">         .NLADirectionX &quot;1&quot;</span>
+<span class="s1">         .NLADirectionY &quot;0&quot;</span>
+<span class="s1">         .NLADirectionZ &quot;0&quot;</span>
+<span class="s1">         .Colour &quot;0.752941&quot;, &quot;0.752941&quot;, &quot;0.752941&quot; </span>
+<span class="s1">         .Wireframe &quot;False&quot; </span>
+<span class="s1">         .Reflection &quot;False&quot; </span>
+<span class="s1">         .Allowoutline &quot;True&quot; </span>
+<span class="s1">         .Transparentoutline &quot;False&quot; </span>
+<span class="s1">         .Transparency &quot;0&quot; </span>
+<span class="s1">         .Create</span>
+<span class="s1">    End With</span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;define SiO2&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="c1"># change color</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    With Material </span>
+<span class="s1">         .Name &quot;SiO2&quot;</span>
+<span class="s1">         .Folder &quot;&quot;</span>
+<span class="s1">         .Colour &quot;0.752941&quot;, &quot;0.752941&quot;, &quot;0.752941&quot; </span>
+<span class="s1">         .Wireframe &quot;False&quot; </span>
+<span class="s1">         .Reflection &quot;False&quot; </span>
+<span class="s1">         .Allowoutline &quot;True&quot; </span>
+<span class="s1">         .Transparentoutline &quot;False&quot; </span>
+<span class="s1">         .Transparency &quot;0&quot; </span>
+<span class="s1">         .ChangeColour </span>
+<span class="s1">    End With</span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;change color of SiO2&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>定义brick</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">brick</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">comp</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">Xrange</span><span class="p">,</span> <span class="n">Yrange</span><span class="p">,</span> <span class="n">Zrange</span><span class="p">):</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    With Brick</span>
+<span class="s1">     .Reset </span>
+<span class="s1">     .Name &quot;</span><span class="si">{0}</span><span class="s1">&quot; </span>
+<span class="s1">     .Component &quot;</span><span class="si">{1}</span><span class="s1">&quot; </span>
+<span class="s1">     .Material &quot;</span><span class="si">{2}</span><span class="s1">&quot; </span>
+<span class="s1">     .Xrange &quot;</span><span class="si">{3[0]}</span><span class="s1">&quot;, &quot;</span><span class="si">{3[1]}</span><span class="s1">&quot; </span>
+<span class="s1">     .Yrange &quot;</span><span class="si">{4[0]}</span><span class="s1">&quot;, &quot;</span><span class="si">{4[1]}</span><span class="s1">&quot; </span>
+<span class="s1">     .Zrange &quot;</span><span class="si">{5[0]}</span><span class="s1">&quot;, &quot;</span><span class="si">{5[1]}</span><span class="s1">&quot; </span>
+<span class="s1">     .Create</span>
+<span class="s1">    End With</span>
+<span class="s1">    &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">comp</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">Xrange</span><span class="p">,</span> <span class="n">Yrange</span><span class="p">,</span> <span class="n">Zrange</span><span class="p">)</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;define brick </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>定义旋转90°</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="n">modeler</span><span class="p">):</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    With Transform </span>
+<span class="s1">         .Reset </span>
+<span class="s1">         .Name &quot;component1:line1&quot; </span>
+<span class="s1">         .Origin &quot;CommonCenter&quot; </span>
+<span class="s1">         .Center &quot;0&quot;, &quot;0&quot;, &quot;0&quot; </span>
+<span class="s1">         .Angle &quot;0&quot;, &quot;0&quot;, &quot;90&quot; </span>
+<span class="s1">         .MultipleObjects &quot;True&quot; </span>
+<span class="s1">         .GroupObjects &quot;False&quot; </span>
+<span class="s1">         .Repetitions &quot;1&quot; </span>
+<span class="s1">         .MultipleSelection &quot;False&quot; </span>
+<span class="s1">         .Destination &quot;&quot; </span>
+<span class="s1">         .Material &quot;&quot; </span>
+<span class="s1">         .Transform &quot;Shape&quot;, &quot;Rotate&quot; </span>
+<span class="s1">    End With </span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;rotate line1 90&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>定义布尔加操作</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">boolean_add</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">name1</span><span class="p">,</span> <span class="n">name2</span><span class="p">):</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    Solid.Add &quot;component1:</span><span class="si">{0}</span><span class="s1">&quot;, &quot;component1:</span><span class="si">{1}</span><span class="s1">&quot; </span>
+<span class="s1">    &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name1</span><span class="p">,</span> <span class="n">name2</span><span class="p">)</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Add </span><span class="si">{</span><span class="n">name1</span><span class="si">}</span><span class="s1"> and </span><span class="si">{</span><span class="n">name2</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>定义floquet边界条件</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">floquet_boundary</span><span class="p">(</span><span class="n">modeler</span><span class="p">):</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    With FloquetPort</span>
+<span class="s1">         .Reset</span>
+<span class="s1">         .SetDialogTheta &quot;0&quot; </span>
+<span class="s1">         .SetDialogPhi &quot;0&quot; </span>
+<span class="s1">         .SetPolarizationIndependentOfScanAnglePhi &quot;0.0&quot;, &quot;False&quot;  </span>
+<span class="s1">         .SetSortCode &quot;+beta/pw&quot; </span>
+<span class="s1">         .SetCustomizedListFlag &quot;False&quot; </span>
+<span class="s1">         .Port &quot;Zmin&quot; </span>
+<span class="s1">         .SetNumberOfModesConsidered &quot;1&quot; </span>
+<span class="s1">         .SetDistanceToReferencePlane &quot;0.0&quot; </span>
+<span class="s1">         .SetUseCircularPolarization &quot;False&quot; </span>
+<span class="s1">         .Port &quot;Zmax&quot; </span>
+<span class="s1">         .SetNumberOfModesConsidered &quot;1&quot; </span>
+<span class="s1">         .SetDistanceToReferencePlane &quot;0.0&quot; </span>
+<span class="s1">         .SetUseCircularPolarization &quot;False&quot; </span>
+<span class="s1">    End With</span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;set floquet boundary&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>定义S参数提取</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_S</span><span class="p">(</span><span class="n">mws</span><span class="p">):</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="n">cst</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">ProjectFile</span><span class="p">(</span><span class="n">mws</span><span class="o">.</span><span class="n">filename</span><span class="p">(),</span> <span class="n">allow_interactive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">wl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">get_3d</span><span class="p">()</span><span class="o">.</span><span class="n">get_result_item</span><span class="p">(</span><span class="s2">&quot;1D Results\S-Parameters\SZmax(1),Zmax(1)&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_xdata</span><span class="p">())</span>
+    <span class="n">s11</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">get_3d</span><span class="p">()</span><span class="o">.</span><span class="n">get_result_item</span><span class="p">(</span><span class="s2">&quot;1D Results\S-Parameters\SZmax(1),Zmax(1)&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_ydata</span><span class="p">())</span>
+
+    <span class="n">s11_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">s11</span><span class="p">)</span>
+    <span class="n">s11_arg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">s11</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">wl</span><span class="p">,</span> <span class="n">s11_norm</span><span class="p">,</span> <span class="n">s11_arg</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+<p>Step3: 主函数：创建十字形的超表面结构，最终得到其吸收率的结果</p>
+<p><img alt="1672394218872" src="../../_images/16723942188722.png" /></p>
+<center>创建的十字形超表面结构 </center>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">=</span> <span class="n">ModelTree</span><span class="p">(</span><span class="s1">&#39;Model&#39;</span><span class="p">)</span>
+<span class="n">save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>  <span class="c1"># save for cst files</span>
+<span class="n">save_name</span> <span class="o">=</span> <span class="s1">&#39;demo.cst&#39;</span>
+<span class="n">save_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">save_name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Working file: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">save_name</span><span class="p">))</span>
+
+<span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">cstx</span> <span class="o">=</span> <span class="n">interface</span><span class="o">.</span><span class="n">DesignEnvironment</span><span class="p">()</span>  <span class="c1"># create new cst project and save it</span>
+<span class="n">mws</span> <span class="o">=</span> <span class="n">cstx</span><span class="o">.</span><span class="n">new_mws</span><span class="p">()</span>
+<span class="c1"># mws.save(path=os.path.join(save_path, save_name))</span>
+<span class="n">mws</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">save_name</span><span class="p">)</span>
+
+<span class="n">mws</span><span class="o">.</span><span class="n">activate</span><span class="p">()</span>
+<span class="n">modeler</span> <span class="o">=</span> <span class="n">mws</span><span class="o">.</span><span class="n">modeler</span>  <span class="c1"># define the modeler to create the unit cell structure</span>
+
+<span class="c1"># set base envs</span>
+<span class="n">setup_base</span><span class="p">(</span><span class="n">modeler</span><span class="p">)</span>
+
+<span class="c1"># add materials</span>
+<span class="n">gold_drude</span><span class="p">(</span><span class="n">modeler</span><span class="p">)</span>
+<span class="n">SiO2</span><span class="p">(</span><span class="n">modeler</span><span class="p">)</span>
+
+<span class="c1"># create pattern</span>
+<span class="c1"># substrate</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;substrate&#39;</span>
+<span class="n">comp</span> <span class="o">=</span> <span class="s1">&#39;component1&#39;</span>
+<span class="n">material</span> <span class="o">=</span> <span class="s1">&#39;SiO2&#39;</span>
+<span class="n">brick</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">comp</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.19</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.19</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">create_model</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.19</span><span class="p">),</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Box&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;substrate&#39;</span><span class="p">)</span>
+<span class="c1"># ground</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;ground&#39;</span>
+<span class="n">comp</span> <span class="o">=</span> <span class="s1">&#39;component1&#39;</span>
+<span class="n">material</span> <span class="o">=</span> <span class="s1">&#39;gold_drude&#39;</span>
+<span class="n">brick</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">comp</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.19</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.19</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">create_model</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">),</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.145</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Box&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;ground&#39;</span><span class="p">)</span>
+
+<span class="c1"># # change color of gold_self</span>
+<span class="c1"># ss.change_color(modeler, &#39;gold_self&#39;, [1, 1, 0.501961])</span>
+
+<span class="c1"># line 1</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;line1&#39;</span>
+<span class="n">comp</span> <span class="o">=</span> <span class="s1">&#39;component1&#39;</span>
+<span class="n">material</span> <span class="o">=</span> <span class="s1">&#39;gold_drude&#39;</span>
+<span class="n">brick</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">comp</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.19</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mf">0.19</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="mf">0.06</span><span class="p">])</span>
+<span class="n">transform</span><span class="p">(</span><span class="n">modeler</span><span class="p">)</span>
+<span class="n">create_model</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.06</span><span class="p">),</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.125</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Box&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;yellow&#39;</span><span class="p">,</span><span class="n">opacity</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;line1&#39;</span><span class="p">)</span>
+
+<span class="c1"># boolean add</span>
+<span class="n">name1</span> <span class="o">=</span> <span class="s1">&#39;line1&#39;</span>
+<span class="n">name2</span> <span class="o">=</span> <span class="s1">&#39;line1_1&#39;</span>
+<span class="n">boolean_add</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">name1</span><span class="p">,</span> <span class="n">name2</span><span class="p">)</span>
+<span class="n">create_model</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.06</span><span class="p">),</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.125</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Box&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;yellow&#39;</span><span class="p">,</span><span class="n">opacity</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;line2&#39;</span><span class="p">)</span>
+<span class="n">floquet_boundary</span><span class="p">(</span><span class="n">modeler</span><span class="p">)</span>
+<span class="c1"># run</span>
+<span class="n">modeler</span><span class="o">.</span><span class="n">run_solver</span><span class="p">()</span>
+
+
+<span class="c1"># get result</span>
+<span class="c1"># result = ss.get_R_A(mws)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">get_S</span><span class="p">(</span><span class="n">mws</span><span class="p">)</span>
+
+<span class="n">mws</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">cstx</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="c1"># end and save results</span>
+<span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="c1"># print(&quot;time elapse: {:.2f} s&quot;.format(end_time - start_time))</span>
+<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s1">&#39;simulation result.txt&#39;</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+
+<span class="c1"># plot Absorbance and Reflectance</span>
+<span class="n">wl</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">result</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">s11</span> <span class="o">=</span> <span class="n">result</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="c1"># A = result[:, 2]</span>
+<span class="n">A</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">s11</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wl</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Absorbance&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;wavelength(um)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;Absorbance&#39;</span><span class="p">)</span>
+<span class="n">device</span><span class="o">.</span><span class="n">save_fig</span><span class="p">(</span><span class="s1">&#39;Absorbance&#39;</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="s2">&quot;Absorbance.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2022, Rickey.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
