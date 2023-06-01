@@ -3,6 +3,8 @@
 .. toctree::
     :maxdepth: 2
 
-    软件可视化建模/contents
-    软件数据库/contents
-    软件光谱预测/contents
+    器件仿真/contents
+    数据库/contents
+    优化算法/contents
+    光谱预测/contents
+    管理中心/contents
