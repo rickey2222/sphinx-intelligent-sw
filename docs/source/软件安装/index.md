@@ -12,7 +12,7 @@ Docker包括三个基本概念：
 + 容器（Container）：镜像（Image）和容器（Container）的关系，就像是面向对象程序设计中的类和实例一样，镜像是静态的定义，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等。
 + 仓库（Repository）：仓库可看成一个代码控制中心，用来保存镜像。一个 Docker Registry 中可以包含多个仓库（Repository）；每个仓库可以包含多个标签（Tag）；每个标签对应一个镜像。通常，一个仓库会包含同一个软件不同版本的镜像，而标签就常用于对应该软件的各个版本。我们可以通过 <仓库名>:<标签> 的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以 latest 作为默认标签。
 ## Linux本地安装Docker engine及Docker compose
-根据本地Linux系统选择对应的docker engine及docker-compose版本进行安装，下载链接：[ubuntu系统下安装docker engine](https://download.docker.com/linux/ubuntu/dists/ )，[centos系统下安装docker engine](https://download.docker.com/linux/centos/7/x86_64/stable/Packages/)，[安装docker-compose](ttps://github.com/docker/compose/releases/download/v2.16.0/docker-compose-linux-x86_64)。
+根据本地Linux系统选择对应的docker engine及docker-compose版本进行安装，下载链接：[ubuntu系统下安装docker engine](https://download.docker.com/linux/ubuntu/dists/ )，[centos系统下安装docker engine](https://download.docker.com/linux/centos/7/x86_64/stable/Packages/)，[安装docker-compose](https://github.com/docker/compose/releases/download/v2.16.0/docker-compose-linux-x86_64)。
 
 ## 拉取代码，启动微纳光学智能设计软件
 通过Git拉取微纳光学智能设计软件后端代码，通过CMD

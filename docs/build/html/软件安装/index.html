@@ -43,7 +43,12 @@
               <p class="caption" role="heading"><span class="caption-text">目录:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../%E7%AE%80%E4%BB%8B/index.html">软件平台简介</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">软件安装</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">软件安装</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#docker">什么是Docker？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linuxdocker-enginedocker-compose">Linux本地安装Docker engine及Docker compose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">拉取代码，启动微纳光学智能设计软件</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../%E8%BD%AF%E4%BB%B6%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D/index.html">软件模块</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../%E8%BD%AF%E4%BB%B6API%E6%8E%A5%E5%8F%A3/contents.html">软件API接口</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../%E5%9B%A2%E9%98%9F%E4%BF%A1%E6%81%AF/index.html">团队信息</a></li>
@@ -75,6 +80,28 @@
              
   <section id="id1">
 <h1>软件安装<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<p>现阶段微纳光学智能设计软件安装是将不同算法环境下/不同Dockerfile制作的Docker镜像部署到Linux主机或虚拟机，通过启动yml文件来运行智能设计软件。因此本地Linux主机或虚拟机需安装Docker和Docker-compose环境.</p>
+<section id="docker">
+<h2>什么是Docker？<a class="headerlink" href="#docker" title="此标题的永久链接"></a></h2>
+<p>Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从 Apache2.0 协议开源。Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。容器是完全使用沙箱机制，相互之间不会有任何接口（类似 iPhone 的 app）,更重要的是容器性能开销极低。</p>
+<p>因此docker可以屏蔽环境差异，只要程序被docker打包后，那么无论运行在什么环境下程序的行为都是一致的，可以做到真正实现“build once, run everywhere”。</p>
+<p>此外docker的另一个好处就是快速部署，一个原因是容器启动速度非常快，另一个原因在于只要确保一个容器中的程序正确运行，那么你就能确信无论在生产环境部署多少都能正确运行。</p>
+<p>Docker包括三个基本概念：</p>
+<ul class="simple">
+<li><p>镜像（Image）：Docker 镜像（Image），就相当于是一个 root 文件系统。比如官方镜像 ubuntu:16.04 就包含了完整的一套 Ubuntu16.04 最小系统的 root 文件系统。</p></li>
+<li><p>容器（Container）：镜像（Image）和容器（Container）的关系，就像是面向对象程序设计中的类和实例一样，镜像是静态的定义，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等。</p></li>
+<li><p>仓库（Repository）：仓库可看成一个代码控制中心，用来保存镜像。一个 Docker Registry 中可以包含多个仓库（Repository）；每个仓库可以包含多个标签（Tag）；每个标签对应一个镜像。通常，一个仓库会包含同一个软件不同版本的镜像，而标签就常用于对应该软件的各个版本。我们可以通过 &lt;仓库名&gt;:&lt;标签&gt; 的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以 latest 作为默认标签。</p></li>
+</ul>
+</section>
+<section id="linuxdocker-enginedocker-compose">
+<h2>Linux本地安装Docker engine及Docker compose<a class="headerlink" href="#linuxdocker-enginedocker-compose" title="此标题的永久链接"></a></h2>
+<p>根据本地Linux系统选择对应的docker engine及docker-compose版本进行安装，下载链接：<a class="reference external" href="https://download.docker.com/linux/ubuntu/dists/">ubuntu系统下安装docker engine</a>，<a class="reference external" href="https://download.docker.com/linux/centos/7/x86_64/stable/Packages/">centos系统下安装docker engine</a>，<a class="reference external" href="https://github.com/docker/compose/releases/download/v2.16.0/docker-compose-linux-x86_64">安装docker-compose</a>。</p>
+</section>
+<section id="id2">
+<h2>拉取代码，启动微纳光学智能设计软件<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>通过Git拉取微纳光学智能设计软件后端代码，通过CMD</p>
+<p>得到算法的Dockerfile部署在后端，基于Docker镜像构建相对于的Python 3运行环境、Jupyter kernel服务器、一些接口代码用于前端展示以及一些基础设施比如mongo DB的连接，Websocket Server相关的连接配置等。前端使用Websocket连接后端服务器，需执行的代码中通过提供的Python接口与前端实时交互，可视化建模中Python脚本窗口使用React插件React-Code Mirror来实现Python代码编写和输出的窗口环境。</p>
+</section>
 </section>
 
 
