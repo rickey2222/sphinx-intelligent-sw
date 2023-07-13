@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>仿真 &mdash; 微纳光学智能设计软件 v1 文档</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="教程/波导仿真" href="../%E6%B3%A2%E5%AF%BC%E4%BB%BF%E7%9C%9F/%E6%B3%A2%E5%AF%BC%E4%BB%BF%E7%9C%9F.html" />
+    <link rel="prev" title="软件设计框架及原理" href="../%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A1%86%E6%9E%B6%E5%8F%8A%E5%8E%9F%E7%90%86/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A1%86%E6%9E%B6%E5%8F%8A%E5%8E%9F%E7%90%86.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> 微纳光学智能设计软件
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">目录:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../%E7%AE%80%E4%BB%8B/index.html">软件平台简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/index.html">软件安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E8%BD%AF%E4%BB%B6%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D/index.html">软件模块</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../contents.html">软件API接口</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A1%86%E6%9E%B6%E5%8F%8A%E5%8E%9F%E7%90%86/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A1%86%E6%9E%B6%E5%8F%8A%E5%8E%9F%E7%90%86.html">软件设计框架及原理</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">仿真</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">环境选择</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">全局定义</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">模型构建</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">源设置</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">监视器</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id7">功率监视器</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">电场监视器</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">仿真区域</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id10">仿真运行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id11">结果提取</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id12">性能图保存</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../%E6%B3%A2%E5%AF%BC%E4%BB%BF%E7%9C%9F/%E6%B3%A2%E5%AF%BC%E4%BB%BF%E7%9C%9F.html">教程/波导仿真</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../%E5%BE%AE%E7%BA%B3%E5%81%8F%E6%8C%AF%E7%BB%93%E6%9E%84/%E5%BE%AE%E7%BA%B3%E5%81%8F%E6%8C%AF%E7%BB%93%E6%9E%84.html">教程/微纳偏振结构</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../%E5%9B%A2%E9%98%9F%E4%BF%A1%E6%81%AF/index.html">团队信息</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">微纳光学智能设计软件</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../contents.html">软件API接口</a></li>
+      <li class="breadcrumb-item active">仿真</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/软件API接口/仿真/仿真.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>仿真<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="id2">
+<h2>环境选择<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<p>微纳光学智能设计软件中，在软件代码区域根据仿真模型选择适配的运行环境。分别在建模代码的<strong>初始</strong>及<strong>结尾</strong>部分调用环境代码：</p>
+<ul class="simple">
+<li><p>FDTD环境：</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sim_start</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;meep&#39;</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="n">sim_end</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;meep&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>lumerical环境：</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sim_start</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;lum&#39;</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="n">sim_end</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;lum&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>CST环境：</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sim_start</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;cst&#39;</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="n">sim_end</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;cst&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id3">
+<h2>全局定义<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>模型仿真需要定义全局变量</p>
+<ul class="simple">
+<li><p>nfreq[数值类型]：频率采样点，默认值为200</p></li>
+<li><p>wl_max[数值类型]：仿真所用波长最大值，默认值为1600nm</p></li>
+<li><p>wl_min[数值类型] ：仿真所用波长最小值，默认值为1100nm</p></li>
+<li><p>T_z meep中监视器末端</p></li>
+<li><p>resolution</p></li>
+<li><p>auto_shutoff_min</p></li>
+</ul>
+</section>
+<section id="id4">
+<h2>模型构建<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
+</section>
+<section id="id5">
+<h2>源设置<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+</section>
+<section id="id6">
+<h2>监视器<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<p>仿真所使用监视器有两类：功率监视器及电场监视器。</p>
+<section id="id7">
+<h3>功率监视器<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h3>
+<p>add_monitor(center, size, name, color, opacity)定义功率监视器</p>
+<ul class="simple">
+<li><p>center及size参数需写为(x,y,z)三维数组，表示监视器中心及大小</p></li>
+<li><p>name参数用来定义监视器的名称，方便后续提取监视器结果</p></li>
+<li><p>color参数用来定义监视器展示颜色，默认为red</p></li>
+<li><p>opacity参数用来定义监视器展示透明度，默认为0.4</p></li>
+</ul>
+<p><em>备注: 用户必需定义center，size，name参数来建立监视器，否则无法加载</em></p>
+</section>
+<section id="id8">
+<h3>电场监视器<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h3>
+<p>add_monitor_field(center, size, name, color, opactity)定义功率监视器</p>
+<ul class="simple">
+<li><p>center及size参数需写为(x,y,z)三维数组，表示监视器中心及大小</p></li>
+<li><p>name参数用来定义监视器的名称，方便后续提取监视器结果</p></li>
+<li><p>nfreq参数来定义监视器的频率点，默认为200</p></li>
+<li><p>color参数用来定义监视器展示颜色，默认为red</p></li>
+<li><p>opacity参数用来定义监视器展示透明度，默认为0.4</p></li>
+</ul>
+<p><em>备注: 用户必需定义center，size，name参数来建立监视器，否则无法加载</em></p>
+</section>
+</section>
+<section id="id9">
+<h2>仿真区域<a class="headerlink" href="#id9" title="此标题的永久链接"></a></h2>
+<p>add_sim_area(center, size)定义模型的仿真区域</p>
+</section>
+<section id="id10">
+<h2>仿真运行<a class="headerlink" href="#id10" title="此标题的永久链接"></a></h2>
+</section>
+<section id="id11">
+<h2>结果提取<a class="headerlink" href="#id11" title="此标题的永久链接"></a></h2>
+</section>
+<section id="id12">
+<h2>性能图保存<a class="headerlink" href="#id12" title="此标题的永久链接"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A1%86%E6%9E%B6%E5%8F%8A%E5%8E%9F%E7%90%86/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A1%86%E6%9E%B6%E5%8F%8A%E5%8E%9F%E7%90%86.html" class="btn btn-neutral float-left" title="软件设计框架及原理" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../%E6%B3%A2%E5%AF%BC%E4%BB%BF%E7%9C%9F/%E6%B3%A2%E5%AF%BC%E4%BB%BF%E7%9C%9F.html" class="btn btn-neutral float-right" title="教程/波导仿真" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2023, ZJU.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
