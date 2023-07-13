@@ -6,9 +6,9 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'Intelligent Software Design'
-copyright = '2022, Rickey'
-author = 'Rickey'
+project = '微纳光学智能设计软件'
+copyright = '2023, ZJU'
+author = 'ZJU'
 release = 'v1'
 
 # -- General configuration ---------------------------------------------------

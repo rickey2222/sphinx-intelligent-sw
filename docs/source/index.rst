@@ -11,8 +11,7 @@ Welcome to Intelligent Software Design's documentation!
    :caption: 目录:
 
    简介/index
+   软件安装/index
    软件模块介绍/index
-   数据库/index
-   算法/index
-   公共接口用户手册/contents
-
+   软件API接口/contents
+   团队信息/index
