@@ -8,7 +8,7 @@
 
 project = '微纳光学智能设计软件'
 copyright = '2023, ZJU'
-author = 'ZJU'
+author = 'Rickey'
 release = 'v1'
 
 # -- General configuration ---------------------------------------------------
