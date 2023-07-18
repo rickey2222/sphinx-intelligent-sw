@@ -15,9 +15,9 @@ Docker包括三个基本概念：
 ## Linux本地安装Docker engine及Docker compose
 根据本地Linux系统选择对应的docker engine及docker-compose版本进行安装，下载链接：**[ubuntu系统安装docker engine](https://download.docker.com/linux/ubuntu/dists/ )**，**[centos系统安装docker engine](https://download.docker.com/linux/centos/7/x86_64/stable/Packages/)**，**[Linux安装docker-compose](https://github.com/docker/compose/releases/download/v2.16.0/docker-compose-linux-x86_64)**。
 
-Docker Engine是Docker的核心组件，它是一个轻量级的容器管理工具，可以在Linux、Windouws和macOS上运行。Docker Engine通过使用容器技术将应用程序及其所有依赖打包成可移植的容器，从而实现了应用程序在不同环境中的快速部署和运行。
+**Docker Engine**是Docker的核心组件，它是一个轻量级的容器管理工具，可以在Linux、Windouws和macOS上运行。Docker Engine通过使用容器技术将应用程序及其所有依赖打包成可移植的容器，从而实现了应用程序在不同环境中的快速部署和运行。
 
-Docker Compose是一个工具，用于定义和运行多个Docker容器的应用程序。它使用YAML文件来定义容器、网络、数据卷等，并提供一组命令来管理这些资源。Docker Compose可以在单个主机上运行多个容器，也可以在多个主机上运行容器。用户可以使用docker-compose up命令来启动所有容器，使用docker-compose down命令来停止所有容器。
+**Docker Compose**是一个工具，用于定义和运行多个Docker容器的应用程序。它使用YAML文件来定义容器、网络、数据卷等，并提供一组命令来管理这些资源。Docker Compose可以在单个主机上运行多个容器，也可以在多个主机上运行容器。用户可以使用docker-compose up命令来启动所有容器，使用docker-compose down命令来停止所有容器。
 ## 启动微纳光学智能设计软件
 通过Git命令拉取微纳光学智能设计软件后端代码，进入下载文件夹后open terminal执行：
 ```
@@ -37,7 +37,7 @@ docker-compose -f docker-compose-production.yml up
 - 调用算法，执行命令：python test/api_test/algorithm.py
 
 初始化软件后默认在HOST= 'http://127.0.0.1/api'部署软件，也可以在服务器所在IP下登入软件页面
-![部署成功.png](https://s2.loli.net/2023/07/14/CEk5HGxdaXzUJlZ.png)
+![部署成功1.png](https://s2.loli.net/2023/07/18/qAEu1Y4lz7wOknG.png)
 <center> 图4.1 软件部署首页展示 </center>
 
 ## 联合仿真Windows环境部署

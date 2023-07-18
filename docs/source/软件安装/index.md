@@ -37,7 +37,7 @@ docker-compose -f docker-compose-production.yml up
 - 调用算法，执行命令：python test/api_test/algorithm.py
 
 初始化软件后默认在HOST= 'http://127.0.0.1/api'部署软件，也可以在服务器所在IP下登入软件页面
-![部署成功.png](https://s2.loli.net/2023/07/14/CEk5HGxdaXzUJlZ.png)
+![部署成功1.png](https://s2.loli.net/2023/07/18/qAEu1Y4lz7wOknG.png)
 <center> 图4.1 软件部署首页展示 </center>
 
 ## 联合仿真Windows环境部署
