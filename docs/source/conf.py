@@ -7,7 +7,7 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = '微纳光学智能设计软件'
-copyright = '2023, ZJU'
+copyright = '2023, Rickey'
 author = 'Rickey'
 release = 'v1'
 
