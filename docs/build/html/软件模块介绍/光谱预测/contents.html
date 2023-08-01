@@ -90,39 +90,43 @@
 <section id="id2">
 <h2>1. 光谱预测模块功能简介<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <p>首先点击光谱预测模块，进入初始化页面：</p>
-<p><img alt="1672371390212" src="../../_images/1672371390212.png" /></p>
+<p><img alt="1672371390212" src="../../_images/spectrum.png" /></p>
 <center>图1.1 光谱预测模块初始化界面</center>
 <p>本页面的各功能模块基于VAE模型开发（VAE模型介绍详见<a class="reference external" href="https://intelligent-software-design.readthedocs.io/zh_CN/latest/%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9D%97/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B.html#id6">深度学习模块</a>）。</p>
-<p>本页面可分有三个功能区域：输入区、模型区、结果展示区。</p>
+<p>本页面可分有三个功能区域：<strong>输入区、模型区、结果展示区</strong>。</p>
 <p>输入区上传并展示传入VAE模型的光谱数据，模型区用于选择光谱预测的模型，结果展示区用于展示VAE模型的多样性预测结果。</p>
-<p>以下是各模块的详细介绍：</p>
+<p>以下是输入区和结果展示区中各模块的详细介绍：</p>
 <ul class="simple">
-<li><p>”曲线“模块：绘制”配置点位“模块中上传的数据。</p></li>
-<li><p>”配置点位“模块：点击”上传模型“，上传本地csv文件。csv文件格式：光谱数据按列排列，第一列为横坐标数据，其余列为纵坐标数据。</p></li>
-<li><p>”结构预测结果“模块：展示VAE模型的多样性结果。左侧深色区可以选择不同的预测结果，右侧白色区展示超表面结构。“导出”按钮导出右侧光谱预测结果的csv文件。</p></li>
-<li><p>”光谱预测结果”模块：展示左侧超表面结构对应的光谱预测结果。</p></li>
+<li><p>输入区<strong>曲线模块</strong>：绘制”配置点位“模块中上传的数据。</p></li>
+<li><p>输入区<strong>配置点位模块</strong>：点击”上传模型”，上传本地csv文件。csv文件格式：光谱数据按列排列，第一列为横坐标数据，其余列为纵坐标数据。</p></li>
+<li><p>结果展示区<strong>结构预测结果模块</strong>：展示VAE模型的多样性结果。”导出”按钮导出右侧光谱预测结果的CSV文件或版图GDS文件。</p></li>
+<li><p>结果展示区<strong>光谱预测结果模块</strong>：展示左侧微纳光学结构对应的光谱预测结果，可与目标曲线直观进行对比。</p></li>
 </ul>
-<p><img alt="1672371927545" src="../../_images/1672371927545.png" /></p>
-<center> 图1.2 “配置”模块</center>
-<p>在“配置”模块中：</p>
+<p><img alt="1672371927545" src="../../_images/spectrum1.png" /></p>
+<center> 图1.2 模型区配置模块</center>
+<p>在模型区<strong>配置模块</strong>中：</p>
 <ul class="simple">
-<li><p>“模型库”：可添加/删除模型。点击“查看”，可上传模型中用到的模型文件。在模型中，通过“文件ID”调用上传的模型文件。</p></li>
+<li><p>点击模型库：可添加/删除模型。点击“查看”，可上传模型中用到的模型文件。在模型中，通过“文件ID”调用上传的模型文件：</p></li>
 </ul>
-<p><img alt="1672372131859" src="../../_images/1672372131859.png" /></p>
-<center>图1.3 模型库界面</center>
-<p><img alt="1672372239136" src="../../_images/1672372239136.png" /></p>
-<center>图1.4 模型文件的管理界面</center>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#load generative model</span>
+<span class="n">generative_models</span> <span class="o">=</span> <span class="n">forecast</span><span class="o">.</span><span class="n">get_model_file</span><span class="p">(</span><span class="s1">&#39;e3a30bccf854cd3efcde7efe51d82f78&#39;</span><span class="p">)</span>
+<span class="n">file_path</span> <span class="o">=</span> <span class="s1">&#39;generative_models.py&#39;</span>
+</pre></div>
+</div>
+<p><img alt="1672372131859" src="../../_images/spectrum2.png" /></p>
+<center>图1.3 模型库界面及配置文件查看窗口</center>
+<p>模型库中保存模型名称及模型参数化描述，用户可以点击操作中的功能来使用、编辑、查看或者删除模型。</p>
 <ul class="simple">
 <li><p>历时预测：保存历时预测结果。通过点击右上角的保存标志保存。</p></li>
-<li><p>pytorch框：算法选择框，在本模块中选择pytorch。</p></li>
-<li><p>代码输入：点击模型后，在此处输入必要的参数。（目前这里展示的是模型代码，该功能还在完善中）</p></li>
+<li><p>代码输入：点击模型后，在此处输入必要的参数，比如最大迭代测试、单点预测误差、制造限制等。</p></li>
 <li><p>预测：运行模型代码，该模型对输入数据的预测。</p></li>
 <li><p>解释器输出：运行模型代码时的python解释器输出。</p></li>
+<li><p>可点击停止按钮强停止仿真过程</p></li>
 </ul>
 </section>
 <section id="id3">
 <h2>2. 光谱预测使用实例<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
-<p>本节以自由形状结构超表面的[VAE模型](https://intelligent-software-design.readthedocs.io/zh_CN/latest/算法/深度学习模块/深度学习模型.html#id8）。</p>
+<p>本节以自由形状结构超表面的<a class="reference external" href="https://intelligent-software-design.readthedocs.io/zh_CN/latest/%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9D%97/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B.html#id8">VAE模型</a>。</p>
 <p>Step1: 选择模型：</p>
 <p><img alt="1672373014714" src="../../_images/1672373014714.png" /></p>
 <center>图2.1 选择模型</center>
