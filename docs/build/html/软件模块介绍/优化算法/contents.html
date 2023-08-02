@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>数据库 &mdash; 微纳光学智能设计软件 v1 文档</title>
+  <title>优化算法 &mdash; 微纳光学智能设计软件 v1 文档</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -21,8 +21,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="索引" href="../../genindex.html" />
     <link rel="search" title="搜索" href="../../search.html" />
-    <link rel="next" title="优化算法" href="../%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/contents.html" />
-    <link rel="prev" title="器件仿真" href="../%E5%99%A8%E4%BB%B6%E4%BB%BF%E7%9C%9F/contents.html" /> 
+    <link rel="next" title="光谱预测" href="../%E5%85%89%E8%B0%B1%E9%A2%84%E6%B5%8B/contents.html" />
+    <link rel="prev" title="数据库" href="../%E6%95%B0%E6%8D%AE%E5%BA%93/contents.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -46,16 +46,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/index.html">软件安装</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">软件模块</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../%E5%99%A8%E4%BB%B6%E4%BB%BF%E7%9C%9F/contents.html">器件仿真</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">数据库</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id2">数据库——材料库</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id3">数据库——器件库</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id4">器件库中添加/删除器件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../%E6%95%B0%E6%8D%AE%E5%BA%93/contents.html">数据库</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">优化算法</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">优化算法模块介绍</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">数据库——算法库</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/contents.html">优化算法</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../%E5%85%89%E8%B0%B1%E9%A2%84%E6%B5%8B/contents.html">光谱预测</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../%E7%AE%A1%E7%90%86%E4%B8%AD%E5%BF%83/contents.html">管理中心</a></li>
 </ul>
@@ -79,9 +74,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">软件模块</a></li>
-      <li class="breadcrumb-item active">数据库</li>
+      <li class="breadcrumb-item active">优化算法</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/软件模块介绍/数据库/contents.md.txt" rel="nofollow"> 查看页面源码</a>
+            <a href="../../_sources/软件模块介绍/优化算法/contents.md.txt" rel="nofollow"> 查看页面源码</a>
       </li>
   </ul>
   <hr/>
@@ -90,46 +85,9 @@
            <div itemprop="articleBody">
              
   <section id="id1">
-<h1>数据库<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<h1>优化算法<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
 <section id="id2">
-<h2>数据库——材料库<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
-<p>智能软件系统提供用户定义的特殊材料，用户可自定义并上传特定材料在各个波段的性能数据并在模型构建中使用。
-点击上传按钮即可添加以xls、xlsx及csv文件存储的材料折射率，文件第一列为波长，第二、第三列分别为材料的n、K值。如图所示，添加完成后的材料折射率会显示在折线图中。
-<img alt="材料库页面展示.png" src="../../_images/material.png" /></p>
-<center> 图1 材料库页面展示 </center>
-用户可在器件仿真中调用材料表中的折射率，其中字符串中输入存储的材料名：
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">get_material</span><span class="p">(</span><span class="s1">&#39;xxxx&#39;</span><span class="p">)</span>
-<span class="c1"># data数据提取</span>
-<span class="c1"># data[&#39;wave&#39;]: 材料波长信息</span>
-<span class="c1"># data[&#39;n&#39;]: 材料折射率n</span>
-<span class="c1"># data[&#39;k&#39;]: 材料折射率k</span>
-</pre></div>
-</div>
-</section>
-<section id="id3">
-<h2>数据库——器件库<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
-<p>在器件仿真及优化算法模块中用户运行的模型及结果按照类型保存在器件库中，器件表有模型结构参数信息、建模代码区域、模型预览图、性能图及计算结果展示：
-<img alt="器件库页面展示.png" src="../../_images/device.png" /></p>
-<center> 图2 器件库页面展示 </center>
-<ul class="simple">
-<li><p>结构参数包含模型结构的中心坐标，大小及高度</p></li>
-<li><p>代码区域记录模型建模及参数提取所用代码</p></li>
-<li><p>性能图存储模型仿真结果</p></li>
-<li><p>计算结果记录模型仿真过程中的解释器输出</p></li>
-</ul>
-<section id="id4">
-<h3>器件库中添加/删除器件<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
-<p>软件支持用户新添加器件，点击器件表中的加号，输入器件名称及类型后点击保存即可在仿真模块中使用。用户也可以在器件仿真或优化算法模块中另存为功能添加器件。同时，拥有管理员权限的用户可以在数据库中删除器件。</p>
-</section>
-</section>
-<section id="id5">
-<h2>数据库——算法库<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
-<p>软件系统算法库中保存了不同环境的镜像地址及域名，现可提供：</p>
-<ul class="simple">
-<li><p>基于MEEP的FDTD算法环境</p></li>
-<li><p>与Lumerical/CST商用软件可调用的算法环境</p></li>
-<li><p>用于光谱预测的pytorch算法环境</p></li>
-</ul>
+<h2>优化算法模块介绍<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 </section>
 </section>
 
@@ -137,8 +95,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
-        <a href="../%E5%99%A8%E4%BB%B6%E4%BB%BF%E7%9C%9F/contents.html" class="btn btn-neutral float-left" title="器件仿真" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
-        <a href="../%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/contents.html" class="btn btn-neutral float-right" title="优化算法" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../%E6%95%B0%E6%8D%AE%E5%BA%93/contents.html" class="btn btn-neutral float-left" title="数据库" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../%E5%85%89%E8%B0%B1%E9%A2%84%E6%B5%8B/contents.html" class="btn btn-neutral float-right" title="光谱预测" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
