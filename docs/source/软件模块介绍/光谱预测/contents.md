@@ -1,6 +1,6 @@
 # 光谱预测
 
-## 1. 光谱预测模块功能简介
+## 光谱预测模块功能简介
 
 首先点击光谱预测模块，进入初始化页面：
 
@@ -45,28 +45,30 @@ file_path = 'generative_models.py'
 + 解释器输出：运行模型代码时的python解释器输出。
 + 可点击停止按钮强停止仿真过程
 
-## 2. 光谱预测使用实例
+## 光谱预测使用实例
 
-本节以自由形状结构超表面的[VAE模型](https://intelligent-software-design.readthedocs.io/zh_CN/latest/算法/深度学习模块/深度学习模型.html#id8)。
+本节以自由形状结构超表面的[VAE模型](https://intelligent-software-design.readthedocs.io/zh_CN/latest/%E8%BD%AF%E4%BB%B6%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D/%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9D%97/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B.html)。
 
-Step1: 选择模型：
+**Step1: 选择模型**
 
-![1672373014714](assets/1672373014714.png)
+![1672373014714](assets/spectrum3.png)
 
 <center>图2.1 选择模型</center>
 
-Step2: 上传输入模型的光谱数据。
+**Step2: 上传输入模型的光谱数据，文件类型为csv**
 
 该模型输入x的范围为600-1200，y的范围为0-1。
 
-![1672373180571](assets/1672373180571.png)
+![1672373180571](assets/spectrum4.png)
 
 <center>图2.2 上传模型数据</center>
 
 上传后，点位可在y方向上拖动，右侧可查看拖动后点位的精确数值。模型预测读取的是实时的输入数据。
 
-Step3：点击“预测”，得到预测结果。
+**Step3：预测结果**
++ 在代码输入窗口中输入必要参数：预测结构数目、最大迭代次数、单点预测误差阈值等。
++ 点击预测按钮后开始预测结构并实时反馈结构对应的光谱结果。
++ 待迭代循环完毕后可导出预测的光谱结果以及结构的GDS版图。
 
-![1672373686957](assets/1672373686957.png)
-
+![1672373686957](assets/spectrum5.png)
 <center>图2.3 模型预测结果</center>

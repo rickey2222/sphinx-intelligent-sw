@@ -49,8 +49,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../%E6%95%B0%E6%8D%AE%E5%BA%93/contents.html">数据库</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/index.html">优化算法</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">光谱预测</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#id2">1. 光谱预测模块功能简介</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id3">2. 光谱预测使用实例</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">光谱预测模块功能简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">光谱预测使用实例</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../%E7%AE%A1%E7%90%86%E4%B8%AD%E5%BF%83/contents.html">管理中心</a></li>
@@ -88,7 +88,7 @@
   <section id="id1">
 <h1>光谱预测<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
 <section id="id2">
-<h2>1. 光谱预测模块功能简介<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<h2>光谱预测模块功能简介<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <p>首先点击光谱预测模块，进入初始化页面：</p>
 <p><img alt="1672371390212" src="../../_images/spectrum.png" /></p>
 <center>图1.1 光谱预测模块初始化界面</center>
@@ -113,9 +113,9 @@
 <span class="n">file_path</span> <span class="o">=</span> <span class="s1">&#39;generative_models.py&#39;</span>
 </pre></div>
 </div>
-<p><img alt="1672372131859" src="../../_images/spectrum2.png" /></p>
+<p>模型库中保存模型名称及模型参数化描述，用户可以点击操作中的功能来使用、编辑、查看或者删除模型。
+<img alt="1672372131859" src="../../_images/spectrum2.png" /></p>
 <center>图1.3 模型库界面及配置文件查看窗口</center>
-<p>模型库中保存模型名称及模型参数化描述，用户可以点击操作中的功能来使用、编辑、查看或者删除模型。</p>
 <ul class="simple">
 <li><p>历时预测：保存历时预测结果。通过点击右上角的保存标志保存。</p></li>
 <li><p>代码输入：点击模型后，在此处输入必要的参数，比如最大迭代测试、单点预测误差、制造限制等。</p></li>
@@ -125,18 +125,23 @@
 </ul>
 </section>
 <section id="id3">
-<h2>2. 光谱预测使用实例<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
-<p>本节以自由形状结构超表面的<a class="reference external" href="https://intelligent-software-design.readthedocs.io/zh_CN/latest/%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9D%97/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B.html#id8">VAE模型</a>。</p>
-<p>Step1: 选择模型：</p>
-<p><img alt="1672373014714" src="../../_images/1672373014714.png" /></p>
+<h2>光谱预测使用实例<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<p>本节以自由形状结构超表面的<a class="reference external" href="https://intelligent-software-design.readthedocs.io/zh_CN/latest/%E8%BD%AF%E4%BB%B6%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D/%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9D%97/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B.html">VAE模型</a>。</p>
+<p><strong>Step1: 选择模型</strong></p>
+<p><img alt="1672373014714" src="../../_images/spectrum3.png" /></p>
 <center>图2.1 选择模型</center>
-<p>Step2: 上传输入模型的光谱数据。</p>
+<p><strong>Step2: 上传输入模型的光谱数据，文件类型为csv</strong></p>
 <p>该模型输入x的范围为600-1200，y的范围为0-1。</p>
-<p><img alt="1672373180571" src="../../_images/1672373180571.png" /></p>
+<p><img alt="1672373180571" src="../../_images/spectrum4.png" /></p>
 <center>图2.2 上传模型数据</center>
 <p>上传后，点位可在y方向上拖动，右侧可查看拖动后点位的精确数值。模型预测读取的是实时的输入数据。</p>
-<p>Step3：点击“预测”，得到预测结果。</p>
-<p><img alt="1672373686957" src="../../_images/1672373686957.png" /></p>
+<p><strong>Step3：预测结果</strong></p>
+<ul class="simple">
+<li><p>在代码输入窗口中输入必要参数：预测结构数目、最大迭代次数、单点预测误差阈值等。</p></li>
+<li><p>点击预测按钮后开始预测结构并实时反馈结构对应的光谱结果。</p></li>
+<li><p>待迭代循环完毕后可导出预测的光谱结果以及结构的GDS版图。</p></li>
+</ul>
+<p><img alt="1672373686957" src="../../_images/spectrum5.png" /></p>
 <center>图2.3 模型预测结果</center></section>
 </section>
 
