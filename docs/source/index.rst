@@ -14,4 +14,3 @@ Welcome to Document Of Intelligent Photonic Design Software!
    软件安装/index
    软件模块介绍/index
    软件API接口/contents
-   团队信息/index
