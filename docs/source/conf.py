@@ -24,7 +24,7 @@ source_suffix = {
 
 language = 'zh_CN'
 extensions = [
-+    'sphinx_rtd_theme'
+        'sphinx_rtd_theme'
 ]
 
 # -- Options for HTML output -------------------------------------------------
