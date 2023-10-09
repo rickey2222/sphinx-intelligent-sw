@@ -19,56 +19,310 @@ sim_start(backend='cst')
 ...
 sim_end(backend='cst')
 ```
+环境外需要使用的数据需要在建模代码中使用时：
+```
+unityCode.save_data(data = need_to_save_data) #将不同环境中需保存的数据存在变量data中（变量名可自定义），环境外使用data即可调用。
+```
 ## 全局定义
-模型仿真需要定义全局变量
-* nfreq[数值类型]：频率采样点，默认值为200
-* wl_max[数值类型]：仿真所用波长最大值，默认值为1600nm
-* wl_min[数值类型] ：仿真所用波长最小值，默认值为1100nm
-* T_z meep中监视器末端
-* resolution
-* auto_shutoff_min
+微纳光学智能设计软件模型仿真需要定义全局变量，在代码区域中传入：
+* nfreq[<font color=red>number</font>]：频率采样点，默认值为200
+* wl_max[<font color=red>number</font>]：仿真所用波长最大值，默认值为1600nm
+* wl_min[<font color=red>number</font>] ：仿真所用波长最小值，默认值为1100nm
+* T_z[<font color=red>number</font>]：meep环境中监视器末端，默认值为1.9
+* resolution[<font color=red>number</font>]：仿真分辨率，默认值为50（每单位um划分为50格）
+* auto_shutoff_min[<font color=red>number</font>]：仿真截断时间，默认为1e-9s
 
+代码区通过unity_sim.set_sim_paras()函数定义全局变量，比如：
+```
+# 基础结构
+unit = 1e-6
+focal_length = 30 * unit                # 聚焦距离
+lens_radius = 15 * unit                 # 透镜半径
+substrate_thickness = 2 * unit          # SiO2衬底厚度
+period = 1.8 * unit
+height = 2.5 * unit                     # Si柱厚度
+wavelength = 3.8 * unit                 # 工作波长
+T_z = height + 1.5e-6
+wl_max = 5 * unit
+wl_min = 3 * unit
+nfreq = 201
+
+unity_sim.set_sim_paras(wl_max=wl_max,wl_min=wl_min,T_z=T_z,nfreq=nfreq,resolution=80)
+```
 ## 模型构建
+微纳光学智能设计软件模型构建支持材料数据调用数据库中材料表中的特定材料、用户自定义折射率材料等，模型可构建方块、圆柱。
+1. 材料定义
+用户自定义材料折射率：
+```
+def define_material(self, name, n, **kwargs):
+        """定义材料的折射率
+            name：类型：str，自定义材料名称
+            n:材料的折射率
+        """
+```
 
+使用场景：
+```
+# 材料定义
+unity_sim.define_material('SiO2', 1.444)
+unity_sim.define_material('Si', 3.476)
+```
+用户调用数据库-材料表中材料信息：
+   def nk_material(self,w,n,k,name,**kwargs):
+        """
+        自定义n,k模型，传入材料
+        par:
+            w:波长
+            n:折射率
+            name:材料名称，str
+            k:消光系数
+        """
+
+使用场景：
+```
+# 导入材料
+name = '3_Al_Rakic'
+data=device.get_material('3_Al_Rakic')
+unity_sim.nk_material(name, data)
+```
+其中name为材料表中存储的材料名（非中文）
+2. 模型定义
+用户建立方块模型：
+```
+    def add_block(self, size, center, material_name, **kwargs):
+        """ 定义方块模型尺寸
+        parameter:
+            center:  (x,y,z),中心坐标
+            size: (x_span,y_span,z_span),沿x,y,z轴尺寸大小
+            material_name: 定义材料,类型：str
+        **kwargs：
+            name:定义模型名称
+            mesh_order:
+            color：定义模型材料颜色
+            opacity:定义模型透明度
+            line：True(default),是否线框
+        """
+```
+
+用户建立圆柱模型：
+```
+def add_cylinder(self, center, radius, height, material_name,**kwargs):
+        """定义圆柱模型尺寸
+        parameter:
+            center:  (x,y,z),中心坐标
+            radius: 圆柱半径
+            height：圆柱高度
+            material_name: 定义材料，类型：str
+        **kwargs：
+            name:定义模型名称
+            mesh_order
+            color：定义模型材料颜色
+            opacity:定义模型透明度
+            line：True(default),是否线框
+        """
+```
+
+使用场景：
+```
+# 添加 SiO2 衬底
+unit = 1e-6
+period = 2.5 * unit
+substrate_thickness = 3 * unit  # SiO2层衬底厚度
+unity_sim.define_material('SiO2', 1.45)
+unity_sim.add_block(size=(period, period, substrate_thickness), center=(0, 0, -substrate_thickness/2),
+										material_name='SiO2', name='substrate', color='Grey')
+```
+
+软件代码兼容各个环境的API。
 
 
 ## 源设置
+微纳光学智能设计软件光源支持平面光源、模式光和高斯光源：
+```
+    def add_source(self, center, size, **kwargs):
+        """定义光源
+        parameter:
+            center:  (x,y,z),中心坐标
+            size: (x_span,y_span,z_span),沿x,y,z轴尺寸大小
+        **kwargs：
+            name:定义模型名称
+            color：定义模型材料颜色，Red(default)
+            opacity:定义模型透明度
+            line：True(default),是否线框
+            mode: TE(default),TM, LCP, RCP
+            source_type: 源类型   PlaneSource(dafault): 上方入射, 支持TE/TM/LCP/RCP
+                          GaussSource: 下方入射, 支持 TE/TM
+            w0: 束腰半径
+            direction: 入射方向，forward/backward(default)
+            injection: 入射轴，x/y/z(default)
+        """
+```
 
-
-
+使用左旋偏振光场景：
+```
+unit = 1e-6
+period = 2.5 * unit
+source_z = 4 * unit
+mode = 'LCP'
+unity_sim.add_source(size=(period, period, 0), center=(0, 0, source_z), mode=mode)
+```
 
 ## 监视器
-仿真所使用监视器有两类：功率监视器及电场监视器。
-### 功率监视器
-add_monitor(center, size, name, color, opacity)定义功率监视器
-* center及size参数需写为(x,y,z)三维数组，表示监视器中心及大小
-* name参数用来定义监视器的名称，方便后续提取监视器结果
-* color参数用来定义监视器展示颜色，默认为red
-* opacity参数用来定义监视器展示透明度，默认为0.4
+微纳光学智能设计软件支持功率监视器及电场监视器：
+```
+    def add_monitor(self, center, size, **kwargs):
+        """定义功率监视器区域
+        parameter:
+            center:  (x,y,z),中心坐标
+            size: (x_span,y_span,z_span),沿x,y,z轴尺寸大小
+        **kwargs：
+            name:定义模型名称
+            color：定义模型材料颜色，Red(default)
+            opacity:定义模型透明度
+            line：True(default),是否线框
+        return:
+            监视器的名称
+        """
 
-*备注: 用户必需定义center，size，name参数来建立监视器，否则无法加载*
+        def add_monitor_field(self, center, size, **kwargs):
+        """定义电场监视器区域
+        parameter:
+            center:  (x,y,z),中心坐标
+            size: (x_span,y_span,z_span),沿x,y,z轴尺寸大小
+        **kwargs：
+            name:定义模型名称
+            color：定义模型材料颜色，Red(default)
+            opacity:定义模型透明度
+            line：True(default),是否线框
+        """
+```
 
-### 电场监视器
-add_monitor_field(center, size, name, color, opactity)定义功率监视器
-* center及size参数需写为(x,y,z)三维数组，表示监视器中心及大小
-* name参数用来定义监视器的名称，方便后续提取监视器结果
-* nfreq参数来定义监视器的频率点，默认为200
-* color参数用来定义监视器展示颜色，默认为red
-* opacity参数用来定义监视器展示透明度，默认为0.4
+使用场景：
+```
+unity_sim.add_monitor(size=(period, period, 0), center=(0, 0, T_z), name='T_monitor')
+```
 
 *备注: 用户必需定义center，size，name参数来建立监视器，否则无法加载*
 
 ## 仿真区域
-add_sim_area(center, size)定义模型的仿真区域
+微纳光学智能设计软件使用unity_sim.add_sim_area(center, size)定义模型的仿真区域:
+```
+    def add_sim_area(self, center, size, **kwargs):
+        """ 定义仿真区域
+        parameter:
+            center:  (x,y,z),中心坐标
+            size: (x_span,y_span,z_span),沿x,y,z轴尺寸大小
+        **kwargs：
+            name:定义模型名称
+            color：定义模型材料颜色，Orange(default)
+            opacity:定义模型透明度, 0.4(default)
+            line：True(default),是否线框
+            boundary: 边界条件: Periodic(default)/ PML/ Symmetric_TE/ Symmetric_TM
+                               或者输入 {x_bc, y_bc, z_bc}指定各自方向的边界条件, 必须输入x_bc, y_bc
+            dimension: 仿真区域维度，2D/3D(default)
+            sim_time: 仿真时间，10000 * 1e-15 (default)
+            mesh_accuracy：网格精度，1~9，2 (default)，数值越大，网格精度越高
+            mesh_geometry: 加网格的结构名称
+            mesh_dx:网格x方向的精度，若在该方向设定网格步长，需输入
+            mesh_dy:网格y方向的精度，若在该方向设定网格步长，需输入
+            mesh_dz:网格y方向的精度，若在该方向设定网格步长，需输入
+        """
+```
 
-
+使用场景：
+```
+unity_sim.add_sim_area(size=(period, period, z_span), center=(0, 0, z_cen), boundary='Periodic', mesh_accuracy=3, sim_time=3000e-15)
+```
 
 ## 仿真运行
+微纳光学智能设计软件使用unity_sim.run()仿真运行：
+```
+    def run(self,  **kwargs):
+        """仿真运行
+        **kwargs:
+            name:后台保存文件.fsp名称
+        """
+```
 
-
+使用场景：
+```
+save_name = 'chiral_LCP'
+unity_sim.run(save_name=save_name)
+```
 
 ## 结果提取
+微纳光学智能设计软件可提取监视器结果：
+1. 提取功率监视器：
+```
+    def get_result_monitor(self, **kwargs):
+        """从功率监视器提取数据
+        parameter:
+            name:  监视器，add_monitor()中的名字
+        return：
+            power:从监视器提取的数据T/R
+            wl: 波长， 单位为设定的unit
+            f:频率点
+        """
+```
 
+2. 提取电场监视器：
 
+```
+    def get_result_monitor_field(self, **kwargs):
+        """从电场监视器提取数据
+        return：
+            Ex:电场x的分量
+            Ey:电场y的分量
+            Ez:电场z的分量
+            f: 频率，单位 Hz
+            wl: 波长，单位 m
+            x, y, z: 电场监视器范围，单位 m
+        """
+```
 
 ## 性能图保存
+微纳光学智能设计软件支持图片保存：数据处理后绘制图片可保存到页面性能图中，后续也可通过数据库-器件库查看，使用
+device.save_fig(name, file_path, file_data_path):
+* name[<font color=red>string</font>]：图片名称
+* file_path[<font color=red>string</font>]：图片保存名，例如picture.png
+* file_data_path[<font color=red>string</font>]：数据保存名，例如data.txt
+
+使用场景：
+```
+import matplotlib.pyplot as plt
+import numpy as np
+
+# 结果处理 - 透射率
+wl = result_RCP["wl"]  # 单位： um
+T_LCP = result_LCP["power"]
+T_RCP = result_RCP["power"]
+
+fig, ax = plt.subplots(1, 1)
+plt.plot(wl, abs(T_LCP), 'r--', label='T_LCP')
+plt.plot(wl, abs(T_RCP), 'g--', label='T_RCP')
+plt.plot(wl, abs(T_LCP) - abs(T_RCP), 'b', label='CD')
+
+plt.xlabel("wavelength (μm)")
+plt.legend(loc="upper right")
+plt.savefig("chiral_CD.png")
+
+LCP_power = abs(T_LCP)
+np.savetxt("LCP_power.txt", LCP_power)  
+device.save_fig("chiral_CD",file_path="chiral_CD.png", file_data_path = "LCP_power.txt")
+```
+
+性能图展示后可通过导出数据按钮下载file_data_path中存储的数据文件。
+
+## 退出仿真
+微纳光学智能设计软件退出当前仿真进程可点击代码区域右侧暂停按钮强退出，或者在代码区使用quit()函数：
+```
+    def quit(self):
+        """
+        关闭 lumerical/cst/meep
+        """
+```
+
+使用场景：
+```
+unity_sim.quit()
+```
