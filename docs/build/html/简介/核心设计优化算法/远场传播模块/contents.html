@@ -51,9 +51,9 @@
 <li class="toctree-l3"><a class="reference internal" href="../%E5%85%A8%E5%B1%80%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96%E6%A8%A1%E5%9D%97/contents.html">全局搜索优化算法</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../%E6%A2%AF%E5%BA%A6%E6%8B%93%E6%89%91%E4%BC%98%E5%8C%96%E6%A8%A1%E5%9D%97/%E6%A2%AF%E5%BA%A6%E6%8B%93%E6%89%91%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95.html">梯度拓扑优化算法</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">远场传播模块</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id2">基尔霍夫衍射与瑞利-索末菲衍射</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id3">菲涅尔衍射</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id6">夫琅禾费衍射</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">1. 基尔霍夫衍射与瑞利-索末菲衍射</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">2. 菲涅尔衍射</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">3. 夫琅禾费衍射</a></li>
 </ul>
 </li>
 </ul>
@@ -94,10 +94,10 @@
   <section id="id1">
 <h1>远场传播模块<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
 <section id="id2">
-<h2>基尔霍夫衍射与瑞利-索末菲衍射<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
+<h2>1. 基尔霍夫衍射与瑞利-索末菲衍射<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <p>惠更斯-菲涅耳原理可表述为：波面上的每一点都可以看作一个发出球面次级扰动（子波）的次级波源，波场中任一点的扰动，都可看作是所有次级波源所造成的次级扰动的相干叠加。</p>
 <p>对于其数学表达式，根据下图进行描述：</p>
-<p><img alt="1676289189304" src="简介/核心设计优化算法/远场传播模块/assets/1676289189304.png#pic_center" /></p>
+<p><img alt="1676289189304" src="../../../_images/1676289189304.png" /></p>
 <center>图1 光源S发出的球面波对P点作用的示意图</center>
 <p>考虑光源 <span class="math notranslate nohighlight">\(S\)</span>发出的球面波对 <span class="math notranslate nohighlight">\(P\)</span> 点的作用。</p>
 <p>选取 <span class="math notranslate nohighlight">\(S\)</span> 与 <span class="math notranslate nohighlight">\(P\)</span> 之间的一个波面 <span class="math notranslate nohighlight">\(\Sigma\)</span> ，用这个波面上各点发出的子波在 <span class="math notranslate nohighlight">\(P\)</span> 点相干叠加的结果表示 <span class="math notranslate nohighlight">\(S\)</span> 对 <span class="math notranslate nohighlight">\(P\)</span> 的作用。</p>
@@ -133,7 +133,7 @@
 <p>在实际问题中，<span class="math notranslate nohighlight">\(\theta\)</span>通常较小，三个公式的倾斜因子均接近1。</p>
 </section>
 <section id="id3">
-<h2>菲涅尔衍射<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
+<h2>2. 菲涅尔衍射<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
 <section id="id4">
 <h3>傍轴近似<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h3>
 <p><img alt="1676293738928" src="../../../_images/1676293738928.png" /></p>
@@ -153,7 +153,7 @@
 </section>
 </section>
 <section id="id6">
-<h2>夫琅禾费衍射<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<h2>3. 夫琅禾费衍射<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
 <p>在菲涅耳近似的基础上，如果光孔屏与接收屏的距离更远，则可以得到更进一步的近似。</p>
 <p>在菲涅尔近似中，
 <span class="math notranslate nohighlight">\(r= z_1+\frac{x^2+y^2}{2z_1}-\frac{xx_1+yy_1}{z_1}+\frac{x_1^2+y_1^2}{2z_1}\)</span>

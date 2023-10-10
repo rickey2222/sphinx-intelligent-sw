@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>仿真 &mdash; 微纳光学智能设计软件 v1 文档</title>
+  <title>仿真接口规范 &mdash; 微纳光学智能设计软件 v1 文档</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -47,7 +47,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../%E8%BD%AF%E4%BB%B6%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D/index.html">软件模块</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../contents.html">软件API接口</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A1%86%E6%9E%B6%E5%8F%8A%E5%8E%9F%E7%90%86/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A1%86%E6%9E%B6%E5%8F%8A%E5%8E%9F%E7%90%86.html">软件设计框架及原理</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">仿真</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">仿真接口规范</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#id2">环境选择</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id3">全局定义</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#id4">模型构建</a></li>
@@ -80,7 +80,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home"></a></li>
           <li class="breadcrumb-item"><a href="../contents.html">软件API接口</a></li>
-      <li class="breadcrumb-item active">仿真</li>
+      <li class="breadcrumb-item active">仿真接口规范</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/软件API接口/仿真/仿真.md.txt" rel="nofollow"> 查看页面源码</a>
       </li>
@@ -91,7 +91,7 @@
            <div itemprop="articleBody">
              
   <section id="id1">
-<h1>仿真<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<h1>仿真接口规范<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
 <section id="id2">
 <h2>环境选择<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <p>微纳光学智能设计软件中，在软件代码区域根据仿真模型选择适配的运行环境。分别在建模代码的<strong>初始</strong>及<strong>结尾</strong>部分调用环境代码：</p>
@@ -173,16 +173,18 @@
 <span class="n">unity_sim</span><span class="o">.</span><span class="n">define_material</span><span class="p">(</span><span class="s1">&#39;Si&#39;</span><span class="p">,</span> <span class="mf">3.476</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>用户调用数据库-材料表中材料信息：
-def nk_material(self,w,n,k,name,**kwargs):
-“””
-自定义n,k模型，传入材料
-par:
-w:波长
-n:折射率
-name:材料名称，str
-k:消光系数
-“””</p>
+<p>用户调用数据库-材料表中材料信息：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">nk_material</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">n</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    自定义n,k模型，传入材料</span>
+<span class="sd">    par:</span>
+<span class="sd">        w:波长</span>
+<span class="sd">        n:折射率</span>
+<span class="sd">        name:材料名称，str</span>
+<span class="sd">        k:消光系数</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+</pre></div>
+</div>
 <p>使用场景：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># 导入材料</span>
 <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;3_Al_Rakic&#39;</span>
@@ -193,36 +195,37 @@ k:消光系数
 <p>其中name为材料表中存储的材料名（非中文）
 2. 模型定义
 用户建立方块模型：</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">add_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">material_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; 定义方块模型尺寸</span>
-<span class="sd">        parameter:</span>
-<span class="sd">            center:  (x,y,z),中心坐标</span>
-<span class="sd">            size: (x_span,y_span,z_span),沿x,y,z轴尺寸大小</span>
-<span class="sd">            material_name: 定义材料,类型：str</span>
-<span class="sd">        **kwargs：</span>
-<span class="sd">            name:定义模型名称</span>
-<span class="sd">            mesh_order:</span>
-<span class="sd">            color：定义模型材料颜色</span>
-<span class="sd">            opacity:定义模型透明度</span>
-<span class="sd">            line：True(default),是否线框</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">material_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">    定义方块模型尺寸</span>
+<span class="sd">    parameter:</span>
+<span class="sd">        center:  (x,y,z),中心坐标</span>
+<span class="sd">        size: (x_span,y_span,z_span),沿x,y,z轴尺寸大小</span>
+<span class="sd">        material_name: 定义材料,类型：str</span>
+<span class="sd">    **kwargs：</span>
+<span class="sd">        name:定义模型名称</span>
+<span class="sd">        mesh_order:</span>
+<span class="sd">        color：定义模型材料颜色</span>
+<span class="sd">        opacity:定义模型透明度</span>
+<span class="sd">        line：True(default),是否线框</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 </pre></div>
 </div>
 <p>用户建立圆柱模型：</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_cylinder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">material_name</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;定义圆柱模型尺寸</span>
-<span class="sd">        parameter:</span>
-<span class="sd">            center:  (x,y,z),中心坐标</span>
-<span class="sd">            radius: 圆柱半径</span>
-<span class="sd">            height：圆柱高度</span>
-<span class="sd">            material_name: 定义材料，类型：str</span>
-<span class="sd">        **kwargs：</span>
-<span class="sd">            name:定义模型名称</span>
-<span class="sd">            mesh_order</span>
-<span class="sd">            color：定义模型材料颜色</span>
-<span class="sd">            opacity:定义模型透明度</span>
-<span class="sd">            line：True(default),是否线框</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;定义圆柱模型尺寸</span>
+<span class="sd">    parameter:</span>
+<span class="sd">        center:  (x,y,z),中心坐标</span>
+<span class="sd">        radius: 圆柱半径</span>
+<span class="sd">        height：圆柱高度</span>
+<span class="sd">        material_name: 定义材料，类型：str</span>
+<span class="sd">    **kwargs：</span>
+<span class="sd">        name:定义模型名称</span>
+<span class="sd">        mesh_order</span>
+<span class="sd">        color：定义模型材料颜色</span>
+<span class="sd">        opacity:定义模型透明度</span>
+<span class="sd">        line：True(default),是否线框</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 </pre></div>
 </div>
 <p>使用场景：</p>
@@ -240,23 +243,23 @@ k:消光系数
 <section id="id5">
 <h2>源设置<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
 <p>微纳光学智能设计软件光源支持平面光源和高斯光源：</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">add_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;定义光源</span>
-<span class="sd">        parameter:</span>
-<span class="sd">            center:  (x,y,z),中心坐标</span>
-<span class="sd">            size: (x_span,y_span,z_span),沿x,y,z轴尺寸大小</span>
-<span class="sd">        **kwargs：</span>
-<span class="sd">            name:定义模型名称</span>
-<span class="sd">            color：定义模型材料颜色，Red(default)</span>
-<span class="sd">            opacity:定义模型透明度</span>
-<span class="sd">            line：True(default),是否线框</span>
-<span class="sd">            mode: TE(default),TM, LCP, RCP</span>
-<span class="sd">            source_type: 源类型   PlaneSource(dafault): 上方入射, 支持TE/TM/LCP/RCP</span>
-<span class="sd">                          GaussSource: 下方入射, 支持 TE/TM</span>
-<span class="sd">            w0: 束腰半径</span>
-<span class="sd">            direction: 入射方向，forward/backward(default)</span>
-<span class="sd">            injection: 入射轴，x/y/z(default)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;定义光源</span>
+<span class="sd">    parameter:</span>
+<span class="sd">        center:  (x,y,z),中心坐标</span>
+<span class="sd">        size: (x_span,y_span,z_span),沿x,y,z轴尺寸大小</span>
+<span class="sd">    **kwargs：</span>
+<span class="sd">        name:定义模型名称</span>
+<span class="sd">        color：定义模型材料颜色，Red(default)</span>
+<span class="sd">        opacity:定义模型透明度</span>
+<span class="sd">        line：True(default),是否线框</span>
+<span class="sd">        mode: TE(default),TM, LCP, RCP</span>
+<span class="sd">        source_type: 源类型   PlaneSource(dafault): 上方入射, 支持TE/TM/LCP/RCP</span>
+<span class="sd">                        GaussSource: 下方入射, 支持 TE/TM</span>
+<span class="sd">        w0: 束腰半径</span>
+<span class="sd">        direction: 入射方向，forward/backward(default)</span>
+<span class="sd">        injection: 入射轴，x/y/z(default)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 </pre></div>
 </div>
 <p>使用左旋偏振光场景：</p>
@@ -271,31 +274,31 @@ k:消光系数
 <section id="id6">
 <h2>监视器<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
 <p>微纳光学智能设计软件支持功率监视器及电场监视器：</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">add_monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;定义功率监视器区域</span>
-<span class="sd">        parameter:</span>
-<span class="sd">            center:  (x,y,z),中心坐标</span>
-<span class="sd">            size: (x_span,y_span,z_span),沿x,y,z轴尺寸大小</span>
-<span class="sd">        **kwargs：</span>
-<span class="sd">            name:定义模型名称</span>
-<span class="sd">            color：定义模型材料颜色，Red(default)</span>
-<span class="sd">            opacity:定义模型透明度</span>
-<span class="sd">            line：True(default),是否线框</span>
-<span class="sd">        return:</span>
-<span class="sd">            监视器的名称</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;定义功率监视器区域</span>
+<span class="sd">    parameter:</span>
+<span class="sd">        center:  (x,y,z),中心坐标</span>
+<span class="sd">        size: (x_span,y_span,z_span),沿x,y,z轴尺寸大小</span>
+<span class="sd">    **kwargs：</span>
+<span class="sd">        name:定义模型名称</span>
+<span class="sd">        color：定义模型材料颜色，Red(default)</span>
+<span class="sd">        opacity:定义模型透明度</span>
+<span class="sd">        line：True(default),是否线框</span>
+<span class="sd">    return:</span>
+<span class="sd">        监视器的名称</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-        <span class="k">def</span> <span class="nf">add_monitor_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;定义电场监视器区域</span>
-<span class="sd">        parameter:</span>
-<span class="sd">            center:  (x,y,z),中心坐标</span>
-<span class="sd">            size: (x_span,y_span,z_span),沿x,y,z轴尺寸大小</span>
-<span class="sd">        **kwargs：</span>
-<span class="sd">            name:定义模型名称</span>
-<span class="sd">            color：定义模型材料颜色，Red(default)</span>
-<span class="sd">            opacity:定义模型透明度</span>
-<span class="sd">            line：True(default),是否线框</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">add_monitor_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;定义电场监视器区域</span>
+<span class="sd">    parameter:</span>
+<span class="sd">        center:  (x,y,z),中心坐标</span>
+<span class="sd">        size: (x_span,y_span,z_span),沿x,y,z轴尺寸大小</span>
+<span class="sd">    **kwargs：</span>
+<span class="sd">        name:定义模型名称</span>
+<span class="sd">        color：定义模型材料颜色，Red(default)</span>
+<span class="sd">        opacity:定义模型透明度</span>
+<span class="sd">        line：True(default),是否线框</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 </pre></div>
 </div>
 <p>使用场景：</p>
@@ -307,26 +310,26 @@ k:消光系数
 <section id="id7">
 <h2>仿真区域<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h2>
 <p>微纳光学智能设计软件使用unity_sim.add_sim_area(center, size)定义模型的仿真区域:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">add_sim_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; 定义仿真区域</span>
-<span class="sd">        parameter:</span>
-<span class="sd">            center:  (x,y,z),中心坐标</span>
-<span class="sd">            size: (x_span,y_span,z_span),沿x,y,z轴尺寸大小</span>
-<span class="sd">        **kwargs：</span>
-<span class="sd">            name:定义模型名称</span>
-<span class="sd">            color：定义模型材料颜色，Orange(default)</span>
-<span class="sd">            opacity:定义模型透明度, 0.4(default)</span>
-<span class="sd">            line：True(default),是否线框</span>
-<span class="sd">            boundary: 边界条件: Periodic(default)/ PML/ Symmetric_TE/ Symmetric_TM</span>
-<span class="sd">                               或者输入 {x_bc, y_bc, z_bc}指定各自方向的边界条件, 必须输入x_bc, y_bc</span>
-<span class="sd">            dimension: 仿真区域维度，2D/3D(default)</span>
-<span class="sd">            sim_time: 仿真时间，10000 * 1e-15 (default)</span>
-<span class="sd">            mesh_accuracy：网格精度，1~9，2 (default)，数值越大，网格精度越高</span>
-<span class="sd">            mesh_geometry: 加网格的结构名称</span>
-<span class="sd">            mesh_dx:网格x方向的精度，若在该方向设定网格步长，需输入</span>
-<span class="sd">            mesh_dy:网格y方向的精度，若在该方向设定网格步长，需输入</span>
-<span class="sd">            mesh_dz:网格y方向的精度，若在该方向设定网格步长，需输入</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_sim_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; 定义仿真区域</span>
+<span class="sd">    parameter:</span>
+<span class="sd">        center:  (x,y,z),中心坐标</span>
+<span class="sd">        size: (x_span,y_span,z_span),沿x,y,z轴尺寸大小</span>
+<span class="sd">    **kwargs：</span>
+<span class="sd">        name:定义模型名称</span>
+<span class="sd">        color：定义模型材料颜色，Orange(default)</span>
+<span class="sd">        opacity:定义模型透明度, 0.4(default)</span>
+<span class="sd">        line：True(default),是否线框</span>
+<span class="sd">        boundary: 边界条件: Periodic(default)/ PML/ Symmetric_TE/ Symmetric_TM</span>
+<span class="sd">                            或者输入 {x_bc, y_bc, z_bc}指定各自方向的边界条件, 必须输入x_bc, y_bc</span>
+<span class="sd">        dimension: 仿真区域维度，2D/3D(default)</span>
+<span class="sd">        sim_time: 仿真时间，10000 * 1e-15 (default)</span>
+<span class="sd">        mesh_accuracy：网格精度，1~9，2 (default)，数值越大，网格精度越高</span>
+<span class="sd">        mesh_geometry: 加网格的结构名称</span>
+<span class="sd">        mesh_dx:网格x方向的精度，若在该方向设定网格步长，需输入</span>
+<span class="sd">        mesh_dy:网格y方向的精度，若在该方向设定网格步长，需输入</span>
+<span class="sd">        mesh_dz:网格y方向的精度，若在该方向设定网格步长，需输入</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 </pre></div>
 </div>
 <p>使用场景：</p>
@@ -337,11 +340,11 @@ k:消光系数
 <section id="id8">
 <h2>仿真运行<a class="headerlink" href="#id8" title="此标题的永久链接"></a></h2>
 <p>微纳光学智能设计软件使用unity_sim.run()仿真运行：</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>  <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;仿真运行</span>
-<span class="sd">        **kwargs:</span>
-<span class="sd">            name:后台保存文件.fsp名称</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>  <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;仿真运行</span>
+<span class="sd">    **kwargs:</span>
+<span class="sd">        name:后台保存文件.fsp名称</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 </pre></div>
 </div>
 <p>使用场景：</p>
@@ -356,30 +359,30 @@ k:消光系数
 <ol class="arabic simple">
 <li><p>提取功率监视器：</p></li>
 </ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">get_result_monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;从功率监视器提取数据</span>
-<span class="sd">        parameter:</span>
-<span class="sd">            name:  监视器，add_monitor()中的名字</span>
-<span class="sd">        return：</span>
-<span class="sd">            power:从监视器提取的数据T/R</span>
-<span class="sd">            wl: 波长， 单位为设定的unit</span>
-<span class="sd">            f:频率点</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_result_monitor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;从功率监视器提取数据</span>
+<span class="sd">    parameter:</span>
+<span class="sd">        name:  监视器，add_monitor()中的名字</span>
+<span class="sd">    return：</span>
+<span class="sd">        power:从监视器提取的数据T/R</span>
+<span class="sd">        wl: 波长， 单位为设定的unit</span>
+<span class="sd">        f:频率点</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
 <li><p>提取电场监视器：</p></li>
 </ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">get_result_monitor_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;从电场监视器提取数据</span>
-<span class="sd">        return：</span>
-<span class="sd">            Ex:电场x的分量</span>
-<span class="sd">            Ey:电场y的分量</span>
-<span class="sd">            Ez:电场z的分量</span>
-<span class="sd">            f: 频率，单位 Hz</span>
-<span class="sd">            wl: 波长，单位 m</span>
-<span class="sd">            x, y, z: 电场监视器范围，单位 m</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_result_monitor_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;从电场监视器提取数据</span>
+<span class="sd">    return：</span>
+<span class="sd">        Ex:电场x的分量</span>
+<span class="sd">        Ey:电场y的分量</span>
+<span class="sd">        Ez:电场z的分量</span>
+<span class="sd">        f: 频率，单位 Hz</span>
+<span class="sd">        wl: 波长，单位 m</span>
+<span class="sd">        x, y, z: 电场监视器范围，单位 m</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 </pre></div>
 </div>
 </section>
@@ -420,10 +423,10 @@ device.save_fig(name, file_path, file_data_path):</p>
 <section id="id11">
 <h2>退出仿真<a class="headerlink" href="#id11" title="此标题的永久链接"></a></h2>
 <p>微纳光学智能设计软件退出当前仿真进程可点击代码区域右侧暂停按钮强退出，或者在代码区使用quit()函数：</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">quit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        关闭 lumerical/cst/meep</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">quit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    关闭 lumerical/cst/meep</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 </pre></div>
 </div>
 <p>使用场景：</p>

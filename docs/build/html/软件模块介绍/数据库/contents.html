@@ -52,7 +52,11 @@
 <li class="toctree-l4"><a class="reference internal" href="#id4">器件库中添加/删除器件</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">数据库——算法库</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">数据库——工程环境</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">数据库——算法表</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id7">算法表中添加/下载算法</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/contents.html">优化算法</a></li>
@@ -94,7 +98,7 @@
 <h2>数据库——材料库<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h2>
 <p>智能软件系统提供用户定义的特殊材料，用户可自定义并上传特定材料在各个波段的性能数据并在模型构建中使用。
 点击上传按钮即可添加以xls、xlsx及csv文件存储的材料折射率，文件第一列为波长，第二、第三列分别为材料的n、K值。如图所示，添加完成后的材料折射率会显示在折线图中。
-<img alt="材料库页面展示.png" src="../../_images/material.png" /></p>
+<img alt="材料库页面展示.png" src="../../_images/material.jpg" /></p>
 <center> 图1 材料库页面展示 </center>
 用户可在器件仿真中调用材料表中的折射率，其中字符串中输入存储的材料名：
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">device</span><span class="o">.</span><span class="n">get_material</span><span class="p">(</span><span class="s1">&#39;xxxx&#39;</span><span class="p">)</span>
@@ -108,7 +112,7 @@
 <section id="id3">
 <h2>数据库——器件库<a class="headerlink" href="#id3" title="此标题的永久链接"></a></h2>
 <p>在器件仿真及优化算法模块中用户运行的模型及结果按照类型保存在器件库中，器件表有模型结构参数信息、建模代码区域、模型预览图、性能图及计算结果展示：
-<img alt="器件库页面展示.png" src="../../_images/device.png" /></p>
+<img alt="器件库页面展示.png" src="../../_images/device.jpg" /></p>
 <center> 图2 器件库页面展示 </center>
 <ul class="simple">
 <li><p>结构参数包含模型结构的中心坐标，大小及高度</p></li>
@@ -122,13 +126,29 @@
 </section>
 </section>
 <section id="id5">
-<h2>数据库——算法库<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
-<p>软件系统算法库中保存了不同环境的镜像地址及域名，现可提供：</p>
+<h2>数据库——工程环境<a class="headerlink" href="#id5" title="此标题的永久链接"></a></h2>
+<p>软件系统工程环境表中保存了不同环境的镜像地址及域名，现可提供：</p>
 <ul class="simple">
-<li><p>基于MEEP的FDTD算法环境</p></li>
-<li><p>与Lumerical/CST商用软件可调用的算法环境</p></li>
-<li><p>用于光谱预测的pytorch算法环境</p></li>
+<li><p>基于MEEP-FDTD算法的镜像地址</p></li>
+<li><p>用于光谱预测pytorch算法的镜像地址</p></li>
+<li><p>用于RCWA算法的镜像地址</p></li>
+<li><p>后续可添加其他算法镜像
+商用软件Lumerical及CST无需添加。</p></li>
 </ul>
+</section>
+<section id="id6">
+<h2>数据库——算法表<a class="headerlink" href="#id6" title="此标题的永久链接"></a></h2>
+<p>微纳光学智能设计软件支持上传算法扩展文件以及仿真使用的数据文件，算法表具备软件的文件管理功能。用户上传以ZIP格式的算法包后可在器件仿真、优化算法模块调用。
+<img alt="数据库算法表.png" src="../../_images/add_doc.jpg" /></p>
+<center> 图2 算法表页面展示 </center>
+用户可点击添加按钮上传所需算法的ZIP压缩包，添加成功后可在右侧窗口看到解压后的文件集层级结构，点击文件后可预览。
+用户使用是需要在器件仿真或优化算法模块中点击算法添加按钮，加载对应的算法表，添加完成后可在代码区导入算法表中的文件，添加形式符合py文件调用规则。
+<p><img alt="数据库算法表导入.png" src="../../_images/add_doc2.jpg" /></p>
+<center> 图2 算法表导入展示 </center>
+<section id="id7">
+<h3>算法表中添加/下载算法<a class="headerlink" href="#id7" title="此标题的永久链接"></a></h3>
+<p>与器件库类似，算法表中算法压缩包可以通过点击加号按钮添加，右键“下载压缩包”可以下载算法。非管理员无编辑算法表的权限。</p>
+</section>
 </section>
 </section>
 
