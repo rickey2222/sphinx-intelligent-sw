@@ -3,7 +3,11 @@
 ## 器件仿真模块介绍
 
 器件仿真建模需要用户将python建模代码输入至软件器件仿真模块的**代码区**中，前端采用CodeMirror在线代码编辑器使得用户可以在对应的算法环境中定义仿真模型，点击运行按钮即可进行器件仿真。与此同时模型会通过Three.js框架实现3D效果展示，在**模型展示区**中XY view、YZ view、XZ view二维平面以及Perspective View三维视角显示模型的视图，并且通过拖动鼠标及滑动鼠标滚轴可拖拽模型方向及缩放。
+<span><div style="text-align: center;">
+
 ![器件仿真模块页面展示.png](./assets/device_simu1.png)
+</div></span>
+
 <center> 图1 器件仿真模块页面展示 </center>
 
 现阶段软件可提供**FDTD底层算法结构**以及**与Lumerical、CST商业软件联动算法背景**，需要用户切换算法环境。具体的API接口使用方法及示例详见：**[软件API接口及示例](https://intelligent-software-design.readthedocs.io/zh_CN/latest/%E8%BD%AF%E4%BB%B6API%E6%8E%A5%E5%8F%A3/contents.html)**。
@@ -18,7 +22,11 @@
 器件仿真过程中的状态会实时显示在解释器输出窗口中，当运行完毕后会显示 ***FINISHED***。模型相关要素会在**要素预览区**显示，包括模型结构、监视器、仿真区域等关键组件。运算过程中按照代码区编写存储的的性能图、模型图等显示在**性能展示区**，并会将图片保存至数据库对应的器件性能图中。
 
 器件仿真过程展示在下图中，包括软件初始页面、模型建立中、模型仿真运行完毕后的结果展示、以及建模Perspective View全屏后的模型展示。
+<span><div style="text-align: center;">
+
 ![器件仿真过程展示.png](./assets/device_simu_ex.png)
+</div></span>
+
 <center> 图2 器件仿真过程展示 </center>
 
 ## 器件仿真tips

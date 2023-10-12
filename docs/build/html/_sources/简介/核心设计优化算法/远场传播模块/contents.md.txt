@@ -6,7 +6,11 @@
 
 对于其数学表达式，根据下图进行描述：
 
+<span><div style="text-align: center;">
+
 ![1676289189304](assets/1676289189304.png)
+
+</div></span>
 
 <center>图1.1 光源S发出的球面波对P点作用的示意图</center>
 
@@ -66,8 +70,11 @@
 ## 2. 菲涅尔衍射
 
 ### 傍轴近似
+<span><div style="text-align: center;">
 
 ![1676293738928](assets/1676293738928.png)
+
+</div></span>
 
 <center> 图2.1 衍射示意图</center>
 

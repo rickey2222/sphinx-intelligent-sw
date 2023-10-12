@@ -3,7 +3,11 @@
 ## 数据库——材料库
 智能软件系统提供用户定义的特殊材料，用户可自定义并上传特定材料在各个波段的性能数据并在模型构建中使用。
 点击上传按钮即可添加以xls、xlsx及csv文件存储的材料折射率，文件第一列为波长，第二、第三列分别为材料的n、K值。如图所示，添加完成后的材料折射率会显示在折线图中。
+<span><div style="text-align: center;">
+
 ![材料库页面展示.png](./asserts/material.jpg)
+</div></span>
+
 <center> 图1 材料库页面展示 </center>
 用户可在器件仿真中调用材料表中的折射率，其中字符串中输入存储的材料名：
 
@@ -16,7 +20,11 @@ data = device.get_material('xxxx')
 ```
 ## 数据库——器件库
 在器件仿真及优化算法模块中用户运行的模型及结果按照类型保存在器件库中，器件表有模型结构参数信息、建模代码区域、模型预览图、性能图及计算结果展示：
+<span><div style="text-align: center;">
+
 ![器件库页面展示.png](./asserts/device.jpg)
+</div></span>
+
 <center> 图2 器件库页面展示 </center>
 
 + 结构参数包含模型结构的中心坐标，大小及高度
@@ -36,12 +44,19 @@ data = device.get_material('xxxx')
 
 ## 数据库——算法表
 微纳光学智能设计软件支持上传算法扩展文件以及仿真使用的数据文件，算法表具备软件的文件管理功能。用户上传以ZIP格式的算法包后可在器件仿真、优化算法模块调用。
+<span><div style="text-align: center;">
+
 ![数据库算法表.png](./asserts/add_doc.jpg)
+</div></span>
+
 <center> 图3 算法表页面展示 </center>
 用户可点击添加按钮上传所需算法的ZIP压缩包，添加成功后可在右侧窗口看到解压后的文件集层级结构，点击文件后可预览。
 用户使用是需要在器件仿真或优化算法模块中点击算法添加按钮，加载对应的算法表，添加完成后可在代码区导入算法表中的文件，添加形式符合py文件调用规则。
+<span><div style="text-align: center;">
 
 ![数据库算法表导入.png](./asserts/add_doc2.jpg)
+</div></span>
+
 <center> 图4 算法表导入展示 </center>
 
 ### 算法表中添加/下载算法

@@ -50,16 +50,20 @@ file_path = 'generative_models.py'
 本节以自由形状结构超表面的[VAE模型](https://intelligent-software-design.readthedocs.io/zh_CN/latest/%E8%BD%AF%E4%BB%B6%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D/%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9D%97/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B.html)。
 
 **Step1: 选择模型**
+<span><div style="text-align: center;">
 
 ![1672373014714](assets/spectrum3.png)
+</div></span>
 
 <center>图2.1 选择模型</center>
 
 **Step2: 上传输入模型的光谱数据，文件类型为csv**
 
 该模型输入x的范围为600-1200，y的范围为0-1。
+<span><div style="text-align: center;">
 
 ![1672373180571](assets/spectrum4.png)
+</div></span>
 
 <center>图2.2 上传模型数据</center>
 
@@ -69,6 +73,9 @@ file_path = 'generative_models.py'
 + 在代码输入窗口中输入必要参数：预测结构数目、最大迭代次数、单点预测误差阈值等。
 + 点击预测按钮后开始预测结构并实时反馈结构对应的光谱结果。
 + 待迭代循环完毕后可导出预测的光谱结果以及结构的GDS版图。
+<span><div style="text-align: center;">
 
 ![1672373686957](assets/spectrum5.png)
+</div></span>
+
 <center>图2.3 模型预测结果</center>
