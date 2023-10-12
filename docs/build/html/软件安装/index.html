@@ -114,10 +114,11 @@
 </pre></div>
 </div>
 <p>对系统进行初始化：</p>
-<ul class="simple">
+<ul>
 <li><p>进入后端容器中，执行命令：docker exec -it web bash</p></li>
-<li><p>创建软件的第一个管理员用户，管理员用户的用户名及密码可在拉取的代码test/api_test/login.py文件中修改，执行命令：python test/api_test/login.py</p></li>
-<li><p>调用算法，执行命令：python test/api_test/algorithm.py</p></li>
+<li><p>创建软件的第一个管理员用户，管理员用户的用户名及密码可在拉取的代码test/api_test/login.py文件中修改，执行命令：python test/api_test/login.py</p>
+<p><em>要注意的是，需要进入web bash容器内部修改test/api_test中的common.py文件里的HOST内容，可采用文件替换形式（docker cp）</em></p>
+</li>
 </ul>
 <p>初始化软件后默认在HOST= ‘http://127.0.0.1/api’部署软件，也可以在服务器所在IP下登入软件页面
 <img alt="部署成功1.png" src="https://s2.loli.net/2023/07/18/qAEu1Y4lz7wOknG.png" /></p>
