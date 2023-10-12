@@ -34,6 +34,9 @@ docker-compose -f docker-compose-production.yml up
 对系统进行初始化：
 - 进入后端容器中，执行命令：docker exec -it web bash
 - 创建软件的第一个管理员用户，管理员用户的用户名及密码可在拉取的代码test/api_test/login.py文件中修改，执行命令：python test/api_test/login.py
+  
+  *要注意的是，需要进入web bash容器内部修改test/api_test中的common.py文件里的HOST内容，可采用文件替换形式（docker cp）*
+
 - 调用算法，执行命令：python test/api_test/algorithm.py
 
 初始化软件后默认在HOST= 'http://127.0.0.1/api'部署软件，也可以在服务器所在IP下登入软件页面
