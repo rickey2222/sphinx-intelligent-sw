@@ -23,7 +23,7 @@
     <link rel="index" title="索引" href="../../../genindex.html" />
     <link rel="search" title="搜索" href="../../../search.html" />
     <link rel="next" title="远场传播模块" href="../%E8%BF%9C%E5%9C%BA%E4%BC%A0%E6%92%AD%E6%A8%A1%E5%9D%97/contents.html" />
-    <link rel="prev" title="全局搜索优化算法" href="../%E5%85%A8%E5%B1%80%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96%E6%A8%A1%E5%9D%97/contents.html" /> 
+    <link rel="prev" title="全局优化算法" href="../%E5%85%A8%E5%B1%80%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96%E6%A8%A1%E5%9D%97/%E5%85%A8%E5%B1%80%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -48,7 +48,7 @@
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">核心设计优化算法</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9D%97/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B.html">深度学习算法</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../%E6%95%B0%E5%80%BC%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9D%97/%E6%95%B0%E5%80%BC%E4%BB%BF%E7%9C%9F%E7%AE%97%E6%B3%95.html">数值仿真算法</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../%E5%85%A8%E5%B1%80%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96%E6%A8%A1%E5%9D%97/contents.html">全局搜索优化算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../%E5%85%A8%E5%B1%80%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96%E6%A8%A1%E5%9D%97/%E5%85%A8%E5%B1%80%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95.html">全局优化算法</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">梯度拓扑优化算法</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#id2">1. 逆向设计介绍</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#id5">2. 基于密度的拓扑优化算法</a></li>
@@ -183,7 +183,7 @@
 </section>
 <section id="id14">
 <h2>4. 添加制造限制约束<a class="headerlink" href="#id14" title="此标题的永久链接"></a></h2>
-<p>基于拓扑优化的光子逆向设计是一种强大的器件设计方法，在这种方法中，性能（如传输功率）可以优化数千或数百万自由度，表征制造器件的每个“像素”，允许完全意想不到的设计与前所未有的性能出现。然而，拓扑优化的巨大设计自由必须受到实际制造过程的限制，能满足那些商业半导体铸造厂的工艺约束，如图1所示。因此，本软件基于经典的密度的拓扑优化框架，施加了最小线宽、线间隔和曲率，最小面积和最小封闭面积约束，所有这些都没有实现任何额外的重新参数化。
+<p>基于拓扑优化的光子逆向设计是一种强大的器件设计方法，在这种方法中，性能（如传输功率）可以优化数千或数百万自由度，表征制造器件的每个“像素”，允许完全意想不到的设计与前所未有的性能出现。然而，拓扑优化的巨大设计自由必须受到实际制造过程的限制，能满足那些商业半导体铸造厂的工艺约束，如图4.1所示。因此，本软件基于经典的密度的拓扑优化框架，施加了最小线宽、线间隔和曲率，最小面积和最小封闭面积约束，所有这些都没有实现任何额外的重新参数化。
 <span><div style="text-align: center;">
 <img alt="五种设计规则" src="../../../_images/4.1.png" /></p>
 </div></span>
@@ -193,28 +193,28 @@
 <p>在拓扑的固体和空隙区域上强制执行最小的长度尺度。这些特殊的约束完全对应于一个铸造厂的设计规则手册的最小线宽和最小线间隔约束。约束通过识别拐点区域来工作，这些区域决定了在战略选择的侵蚀和扩张后设计拓扑是否保持不变。如果拓扑结构是一致的（即没有额外的“孔”或“岛”），那么就满足了长度尺度。强制执行实现此过程的优化约束需要一个指示符函数能够识别拐点区域和过滤器核和必要的侵蚀/膨胀之间的已知关系，最小线宽约束<span class="math notranslate nohighlight">\(g_{Lw}≤0\)</span>由该函数描述：</p>
 <div class="math notranslate nohighlight">
 \[g_{Lw}=\frac{1}{n}\sum_{i∈N} I_i^{Lw}(ρ_i)·[min{(\tilde{\rho_i}-η_e),0}]^2\]</div>
-<p>其中，IiLW(ρ)是一个指示函数，用来识别固相的变化区域：</p>
+<p>其中，<span class="math notranslate nohighlight">\(I_{i}L_{W(ρ)}\)</span>是一个指示函数，用来识别固相的变化区域：</p>
 <div class="math notranslate nohighlight">
 \[I_i^{Lw}(\rho)=\bar{\rho}·exp(-c\left| \nabla{\tilde{\rho}} \right|^2)\]</div>
-<p>其中，c是指示指标函数的“强度”的阻尼项。最小线间隔约束，gLS≤0，用一个类似的函数来描述:</p>
+<p>其中，c是指示指标函数的“强度”的阻尼项。最小线间隔约束，<span class="math notranslate nohighlight">\(g_{LS}\)</span>≤0，用一个类似的函数来描述:</p>
 <div class="math notranslate nohighlight">
-\[g_Ls=frac{1}{n}\]</div>
-<p>其中，I i LS (ρ)是一个指示函数，用来识别空隙阶段的变化区域：</p>
+\[g_{Ls}=\frac{1}{n}\sum_{i∈N} I_i^{Ls}(ρ_i)·[min{(\tilde{\rho_i}-η_d),0}]^2\]</div>
+<p>其中，<span class="math notranslate nohighlight">\(I_{i}L_{S(ρ)}\)</span>是一个指示函数，用来识别空隙阶段的变化区域：</p>
 <div class="math notranslate nohighlight">
 \[I_i^{Ls}(\rho)=(1-\bar{\rho})·exp(-c\left| \nabla{\tilde{\rho}} \right|^2)\]</div>
-<p>要从铸造的最小线宽（lw）和最小间距（ls）确定ηe和ηd，以下关系保持:</p>
+<p>要从铸造的最小线宽<span class="math notranslate nohighlight">\(lw\)</span>和最小间距<span class="math notranslate nohighlight">\(ls\)</span>确定<span class="math notranslate nohighlight">\(η_{e}\)</span>和<span class="math notranslate nohighlight">\(η_{d}\)</span>，以下关系保持:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\eta_e = \begin {cases} \frac{1}{4}(\frac{lw}{R})^2+\frac{1}{2}, &amp; \frac{lw}{R}∈[0,1]  \\  -\frac{1}{4}(\frac{lw}{R})^2+\frac{lw}{R}, &amp; \frac{lw}{R}∈[1,2]   \\ 1,   &amp; \frac{lw}{R}∈[2，∞）    \end {cases}\end{split}\]</div>
 <div class="math notranslate nohighlight">
 \[\begin{split}\eta_d = \begin {cases} \frac{1}{2}- \frac{1}{4}(\frac{ls}{R})^2, &amp; \frac{ls}{R}∈[0,1]  \\  1+\frac{1}{4}(\frac{ls}{R})^2-\frac{ls}{R}, &amp; \frac{ls}{R}∈[1,2]   \\ 0,   &amp; \frac{ls}{R}∈[2，∞）    \end {cases}\end{split}\]</div>
-<p>这里的R是用户指定的圆锥形滤波器的半径。这允许人们任意选择滤波器的半径，并从上述关系中推导出后续的阈值参数（ηe和ηd）。选择更小的半径允许较小的特征，但代价是潜在地“加强”相应的优化问题（即，约束Hessian可能有较大的条件数）。ηe和ηd的典型值分别为0.75和0.25，对应于R = 2lw = 2ls。</p>
-<p>最后，我们注意到线宽和线空间约束也对固体和空隙区域的相应最小曲率进行了隐式约束。假设使用圆形滤波器并且满足约束，得到的拓扑不能包含直径小于相应长度尺度的圆形元素（例如，固体区域的线宽和空隙区域的线间距）。因此，相应的最小曲率半径κw，s被定义为:</p>
+<p>这里的<span class="math notranslate nohighlight">\(R\)</span>是用户指定的圆锥形滤波器的半径。这允许人们任意选择滤波器的半径，并从上述关系中推导出后续的阈值参数（<span class="math notranslate nohighlight">\(η_{e}\)</span>和<span class="math notranslate nohighlight">\(η_{d}\)</span>）。选择更小的半径允许较小的特征，但代价是潜在地“加强”相应的优化问题（即，约束Hessian可能有较大的条件数）。<span class="math notranslate nohighlight">\(η_{e}\)</span>和<span class="math notranslate nohighlight">\(η_{d}\)</span>的典型值分别为0.75和0.25，对应于<span class="math notranslate nohighlight">\(R = 2lw = 2ls\)</span>。</p>
+<p>最后，我们注意到线宽和线空间约束也对固体和空隙区域的相应最小曲率进行了隐式约束。假设使用圆形滤波器并且满足约束，得到的拓扑不能包含直径小于相应长度尺度的圆形元素（例如，固体区域的线宽和空隙区域的线间距）。因此，相应的最小曲率半径<span class="math notranslate nohighlight">\(k_{w,s}\)</span>被定义为:</p>
 <div class="math notranslate nohighlight">
 \[k_{w,s} = \frac{l_{w,s} }{2}\]</div>
 </section>
 <section id="id16">
 <h3>4.2 添加最小面积和封闭面积约束<a class="headerlink" href="#id16" title="此标题的永久链接"></a></h3>
-<p>接下来，是对二维平面的约束，首先，指示器函数识别违反最小面积约束的区域（“岛屿”）和违反最小封闭面积约束的区域（“洞”）。接下来，每个约束都将鼓励优化器通过局部侵蚀（对于岛屿）或局部扩张（对于孔洞）来消除破坏区域。下图说明了一个样本设计（图2(a)）上的最小面积约束函数，使用图像分割算法识别违反规则的区域（图2(c)），不违反规则的区域保留，违反的区域根据我们设计的大小进行约束（图2(b)）。
+<p>接下来，是对二维平面的约束，首先，指示器函数识别违反最小面积约束的区域（“岛屿”）和违反最小封闭面积约束的区域（“洞”）。接下来，每个约束都将鼓励优化器通过局部侵蚀（对于岛屿）或局部扩张（对于孔洞）来消除破坏区域。下图说明了一个样本设计（图4.2(a)）上的最小面积约束函数，使用图像分割算法识别违反规则的区域（图4.2(c)），不违反规则的区域保留，违反的区域根据我们设计的大小进行约束（图4.2(b)）。
 <span><div style="text-align: center;"></p>
 <p><img alt="最小面积" src="../../../_images/4.2.png" /></p>
 </div></span>
@@ -226,7 +226,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
-        <a href="../%E5%85%A8%E5%B1%80%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96%E6%A8%A1%E5%9D%97/contents.html" class="btn btn-neutral float-left" title="全局搜索优化算法" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../%E5%85%A8%E5%B1%80%E6%90%9C%E7%B4%A2%E4%BC%98%E5%8C%96%E6%A8%A1%E5%9D%97/%E5%85%A8%E5%B1%80%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95.html" class="btn btn-neutral float-left" title="全局优化算法" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
         <a href="../%E8%BF%9C%E5%9C%BA%E4%BC%A0%E6%92%AD%E6%A8%A1%E5%9D%97/contents.html" class="btn btn-neutral float-right" title="远场传播模块" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

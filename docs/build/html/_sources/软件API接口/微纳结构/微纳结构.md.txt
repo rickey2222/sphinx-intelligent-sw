@@ -11,7 +11,7 @@
 <center> 图1 Meta结构建模展示 </center>
 
 这里给出的是Meta结构建模仿真的统一代码：
-1. Lumerical 环境
+### 1. Lumerical 环境
 ```
 ###lum环境###
 sim_start(backend="lum")
@@ -104,7 +104,7 @@ sim_end(backend="lum")
 
 <center> 图2 lumerical环境运行结果 </center>
 
-2. Meep 环境
+### 2. Meep 环境
 ```
 sim_start(backend="meep")
 import numpy as np
@@ -214,6 +214,187 @@ sim_end(backend="meep")
 <span><div style="text-align: center;">
 
 ![meep.jpg](meep.jpg)
+</div></span>
+
+<center> 图3 meep环境运行结果 </center>
+
+### 3. RCWA 环境
+```
+'''
+TORCWA unity AOM，单位均为 nm
+'''
+sim_start(backend="rcwa")
+# Import
+import numpy as np
+import torch
+from matplotlib import pyplot as plt
+import torcwa
+
+## 创建预览要素
+tree = ModelTree('Model')
+######################################################################################################
+#                      step1：参数设置
+######################################################################################################
+# Hardware
+# If GPU support TF32 tensor core, the matmul operation is faster than FP32 but with less precision.
+# If you need accurate operation, you have to disable the flag below.
+torch.backends.cuda.matmul.allow_tf32 = True
+sim_dtype = torch.complex64
+geo_dtype = torch.float32
+device0 = torch.device('cuda')
+
+unit=1e3   # 单位：nm
+dp=0.66*unit
+dsub=2.5*unit
+c_r=0.206*unit
+c_h=0.22*unit
+source_z=1.8*unit
+sim_z_span=4*unit
+T_z=1.9*unit
+wl_max=1.6*unit
+wl_min=1*unit
+nfreq=200
+
+# Simulation environment
+# light
+inc_ang = 0.*(np.pi/180)    # radian
+azi_ang = 0.*(np.pi/180)    # radian
+# material
+substrate_eps = 1.5**2
+silicon_eps =3.4**2
+# geometry
+L = [dp, dp]            # nm / nm
+torcwa.rcwa_geo.dtype = geo_dtype
+torcwa.rcwa_geo.device = device0
+torcwa.rcwa_geo.Lx = L[0]
+torcwa.rcwa_geo.Ly = L[1]
+torcwa.rcwa_geo.nx = 1300
+torcwa.rcwa_geo.ny = 1300
+torcwa.rcwa_geo.grid()
+torcwa.rcwa_geo.edge_sharpness = 1000.
+z = torch.linspace(-2000,2000,1500,device=device0)
+x_axis = torcwa.rcwa_geo.x.cpu()
+y_axis = torcwa.rcwa_geo.y.cpu()
+z_axis = z.cpu()
+# layers
+layer0_geometry = torcwa.rcwa_geo.circle(R=c_r,Cx=L[0]/2.,Cy=L[1]/2.)
+layer0_thickness = c_h
+# Generate and perform simulation
+order_N = 7
+order = [order_N,order_N]
+
+lamb0 = torch.linspace(wl_min,wl_max,nfreq,dtype=geo_dtype,device=device0)
+
+######################################################################################################
+#                     step2:建立仿真区域
+######################################################################################################
+def add_simarea(freq):
+    # 添加rcwa仿真区域：长宽为L
+    sim = torcwa.rcwa(freq=freq, order=order, L=L, dtype=sim_dtype, device=device0)
+    return sim
+create_model(position=(0, 0, 0), size=(dp, dp, sim_z_span), type='Box', color='Orange', opacity=0.4)
+tree.add_node('Sim Area', 'area')
+
+######################################################################################################
+#                      step3：添加光源
+######################################################################################################
+def add_source(sim):
+    # 添加光源，入射角度，相位角,位置默认为第一层结构位置处入射，长宽为L
+    source = sim.set_incident_angle(inc_ang=inc_ang, azi_ang=azi_ang) 
+    return source
+create_model(position=(0, 0, source_z), size=(dp, dp, 0), type='Box', line='true', color='Red')
+create_model(source=(0, 0, source_z), target=[0, 0, wl_min if source_z == 0 else 0], type='Arrow', color='Red')
+tree.add_node('Light Source', 'source')
+
+######################################################################################################
+#                      step4：添加仿真模型结构
+######################################################################################################
+#添加第一层和最后一层
+def add_first_last_layer(sim,eps_in,eps_out):
+    # 创建最顶层block，厚度为半无限，材料介电常数为eps_in，长宽为L
+    sim.add_input_layer(eps=eps_in)
+    # 创建最底层block，厚度为半无限，材料介电常数为eps_out，长宽为L
+    sim.add_output_layer(eps=eps_out)   
+    return
+create_model(size=(dp, dp, dsub), position=(0, 0, -c_h/2-dsub/2), type='Box', color='Gray')
+tree.add_node('c1 - Block')
+
+# 添加中间层
+def add_cir(sim,thickness,eps):
+    # 创建圆柱，厚度为layer0_thickness=220，半径为：R=206,X中心左标：Cx=L[0]/2.,Y中心坐标：Cy=L[1]/2.单位为nm,材料介电常数为：layer0_eps
+    sim.add_layer(thickness=thickness, eps=eps)
+    return
+create_model(size=(c_r, c_r,c_h,40), position=(0, 0, 0), type='Cylinder', color='blue')
+tree.add_node('c1 - Cylinder')
+
+######################################################################################################
+#                      step5： 添加监视器,位置由port决定
+######################################################################################################
+def add_monitor(sim,direction,port,polar):
+    monitor = sim.S_parameters(orders=[0, 0], direction=direction, port=port, polarization=polar,
+                            ref_order=[0, 0])   
+    return monitor
+create_model(position=(0, 0, -T_z), size=(dp, dp,0), type='Box', line='true', color='Red')
+tree.add_node('Monitor', 'area')
+######################################################################################################
+#                      step6： 仿真运行
+######################################################################################################
+def run(sim):
+    sim.solve_global_smatrix()  # 运行
+    return
+
+######################################################################################################
+#                      step7：多个点仿真运行，输出光谱图数据
+######################################################################################################
+t = []
+r = []
+a = []
+for lamb0_ind in range(len(lamb0)):
+    lamb0_now = lamb0[lamb0_ind]
+    sim = add_simarea(freq=1/lamb0_now)
+    add_first_last_layer(sim=sim,eps_in=1,eps_out=substrate_eps)
+    add_source(sim)
+    layer0_eps = layer0_geometry * silicon_eps + (1. - layer0_geometry)
+    add_cir(sim=sim,thickness=layer0_thickness,eps=layer0_eps)
+    # run(sim)
+    sim.solve_global_smatrix()
+    ss_t = add_monitor(sim=sim, direction='forward', port='transmission', polar='ss')
+    ss_r = add_monitor(sim=sim,direction='forward', port='reflection', polar='ss')
+    t.append(ss_t)
+    r.append(ss_r)
+    print(lamb0_ind)
+######################################################################################################
+#                      step8：处理数据
+######################################################################################################
+T = torch.abs(torch.cat(t)).cpu()**2
+R = torch.abs(torch.cat(r)).cpu()**2
+wl = lamb0.cpu()
+
+data = np.zeros((len(wl),4))
+data[:, 0] = wl
+data[:, 1] = R
+data[:, 2] = T
+data[:, 3] = 1-R-T
+np.savetxt("rcwa_unity_AOM.txt",data)    ####### 需要保存到本地数据txt文件
+
+# View spectrum
+plt.plot(wl,T, 'blue', label='transmission')
+plt.plot(wl,R, 'red', label='reflection')
+plt.plot(wl,1-R-T, 'green', label='loss')
+plt.title('Spectrum (order: '+str(order_N)+')')
+plt.xlabel('Wavelength (nm)')
+plt.legend()
+plt.savefig("rcwa_unity_AOM.png")        ########   需要展示的数据图
+device.save_fig("rcwa_unity_AOM",file_path="rcwa_unity_AOM.png",file_data_path="rcwa_unity_AOM.txt")
+sim_end(backend="rcwa")
+
+```
+
+由于rcwa环境正在开发中，示例中给出的是部分统一接口
+示例运行后的结果展示：
+<span><div style="text-align: center;">
+
+![rcwa.png](rcwa.png)
 </div></span>
 
 <center> 图3 meep环境运行结果 </center>

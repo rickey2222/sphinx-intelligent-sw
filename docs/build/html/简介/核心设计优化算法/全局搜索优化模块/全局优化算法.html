@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>全局优化算法 &mdash; 微纳光学智能设计软件 v1 文档</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../_static/translations.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="梯度拓扑优化算法" href="../%E6%A2%AF%E5%BA%A6%E6%8B%93%E6%89%91%E4%BC%98%E5%8C%96%E6%A8%A1%E5%9D%97/%E6%A2%AF%E5%BA%A6%E6%8B%93%E6%89%91%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95.html" />
+    <link rel="prev" title="数值仿真算法" href="../%E6%95%B0%E5%80%BC%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9D%97/%E6%95%B0%E5%80%BC%E4%BB%BF%E7%9C%9F%E7%AE%97%E6%B3%95.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> 微纳光学智能设计软件
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="搜索文档" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="导航菜单">
+              <p class="caption" role="heading"><span class="caption-text">目录:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">软件平台简介</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../%E6%99%BA%E8%83%BD%E8%BD%AF%E4%BB%B6%E5%B9%B3%E5%8F%B0%E5%BB%BA%E8%AE%BE/index.html">智能软件平台建设</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">核心设计优化算法</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9D%97/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B.html">深度学习算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../%E6%95%B0%E5%80%BC%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9D%97/%E6%95%B0%E5%80%BC%E4%BB%BF%E7%9C%9F%E7%AE%97%E6%B3%95.html">数值仿真算法</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">全局优化算法</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#ga-generative-algorithm">1. 遗传算法（GA，Generative Algorithm）</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pso-particle-swarm-optimization">2. 粒子群算法(PSO，Particle Swarm Optimization)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../%E6%A2%AF%E5%BA%A6%E6%8B%93%E6%89%91%E4%BC%98%E5%8C%96%E6%A8%A1%E5%9D%97/%E6%A2%AF%E5%BA%A6%E6%8B%93%E6%89%91%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95.html">梯度拓扑优化算法</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../%E8%BF%9C%E5%9C%BA%E4%BC%A0%E6%92%AD%E6%A8%A1%E5%9D%97/contents.html">远场传播模块</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/index.html">软件安装</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../%E8%BD%AF%E4%BB%B6%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D/index.html">软件模块</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../%E8%BD%AF%E4%BB%B6API%E6%8E%A5%E5%8F%A3/contents.html">软件API接口</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="移动版导航菜单" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">微纳光学智能设计软件</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="页面导航">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">软件平台简介</a></li>
+          <li class="breadcrumb-item"><a href="../index.html">核心设计优化算法</a></li>
+      <li class="breadcrumb-item active">全局优化算法</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/简介/核心设计优化算法/全局搜索优化模块/全局优化算法.md.txt" rel="nofollow"> 查看页面源码</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="id1">
+<h1>全局优化算法<a class="headerlink" href="#id1" title="此标题的永久链接"></a></h1>
+<section id="ga-generative-algorithm">
+<h2>1. 遗传算法（GA，Generative Algorithm）<a class="headerlink" href="#ga-generative-algorithm" title="此标题的永久链接"></a></h2>
+<p>遗传算法是应用最广泛的全局优化技术之一，多用于离散优化问题。它将问题的求解过程转换成类似生物进化中的染色体基因的交叉、变异等过程。在求解较为复杂的组合优化问题时,相对一些常规的优化算法,通常能够较快地获得较好的优化结果。</p>
+<p>遗传算法中每一条染色体，对应着遗传算法的一个解决方案，一般我们用适应性函数来衡量这个解决方案的优劣。所以从一个基因组到其解的适应度形成一个映射。可以把遗传算法的过程看作是一个在多元函数里面求最优解的过程。</p>
+<p><span><div style="text-align: center;"></p>
+<p><img alt="1676378417248" src="../../../_images/1676378417248.png" /></p>
+</div></span>
+<center> 图1 遗传算法流程图</center>
+<p>遗传算法的基本运算过程如下：</p>
+<ol class="arabic simple">
+<li><p>初始化：设置进化代数计数器<span class="math notranslate nohighlight">\(t=0\)</span>，设置最大进化代数T，随机生成M个个体作为初始群体<span class="math notranslate nohighlight">\(P(0)\)</span>。</p></li>
+<li><p>个体评价：计算群体<span class="math notranslate nohighlight">\(P(t)\)</span>中各个个体的适应度。</p></li>
+<li><p>选择运算：将选择算子作用于群体。选择的目的是把优化的个体直接遗传到下一代或通过配对交叉产生新的个体再遗传到下一代。选择操作是建立在群体中个体的适应度评估基础上的。</p></li>
+<li><p>交叉运算：将交叉算子作用于群体。遗传算法中起核心作用的就是交叉算子。</p></li>
+<li><p>变异运算：将变异算子作用于群体。即是对群体中的个体串的某些基因座上的基因值作变动。群体<span class="math notranslate nohighlight">\(P(t)\)</span>经过选择、交叉、变异运算之后得到下一代群体<span class="math notranslate nohighlight">\(P(t+1)\)</span>。</p></li>
+<li><p>终止条件判断：若<span class="math notranslate nohighlight">\(t=T\)</span> ，则以进化过程中所得到的具有最大适应度个体作为最优解输出，终止计算。</p></li>
+</ol>
+<p>遗传操作包括以下三个基本遗传算子：选择、交叉、变异。</p>
+<ul>
+<li><p>选择</p>
+<p>从群体中选择优胜的个体，淘汰劣质个体的操作叫选择。</p>
+</li>
+<li><p>交叉</p>
+<p>把两个父代个体的部分结构加以替换重组而生成新个体。这导致后代与父代样本具有一定程度的相似性。</p>
+</li>
+<li><p>变异</p>
+<p>对群体中的个体串的某些基因座上的基因值作变动。这导致了样本彼此之间有一定程度的差异。</p>
+</li>
+</ul>
+</section>
+<section id="pso-particle-swarm-optimization">
+<h2>2. 粒子群算法(PSO，Particle Swarm Optimization)<a class="headerlink" href="#pso-particle-swarm-optimization" title="此标题的永久链接"></a></h2>
+<p>粒子群算法适用于连续优化问题，是另一种群体智能优化算法，源于对鸟群捕食的行为研究 。</p>
+<p>粒子群算法最初是受到飞鸟集群活动的规律性启发，进而利用群体智能建立的一个简化模型。粒子群算法在对动物集群活动行为观察基础上，利用群体中的个体对信息的共享使整个群体的运动在问题求解空间中产生从无序到有序的演化过程，从而获得最优解。</p>
+<ul class="simple">
+<li><p>粒子属性</p></li>
+</ul>
+<p>在粒子群算法中，每个粒子具有两个属性：速度和位置。速度代表移动的快慢，位置代表移动的方向。</p>
+<p>每个粒子都有一个由目标函数决定的适应值，并且知道自己到目前为止发现的最好位置<span class="math notranslate nohighlight">\(pbest\)</span>和现在的位置 <span class="math notranslate nohighlight">\(x_i\)</span>。这个可以看作是粒子自己的飞行经验。除此之外，每个粒子还知道到目前为止整个群体中所有粒子发现的最好位置<span class="math notranslate nohighlight">\(gbest\)</span>(gbest是pbest中的最优值)，这个可以看作是粒子同伴的经验。粒子就是通过自己的经验和同伴中最好的经验来决定下一步的运动。</p>
+<ul class="simple">
+<li><p>更新方式</p></li>
+</ul>
+<p>粒子群算法初始化为一群随机粒子(随机解)，然后通过迭代找到最优解。在每一次的迭代中，粒子通过跟踪两个“极值”<span class="math notranslate nohighlight">\(pbest，gbest\)</span>来更新自己。在找到这两个最优值后，粒子通过下面的公式分别来更新自己的速度和位置。</p>
+<div class="math notranslate nohighlight">
+\[    v_i=v_i+c_1\times rand()\times (pbest_i-x_i)+c_2\times rand()\times (gbest_i-x_i)\]</div>
+<div class="math notranslate nohighlight">
+\[    x_i=x_i+v_i\]</div>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(rand()\)</span>：介于<span class="math notranslate nohighlight">\((0,1)\)</span>之间的随机数</p>
+<p><span class="math notranslate nohighlight">\(c_1\)</span> 和 <span class="math notranslate nohighlight">\(c_2\)</span> ：学习因子，通常均设为2。</p>
+</div></blockquote>
+<p><span><div style="text-align: center;"></p>
+<p><img alt="1676378498462" src="../../../_images/1676378498462.png" /></p>
+</div></span>
+<center> 图2 粒子群算法流程图 </center>
+<p>综上，粒子群算法的基本运算过程如下：</p>
+<ol class="arabic simple">
+<li><p>初始化一群例子(群体规模为<span class="math notranslate nohighlight">\(N\)</span>)，包括随机位置和速度；</p></li>
+<li><p>评价每个粒子的适应度；</p></li>
+<li><p>对每个粒子，将其适应值与其经过的最好位置<span class="math notranslate nohighlight">\(pbest\)</span>作比较，如果较好，则将其作为当前的最好位置<span class="math notranslate nohighlight">\(pbest\)</span>；</p></li>
+<li><p>对每个粒子，将其适应值与其经过的最好位置<span class="math notranslate nohighlight">\(gbest\)</span>作比较，如果较好，则将其作为当前的最好位置<span class="math notranslate nohighlight">\(gbest\)</span>；</p></li>
+<li><p>更新每个例子的速度和位置；</p></li>
+<li><p>终止条件判断：若 <span class="math notranslate nohighlight">\(t=T\)</span> ，则以进化过程中所得到的具有最大适应度个体作为最优解输出，终止计算。</p></li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="页脚">
+        <a href="../%E6%95%B0%E5%80%BC%E4%BB%BF%E7%9C%9F%E6%A8%A1%E5%9D%97/%E6%95%B0%E5%80%BC%E4%BB%BF%E7%9C%9F%E7%AE%97%E6%B3%95.html" class="btn btn-neutral float-left" title="数值仿真算法" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> 上一页</a>
+        <a href="../%E6%A2%AF%E5%BA%A6%E6%8B%93%E6%89%91%E4%BC%98%E5%8C%96%E6%A8%A1%E5%9D%97/%E6%A2%AF%E5%BA%A6%E6%8B%93%E6%89%91%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95.html" class="btn btn-neutral float-right" title="梯度拓扑优化算法" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; 版权所有 2023, Rickey.</p>
+  </div>
+
+  利用 <a href="https://www.sphinx-doc.org/">Sphinx</a> 构建，使用的 
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">主题</a>
+    由 <a href="https://readthedocs.org">Read the Docs</a> 开发.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

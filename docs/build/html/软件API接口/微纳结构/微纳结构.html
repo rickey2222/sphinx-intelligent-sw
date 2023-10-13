@@ -48,7 +48,12 @@
 <li class="toctree-l2"><a class="reference internal" href="../%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A1%86%E6%9E%B6%E5%8F%8A%E5%8E%9F%E7%90%86/%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E6%A1%86%E6%9E%B6%E5%8F%8A%E5%8E%9F%E7%90%86.html">软件设计框架及原理</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../%E4%BB%BF%E7%9C%9F/%E4%BB%BF%E7%9C%9F.html">仿真接口规范</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">教程/微纳结构</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#meta">Meta结构建模仿真</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#meta">Meta结构建模仿真</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#lumerical">1. Lumerical 环境</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#meep">2. Meep 环境</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rcwa">3. RCWA 环境</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -90,9 +95,8 @@
 </div></span>
 <center> 图1 Meta结构建模展示 </center>
 <p>这里给出的是Meta结构建模仿真的统一代码：</p>
-<ol class="arabic simple">
-<li><p>Lumerical 环境</p></li>
-</ol>
+<section id="lumerical">
+<h3>1. Lumerical 环境<a class="headerlink" href="#lumerical" title="此标题的永久链接"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">###lum环境###</span>
 <span class="n">sim_start</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;lum&quot;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -181,9 +185,9 @@
 <p><img alt="lum.jpg" src="../../_images/lum.jpg" /></p>
 </div></span>
 <center> 图2 lumerical环境运行结果 </center>
-<ol class="arabic simple" start="2">
-<li><p>Meep 环境</p></li>
-</ol>
+</section>
+<section id="meep">
+<h3>2. Meep 环境<a class="headerlink" href="#meep" title="此标题的永久链接"></a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sim_start</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;meep&quot;</span><span class="p">)</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
@@ -292,7 +296,187 @@
 <span><div style="text-align: center;"></p>
 <p><img alt="meep.jpg" src="../../_images/meep.jpg" /></p>
 </div></span>
+<center> 图3 meep环境运行结果 </center>
+</section>
+<section id="rcwa">
+<h3>3. RCWA 环境<a class="headerlink" href="#rcwa" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">TORCWA unity AOM，单位均为 nm</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="n">sim_start</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;rcwa&quot;</span><span class="p">)</span>
+<span class="c1"># Import</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">torcwa</span>
+
+<span class="c1">## 创建预览要素</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">ModelTree</span><span class="p">(</span><span class="s1">&#39;Model&#39;</span><span class="p">)</span>
+<span class="c1">######################################################################################################</span>
+<span class="c1">#                      step1：参数设置</span>
+<span class="c1">######################################################################################################</span>
+<span class="c1"># Hardware</span>
+<span class="c1"># If GPU support TF32 tensor core, the matmul operation is faster than FP32 but with less precision.</span>
+<span class="c1"># If you need accurate operation, you have to disable the flag below.</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">matmul</span><span class="o">.</span><span class="n">allow_tf32</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">sim_dtype</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">complex64</span>
+<span class="n">geo_dtype</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">float32</span>
+<span class="n">device0</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
+
+<span class="n">unit</span><span class="o">=</span><span class="mf">1e3</span>   <span class="c1"># 单位：nm</span>
+<span class="n">dp</span><span class="o">=</span><span class="mf">0.66</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">dsub</span><span class="o">=</span><span class="mf">2.5</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">c_r</span><span class="o">=</span><span class="mf">0.206</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">c_h</span><span class="o">=</span><span class="mf">0.22</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">source_z</span><span class="o">=</span><span class="mf">1.8</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">sim_z_span</span><span class="o">=</span><span class="mi">4</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">T_z</span><span class="o">=</span><span class="mf">1.9</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">wl_max</span><span class="o">=</span><span class="mf">1.6</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">wl_min</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">nfreq</span><span class="o">=</span><span class="mi">200</span>
+
+<span class="c1"># Simulation environment</span>
+<span class="c1"># light</span>
+<span class="n">inc_ang</span> <span class="o">=</span> <span class="mf">0.</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span>    <span class="c1"># radian</span>
+<span class="n">azi_ang</span> <span class="o">=</span> <span class="mf">0.</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span>    <span class="c1"># radian</span>
+<span class="c1"># material</span>
+<span class="n">substrate_eps</span> <span class="o">=</span> <span class="mf">1.5</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">silicon_eps</span> <span class="o">=</span><span class="mf">3.4</span><span class="o">**</span><span class="mi">2</span>
+<span class="c1"># geometry</span>
+<span class="n">L</span> <span class="o">=</span> <span class="p">[</span><span class="n">dp</span><span class="p">,</span> <span class="n">dp</span><span class="p">]</span>            <span class="c1"># nm / nm</span>
+<span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa_geo</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="n">geo_dtype</span>
+<span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa_geo</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device0</span>
+<span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa_geo</span><span class="o">.</span><span class="n">Lx</span> <span class="o">=</span> <span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa_geo</span><span class="o">.</span><span class="n">Ly</span> <span class="o">=</span> <span class="n">L</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa_geo</span><span class="o">.</span><span class="n">nx</span> <span class="o">=</span> <span class="mi">1300</span>
+<span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa_geo</span><span class="o">.</span><span class="n">ny</span> <span class="o">=</span> <span class="mi">1300</span>
+<span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa_geo</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa_geo</span><span class="o">.</span><span class="n">edge_sharpness</span> <span class="o">=</span> <span class="mf">1000.</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2000</span><span class="p">,</span><span class="mi">2000</span><span class="p">,</span><span class="mi">1500</span><span class="p">,</span><span class="n">device</span><span class="o">=</span><span class="n">device0</span><span class="p">)</span>
+<span class="n">x_axis</span> <span class="o">=</span> <span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa_geo</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+<span class="n">y_axis</span> <span class="o">=</span> <span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa_geo</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+<span class="n">z_axis</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+<span class="c1"># layers</span>
+<span class="n">layer0_geometry</span> <span class="o">=</span> <span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa_geo</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">R</span><span class="o">=</span><span class="n">c_r</span><span class="p">,</span><span class="n">Cx</span><span class="o">=</span><span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="n">Cy</span><span class="o">=</span><span class="n">L</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span>
+<span class="n">layer0_thickness</span> <span class="o">=</span> <span class="n">c_h</span>
+<span class="c1"># Generate and perform simulation</span>
+<span class="n">order_N</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="n">order</span> <span class="o">=</span> <span class="p">[</span><span class="n">order_N</span><span class="p">,</span><span class="n">order_N</span><span class="p">]</span>
+
+<span class="n">lamb0</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">wl_min</span><span class="p">,</span><span class="n">wl_max</span><span class="p">,</span><span class="n">nfreq</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">geo_dtype</span><span class="p">,</span><span class="n">device</span><span class="o">=</span><span class="n">device0</span><span class="p">)</span>
+
+<span class="c1">######################################################################################################</span>
+<span class="c1">#                     step2:建立仿真区域</span>
+<span class="c1">######################################################################################################</span>
+<span class="k">def</span> <span class="nf">add_simarea</span><span class="p">(</span><span class="n">freq</span><span class="p">):</span>
+    <span class="c1"># 添加rcwa仿真区域：长宽为L</span>
+    <span class="n">sim</span> <span class="o">=</span> <span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="n">L</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">sim_dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sim</span>
+<span class="n">create_model</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">sim_z_span</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Box&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Orange&#39;</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;Sim Area&#39;</span><span class="p">,</span> <span class="s1">&#39;area&#39;</span><span class="p">)</span>
+
+<span class="c1">######################################################################################################</span>
+<span class="c1">#                      step3：添加光源</span>
+<span class="c1">######################################################################################################</span>
+<span class="k">def</span> <span class="nf">add_source</span><span class="p">(</span><span class="n">sim</span><span class="p">):</span>
+    <span class="c1"># 添加光源，入射角度，相位角,位置默认为第一层结构位置处入射，长宽为L</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">set_incident_angle</span><span class="p">(</span><span class="n">inc_ang</span><span class="o">=</span><span class="n">inc_ang</span><span class="p">,</span> <span class="n">azi_ang</span><span class="o">=</span><span class="n">azi_ang</span><span class="p">)</span> 
+    <span class="k">return</span> <span class="n">source</span>
+<span class="n">create_model</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">source_z</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Box&#39;</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Red&#39;</span><span class="p">)</span>
+<span class="n">create_model</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">source_z</span><span class="p">),</span> <span class="n">target</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">wl_min</span> <span class="k">if</span> <span class="n">source_z</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">],</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Arrow&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Red&#39;</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;Light Source&#39;</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">)</span>
+
+<span class="c1">######################################################################################################</span>
+<span class="c1">#                      step4：添加仿真模型结构</span>
+<span class="c1">######################################################################################################</span>
+<span class="c1">#添加第一层和最后一层</span>
+<span class="k">def</span> <span class="nf">add_first_last_layer</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span><span class="n">eps_in</span><span class="p">,</span><span class="n">eps_out</span><span class="p">):</span>
+    <span class="c1"># 创建最顶层block，厚度为半无限，材料介电常数为eps_in，长宽为L</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_input_layer</span><span class="p">(</span><span class="n">eps</span><span class="o">=</span><span class="n">eps_in</span><span class="p">)</span>
+    <span class="c1"># 创建最底层block，厚度为半无限，材料介电常数为eps_out，长宽为L</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_output_layer</span><span class="p">(</span><span class="n">eps</span><span class="o">=</span><span class="n">eps_out</span><span class="p">)</span>   
+    <span class="k">return</span>
+<span class="n">create_model</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">dsub</span><span class="p">),</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">c_h</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="n">dsub</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Box&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Gray&#39;</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;c1 - Block&#39;</span><span class="p">)</span>
+
+<span class="c1"># 添加中间层</span>
+<span class="k">def</span> <span class="nf">add_cir</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span><span class="n">thickness</span><span class="p">,</span><span class="n">eps</span><span class="p">):</span>
+    <span class="c1"># 创建圆柱，厚度为layer0_thickness=220，半径为：R=206,X中心左标：Cx=L[0]/2.,Y中心坐标：Cy=L[1]/2.单位为nm,材料介电常数为：layer0_eps</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="n">eps</span><span class="p">)</span>
+    <span class="k">return</span>
+<span class="n">create_model</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">c_r</span><span class="p">,</span> <span class="n">c_r</span><span class="p">,</span><span class="n">c_h</span><span class="p">,</span><span class="mi">40</span><span class="p">),</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Cylinder&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;c1 - Cylinder&#39;</span><span class="p">)</span>
+
+<span class="c1">######################################################################################################</span>
+<span class="c1">#                      step5： 添加监视器,位置由port决定</span>
+<span class="c1">######################################################################################################</span>
+<span class="k">def</span> <span class="nf">add_monitor</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span><span class="n">direction</span><span class="p">,</span><span class="n">port</span><span class="p">,</span><span class="n">polar</span><span class="p">):</span>
+    <span class="n">monitor</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">S_parameters</span><span class="p">(</span><span class="n">orders</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">direction</span><span class="o">=</span><span class="n">direction</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">,</span> <span class="n">polarization</span><span class="o">=</span><span class="n">polar</span><span class="p">,</span>
+                            <span class="n">ref_order</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>   
+    <span class="k">return</span> <span class="n">monitor</span>
+<span class="n">create_model</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">T_z</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Box&#39;</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Red&#39;</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;Monitor&#39;</span><span class="p">,</span> <span class="s1">&#39;area&#39;</span><span class="p">)</span>
+<span class="c1">######################################################################################################</span>
+<span class="c1">#                      step6： 仿真运行</span>
+<span class="c1">######################################################################################################</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">sim</span><span class="p">):</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">solve_global_smatrix</span><span class="p">()</span>  <span class="c1"># 运行</span>
+    <span class="k">return</span>
+
+<span class="c1">######################################################################################################</span>
+<span class="c1">#                      step7：多个点仿真运行，输出光谱图数据</span>
+<span class="c1">######################################################################################################</span>
+<span class="n">t</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">r</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">lamb0_ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lamb0</span><span class="p">)):</span>
+    <span class="n">lamb0_now</span> <span class="o">=</span> <span class="n">lamb0</span><span class="p">[</span><span class="n">lamb0_ind</span><span class="p">]</span>
+    <span class="n">sim</span> <span class="o">=</span> <span class="n">add_simarea</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="n">lamb0_now</span><span class="p">)</span>
+    <span class="n">add_first_last_layer</span><span class="p">(</span><span class="n">sim</span><span class="o">=</span><span class="n">sim</span><span class="p">,</span><span class="n">eps_in</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">eps_out</span><span class="o">=</span><span class="n">substrate_eps</span><span class="p">)</span>
+    <span class="n">add_source</span><span class="p">(</span><span class="n">sim</span><span class="p">)</span>
+    <span class="n">layer0_eps</span> <span class="o">=</span> <span class="n">layer0_geometry</span> <span class="o">*</span> <span class="n">silicon_eps</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">layer0_geometry</span><span class="p">)</span>
+    <span class="n">add_cir</span><span class="p">(</span><span class="n">sim</span><span class="o">=</span><span class="n">sim</span><span class="p">,</span><span class="n">thickness</span><span class="o">=</span><span class="n">layer0_thickness</span><span class="p">,</span><span class="n">eps</span><span class="o">=</span><span class="n">layer0_eps</span><span class="p">)</span>
+    <span class="c1"># run(sim)</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">solve_global_smatrix</span><span class="p">()</span>
+    <span class="n">ss_t</span> <span class="o">=</span> <span class="n">add_monitor</span><span class="p">(</span><span class="n">sim</span><span class="o">=</span><span class="n">sim</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s1">&#39;transmission&#39;</span><span class="p">,</span> <span class="n">polar</span><span class="o">=</span><span class="s1">&#39;ss&#39;</span><span class="p">)</span>
+    <span class="n">ss_r</span> <span class="o">=</span> <span class="n">add_monitor</span><span class="p">(</span><span class="n">sim</span><span class="o">=</span><span class="n">sim</span><span class="p">,</span><span class="n">direction</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s1">&#39;reflection&#39;</span><span class="p">,</span> <span class="n">polar</span><span class="o">=</span><span class="s1">&#39;ss&#39;</span><span class="p">)</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ss_t</span><span class="p">)</span>
+    <span class="n">r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ss_r</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">lamb0_ind</span><span class="p">)</span>
+<span class="c1">######################################################################################################</span>
+<span class="c1">#                      step8：处理数据</span>
+<span class="c1">######################################################################################################</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">R</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">r</span><span class="p">))</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">wl</span> <span class="o">=</span> <span class="n">lamb0</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">wl</span><span class="p">),</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">wl</span>
+<span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">R</span>
+<span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">T</span>
+<span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">-</span><span class="n">R</span><span class="o">-</span><span class="n">T</span>
+<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s2">&quot;rcwa_unity_AOM.txt&quot;</span><span class="p">,</span><span class="n">data</span><span class="p">)</span>    <span class="c1">####### 需要保存到本地数据txt文件</span>
+
+<span class="c1"># View spectrum</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wl</span><span class="p">,</span><span class="n">T</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;transmission&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wl</span><span class="p">,</span><span class="n">R</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;reflection&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wl</span><span class="p">,</span><span class="mi">1</span><span class="o">-</span><span class="n">R</span><span class="o">-</span><span class="n">T</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Spectrum (order: &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">order_N</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Wavelength (nm)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;rcwa_unity_AOM.png&quot;</span><span class="p">)</span>        <span class="c1">########   需要展示的数据图</span>
+<span class="n">device</span><span class="o">.</span><span class="n">save_fig</span><span class="p">(</span><span class="s2">&quot;rcwa_unity_AOM&quot;</span><span class="p">,</span><span class="n">file_path</span><span class="o">=</span><span class="s2">&quot;rcwa_unity_AOM.png&quot;</span><span class="p">,</span><span class="n">file_data_path</span><span class="o">=</span><span class="s2">&quot;rcwa_unity_AOM.txt&quot;</span><span class="p">)</span>
+<span class="n">sim_end</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;rcwa&quot;</span><span class="p">)</span>
+
+</pre></div>
+</div>
+<p>由于rcwa环境正在开发中，示例中给出的是部分统一接口
+示例运行后的结果展示：
+<span><div style="text-align: center;"></p>
+<p><img alt="rcwa.png" src="../../_images/rcwa.png" /></p>
+</div></span>
 <center> 图3 meep环境运行结果 </center></section>
+</section>
 </section>
 
 
