@@ -157,7 +157,7 @@
 <h2>模型构建<a class="headerlink" href="#id4" title="此标题的永久链接"></a></h2>
 <p>微纳光学智能设计软件模型构建支持材料数据调用数据库中材料表中的特定材料、用户自定义折射率材料等，模型可构建方块、圆柱。</p>
 <ol class="arabic simple">
-<li><p>材料定义
+<li><p><strong>材料定义</strong>
 用户自定义材料折射率：</p></li>
 </ol>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">define_material</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -192,9 +192,11 @@
 <span class="n">unity_sim</span><span class="o">.</span><span class="n">nk_material</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>其中name为材料表中存储的材料名（非中文）
-2. 模型定义
-用户建立方块模型：</p>
+<p>其中name为材料表中存储的材料名（非中文）</p>
+<ol class="arabic simple" start="2">
+<li><p><strong>模型定义</strong>
+用户建立方块模型：</p></li>
+</ol>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">material_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; </span>
 <span class="sd">    定义方块模型尺寸</span>

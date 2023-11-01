@@ -23,7 +23,7 @@
 器件仿真过程展示在下图中，显示的是1×2 power spliter的优化进程。
 <span><div style="text-align: center;">
 
-![优化算法过程展示.png](./assets/algorithm1.png)
+![优化算法过程展示.png](./assets/优化.png)
 </div></span>
 
 <center> 图2 优化算法过程展示 </center>

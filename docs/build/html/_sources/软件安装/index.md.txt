@@ -41,6 +41,16 @@ docker-compose -f docker-compose-production.yml up
 ![部署成功1.png](https://s2.loli.net/2023/07/18/qAEu1Y4lz7wOknG.png)
 <center> 图4.1 软件部署首页展示 </center>
 
+## 更新微纳光学智能设计软件
+由于算法迭代以及公共接口进一步开发，微纳光学智能设计软件需要更新，更新步骤如下：
+- 关闭软件后台，在部署的Linux系统中后端文件夹下使用docker-compose-production.yml down，暂停容器运行
+- 根据对应docker file制作最新版镜像（前端、后端以及meep镜像），本地制作完成后推送到镜像仓库中
+- 在部署的Linux系统中下载最新版镜像（meep需要），或者在docker-compose-production.yml文件中更新前后端镜像地址
+- 修改好yml文件后，需要重新启动软件，即docker-compose -f docker-compose-production.yml up
+- 智能设计软件更新完毕，用户可正常访问微纳光学智能设计软件
+- 在meep工程环境下更新meep镜像地址
+- 联合仿真Windows环境中也需要重新下载后端文件夹
+
 ## 联合仿真Windows环境部署
 微纳光学智能设计软件能够实现与**主流商用光电子软件Lumerical及CST**联合仿真，由于商用软件安装环境为Windows系统与智能设计软件无法兼容，因此设计团队开发了agent服务，用来监听管理端的通知，当获取执行通知后会调用Python SDK执行相关的算法，运行结束通过Websocket返回管理端数据库。
 

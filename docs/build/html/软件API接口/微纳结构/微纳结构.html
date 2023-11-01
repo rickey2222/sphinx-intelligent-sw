@@ -52,6 +52,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#lumerical">1. Lumerical 环境</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#meep">2. Meep 环境</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#rcwa">3. RCWA 环境</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cst">4. CST环境</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4. 四环境合并示例</a></li>
 </ul>
 </li>
 </ul>
@@ -475,7 +477,1220 @@
 <span><div style="text-align: center;"></p>
 <p><img alt="rcwa.png" src="../../_images/rcwa.png" /></p>
 </div></span>
-<center> 图3 meep环境运行结果 </center></section>
+<center> 图3 meep环境运行结果 </center>
+</section>
+<section id="cst">
+<h3>4. CST环境<a class="headerlink" href="#cst" title="此标题的永久链接"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">###cst环境###</span>
+<span class="n">sim_start</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;cst&quot;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="n">unit</span> <span class="o">=</span> <span class="n">unity_sim</span><span class="o">.</span><span class="n">set_unit</span><span class="p">(</span><span class="n">unit</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">)</span>
+<span class="n">dp</span><span class="o">=</span><span class="mf">0.66</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">dsub</span><span class="o">=</span><span class="mf">2.5</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">c_r</span><span class="o">=</span><span class="mf">0.206</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">c_h</span><span class="o">=</span><span class="mf">0.22</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">source_z</span><span class="o">=</span><span class="mf">1.8</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">sim_z_span</span><span class="o">=</span><span class="mi">4</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">T_z</span><span class="o">=</span><span class="mf">1.9</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">wl_max</span><span class="o">=</span><span class="mf">1.6</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">wl_min</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">nfreq</span><span class="o">=</span><span class="mi">51</span>
+<span class="n">save_name</span> <span class="o">=</span> <span class="s1">&#39;circle_cst&#39;</span>
+
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">set_sim_paras</span><span class="p">(</span><span class="n">wl_max</span><span class="o">=</span><span class="n">wl_max</span><span class="p">,</span> <span class="n">wl_min</span><span class="o">=</span><span class="n">wl_min</span><span class="p">,</span> <span class="n">T_z</span><span class="o">=</span><span class="mf">1.9</span><span class="o">*</span><span class="n">unit</span><span class="p">,</span> <span class="n">nfreq</span><span class="o">=</span><span class="n">nfreq</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+
+<span class="c1">###添加结构</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">define_material</span><span class="p">(</span><span class="s1">&#39;SiO2&#39;</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span> <span class="c1"># 定义材料</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">define_material</span><span class="p">(</span><span class="s1">&#39;Si&#39;</span><span class="p">,</span> <span class="mf">3.4</span><span class="p">)</span> <span class="c1"># 定义材料</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">define_material</span><span class="p">(</span><span class="s1">&#39;air&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">block</span> <span class="o">=</span> <span class="n">unity_sim</span><span class="o">.</span><span class="n">add_block</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">dsub</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">c_h</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="n">dsub</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">material_name</span><span class="o">=</span><span class="s1">&#39;SiO2&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span> <span class="c1"># 添加方块</span>
+<span class="n">cylinder</span> <span class="o">=</span> <span class="n">unity_sim</span><span class="o">.</span><span class="n">add_cylinder</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="n">c_r</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">material_name</span><span class="o">=</span><span class="s1">&#39;Si&#39;</span><span class="p">,</span><span class="n">height</span><span class="o">=</span> <span class="n">c_h</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span> <span class="c1"># 添加方块</span>
+
+<span class="c1"># 添加空气块</span>
+<span class="n">air</span> <span class="o">=</span> <span class="n">unity_sim</span><span class="o">.</span><span class="n">add_block</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">sim_z_span</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sim_z_span</span><span class="o">/</span><span class="mi">4</span> <span class="o">-</span> <span class="n">c_h</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span>
+<span class="n">material_name</span><span class="o">=</span><span class="s1">&#39;air&#39;</span><span class="p">)</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">combine_models</span><span class="p">(</span><span class="n">air</span><span class="p">,</span> <span class="n">cylinder</span><span class="p">,</span> <span class="n">boolean_type</span><span class="o">=</span><span class="s1">&#39;insert&#39;</span><span class="p">)</span>
+
+
+<span class="c1">####添加源，监视器</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">add_source</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span><span class="n">dp</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">source_z</span><span class="p">))</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">add_sim_area</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span><span class="n">dp</span><span class="p">,</span><span class="n">sim_z_span</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">add_monitor</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span><span class="n">dp</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">T_z</span><span class="p">),</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;R&quot;</span><span class="p">)</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">add_monitor</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span><span class="n">dp</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="n">T_z</span><span class="p">),</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">add_monitor_field</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span><span class="n">dp</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="n">T_z</span><span class="p">))</span>
+
+<span class="c1">###运行#########</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;cst 正在运行，请等待............&quot;</span><span class="p">)</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">save_name</span><span class="o">=</span><span class="n">save_name</span><span class="p">)</span>
+
+<span class="c1">###提取数据######</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">unity_sim</span><span class="o">.</span><span class="n">get_result_monitor</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+<span class="n">result1</span> <span class="o">=</span> <span class="n">unity_sim</span><span class="o">.</span><span class="n">get_result_monitor</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;R&quot;</span><span class="p">)</span>
+
+<span class="n">wl</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;wl&quot;</span><span class="p">]</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;power&quot;</span><span class="p">]</span>
+<span class="n">R</span> <span class="o">=</span> <span class="n">result1</span><span class="p">[</span><span class="s2">&quot;power&quot;</span><span class="p">]</span>
+
+<span class="c1">####提取光谱图</span>
+<span class="n">wls</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">Rs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">Ts</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">wl</span><span class="p">)):</span>
+    <span class="n">wls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wls</span><span class="p">,</span> <span class="n">wl</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">Rs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Rs</span><span class="p">,</span> <span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">Ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Ts</span><span class="p">,</span> <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">wls</span><span class="p">),</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">wls</span> <span class="c1">#</span>
+<span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Rs</span>  <span class="c1">#</span>
+<span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">Ts</span>  <span class="c1">#</span>
+<span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">Rs</span> <span class="o">-</span> <span class="n">Ts</span>  <span class="c1">#</span>
+<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s2">&quot;cst_data_meta_model.txt&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>  <span class="c1">#</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wls</span><span class="p">,</span> <span class="n">Rs</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;reflectance&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wls</span><span class="p">,</span> <span class="n">Ts</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;transmittance&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wls</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">Rs</span> <span class="o">-</span><span class="n">Ts</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;wavelength (μm)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;cst_meta_model.png&quot;</span><span class="p">)</span>
+<span class="n">device</span><span class="o">.</span><span class="n">save_fig</span><span class="p">(</span><span class="s2">&quot;cst_meta_model&quot;</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="s2">&quot;cst_meta_model.png&quot;</span><span class="p">,</span><span class="n">file_data_path</span><span class="o">=</span><span class="s2">&quot;cst_data_meta_model.txt&quot;</span><span class="p">)</span>
+<span class="n">unityCode</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">wls_lum</span> <span class="o">=</span> <span class="n">wls</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="n">unityCode</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">Rs_lum</span> <span class="o">=</span> <span class="n">Rs</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="n">unityCode</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">Ts_lum</span> <span class="o">=</span> <span class="n">Ts</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+<span class="n">sim_end</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;cst&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>示例运行后的结果展示：
+<span><div style="text-align: center;"></p>
+<p><img alt="cst环境结果展示" src="../../_images/cst.png" /></p>
+</div></span>
+<center> 图2 CST环境运行结果 </center>
+</section>
+<section id="id2">
+<h3>4. 四环境合并示例<a class="headerlink" href="#id2" title="此标题的永久链接"></a></h3>
+<p>验证微纳光学智能设计软件四个环境下可以逐步仿真，联合调动，这里给出四环境合并示例代码，四个环境结果会进行对比展示：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="n">sim_start</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;lum&quot;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="n">unit</span><span class="o">=</span><span class="mf">1e-6</span>   <span class="c1"># 单位：m</span>
+<span class="n">dp</span><span class="o">=</span><span class="mf">0.66</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">dsub</span><span class="o">=</span><span class="mf">2.5</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">c_r</span><span class="o">=</span><span class="mf">0.206</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">c_h</span><span class="o">=</span><span class="mf">0.22</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">source_z</span><span class="o">=</span><span class="mf">1.8</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">sim_z_span</span><span class="o">=</span><span class="mi">4</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">T_z</span><span class="o">=</span><span class="mf">1.9</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">wl_max</span><span class="o">=</span><span class="mf">1.6</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">wl_min</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">nfreq</span><span class="o">=</span><span class="mi">200</span>
+
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">set_sim_paras</span><span class="p">(</span><span class="n">wl_max</span><span class="o">=</span><span class="n">wl_max</span><span class="p">,</span><span class="n">wl_min</span><span class="o">=</span><span class="n">wl_min</span><span class="p">,</span><span class="n">T_z</span><span class="o">=</span><span class="mf">1.9</span><span class="o">*</span><span class="n">unit</span><span class="p">,</span><span class="n">nfreq</span><span class="o">=</span><span class="n">nfreq</span><span class="p">,</span><span class="n">resolution</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+
+<span class="c1">###添加结构</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">define_material</span><span class="p">(</span><span class="s1">&#39;SiO2&#39;</span><span class="p">,</span><span class="mf">1.5</span><span class="p">)</span> <span class="c1"># 定义材料</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">define_material</span><span class="p">(</span><span class="s1">&#39;Si&#39;</span><span class="p">,</span><span class="mf">3.4</span><span class="p">)</span> <span class="c1"># 定义材料</span>
+<span class="n">block</span><span class="o">=</span><span class="n">unity_sim</span><span class="o">.</span><span class="n">add_block</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">dsub</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">c_h</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="n">dsub</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">material_name</span><span class="o">=</span><span class="s1">&#39;SiO2&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span> <span class="c1"># 添加方块</span>
+<span class="n">cylinder</span><span class="o">=</span><span class="n">unity_sim</span><span class="o">.</span><span class="n">add_cylinder</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="n">c_r</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">material_name</span><span class="o">=</span><span class="s1">&#39;Si&#39;</span><span class="p">,</span><span class="n">height</span><span class="o">=</span> <span class="n">c_h</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span> <span class="c1"># 添加方块</span>
+
+<span class="c1">####添加源，监视器</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">add_source</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span><span class="n">dp</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">source_z</span><span class="p">))</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">add_sim_area</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span><span class="n">dp</span><span class="p">,</span><span class="n">sim_z_span</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">add_monitor</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span><span class="n">dp</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">T_z</span><span class="p">),</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;R&quot;</span><span class="p">)</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">add_monitor</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span><span class="n">dp</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="n">T_z</span><span class="p">),</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">add_monitor_field</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span><span class="n">dp</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="n">T_z</span><span class="p">))</span>
+
+<span class="c1">###运行</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;lum正在运行，请等待............&quot;</span><span class="p">)</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">pt</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">T_z</span><span class="p">))</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">unity_sim</span><span class="o">.</span><span class="n">get_result_monitor</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+<span class="n">result1</span> <span class="o">=</span> <span class="n">unity_sim</span><span class="o">.</span><span class="n">get_result_monitor</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;R&quot;</span><span class="p">)</span>
+
+<span class="n">wl</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;wl&quot;</span><span class="p">]</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;power&quot;</span><span class="p">]</span>
+<span class="n">R</span> <span class="o">=</span> <span class="n">result1</span><span class="p">[</span><span class="s2">&quot;power&quot;</span><span class="p">]</span>
+
+
+<span class="c1">####提取光谱图</span>
+<span class="n">wls</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">Rs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">Ts</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfreq</span><span class="p">):</span>
+    <span class="n">wls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wls</span><span class="p">,</span> <span class="n">wl</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">Rs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Rs</span><span class="p">,</span> <span class="n">R</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">Ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Ts</span><span class="p">,</span> <span class="o">-</span><span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">wls</span><span class="p">),</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">wls</span> <span class="c1">#</span>
+<span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Rs</span>  <span class="c1">#</span>
+<span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">Ts</span>  <span class="c1">#</span>
+<span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">Rs</span> <span class="o">-</span> <span class="n">Ts</span>  <span class="c1">#</span>
+<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s2">&quot;lum_data_meta_model.txt&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>  <span class="c1">#</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wls</span><span class="p">,</span> <span class="n">Rs</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;reflectance&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wls</span><span class="p">,</span> <span class="n">Ts</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;transmittance&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wls</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">Rs</span> <span class="o">-</span><span class="n">Ts</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;wavelength (μm)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;lum_meta_model.png&quot;</span><span class="p">)</span>
+<span class="n">device</span><span class="o">.</span><span class="n">save_fig</span><span class="p">(</span><span class="s2">&quot;lum_meta_model&quot;</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="s2">&quot;lum_meta_model.png&quot;</span><span class="p">,</span><span class="n">file_data_path</span><span class="o">=</span><span class="s2">&quot;lum_data_meta_model.txt&quot;</span><span class="p">)</span>
+<span class="n">unityCode</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">wls_lum</span> <span class="o">=</span> <span class="n">wls</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="n">unityCode</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">Rs_lum</span> <span class="o">=</span> <span class="n">Rs</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="n">unityCode</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">Ts_lum</span> <span class="o">=</span> <span class="n">Ts</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="n">sim_end</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;lum&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;lum仿真完毕！！！！！！！！&quot;</span><span class="p">)</span>
+
+<span class="n">sim_start</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;meep&quot;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="n">unit</span><span class="o">=</span><span class="mi">1</span>          <span class="c1"># 单位：um</span>
+<span class="n">dp</span><span class="o">=</span><span class="mf">0.66</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">dsub</span><span class="o">=</span><span class="mf">2.5</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">c_r</span><span class="o">=</span><span class="mf">0.206</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">c_h</span><span class="o">=</span><span class="mf">0.22</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">source_z</span><span class="o">=</span><span class="mf">1.8</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">sim_z_span</span><span class="o">=</span><span class="mi">4</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">T_z</span><span class="o">=</span><span class="mf">1.9</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">wl_max</span><span class="o">=</span><span class="mf">1.6</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">wl_min</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">nfreq</span> <span class="o">=</span><span class="mi">200</span>
+
+<span class="n">fmax</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">wl_min</span>
+<span class="n">fmin</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">wl_max</span>
+<span class="n">fcen</span> <span class="o">=</span> <span class="p">(</span><span class="n">fmin</span> <span class="o">+</span> <span class="n">fmax</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">fmax</span> <span class="o">-</span> <span class="n">fmin</span>
+<span class="n">dpml</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">fcen</span><span class="o">/</span> <span class="mi">2</span>
+
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">set_sim_paras</span><span class="p">(</span><span class="n">wl_max</span><span class="o">=</span><span class="n">wl_max</span><span class="p">,</span><span class="n">wl_min</span><span class="o">=</span><span class="n">wl_min</span><span class="p">,</span><span class="n">T_z</span><span class="o">=</span><span class="mf">1.9</span><span class="o">*</span><span class="n">unit</span><span class="p">,</span><span class="n">nfreq</span><span class="o">=</span><span class="n">nfreq</span><span class="p">,</span><span class="n">resolution</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+
+<span class="c1">###添加结构</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">define_material</span><span class="p">(</span><span class="s1">&#39;SiO2&#39;</span><span class="p">,</span><span class="mf">1.5</span><span class="p">)</span> <span class="c1"># 定义材料</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">define_material</span><span class="p">(</span><span class="s1">&#39;Si&#39;</span><span class="p">,</span><span class="mf">3.4</span><span class="p">)</span> <span class="c1"># 定义材料</span>
+<span class="n">block</span><span class="o">=</span><span class="n">unity_sim</span><span class="o">.</span><span class="n">add_block</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">dsub</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">c_h</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="n">dsub</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="n">material_name</span><span class="o">=</span><span class="s1">&#39;SiO2&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span> <span class="c1"># 添加方块</span>
+<span class="n">cylinder</span><span class="o">=</span><span class="n">unity_sim</span><span class="o">.</span><span class="n">add_cylinder</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="n">c_r</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">material_name</span><span class="o">=</span><span class="s1">&#39;Si&#39;</span><span class="p">,</span><span class="n">height</span><span class="o">=</span> <span class="n">c_h</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span> <span class="c1"># 添加方块</span>
+
+<span class="c1">####添加源，监视器</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">add_source</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span><span class="n">dp</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">source_z</span><span class="p">))</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">add_sim_area</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span><span class="n">dp</span><span class="p">,</span><span class="n">sim_z_span</span><span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">dpml</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="n">geometry</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">inc</span> <span class="o">=</span> <span class="n">unity_sim</span><span class="o">.</span><span class="n">add_monitor</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span><span class="n">dp</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">T_z</span><span class="p">))</span>
+<span class="n">R</span> <span class="o">=</span> <span class="n">unity_sim</span><span class="o">.</span><span class="n">add_monitor</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span><span class="n">dp</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">T_z</span><span class="p">))</span>
+
+<span class="c1">#####第一次运行</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;meep正在运行，请等待............&quot;</span><span class="p">)</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">pt</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">T_z</span><span class="p">))</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">unity_sim</span><span class="o">.</span><span class="n">get_result_monitor</span><span class="p">(</span><span class="n">inc</span><span class="p">)</span>
+<span class="n">result1</span> <span class="o">=</span> <span class="n">unity_sim</span><span class="o">.</span><span class="n">get_flux</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+
+<span class="n">input_flux</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;power&quot;</span><span class="p">]</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">add_sim_area</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span><span class="n">dp</span><span class="p">,</span><span class="n">sim_z_span</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="n">geometry</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">unity_sim</span><span class="o">.</span><span class="n">add_monitor</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span><span class="n">dp</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="n">T_z</span><span class="p">))</span>
+<span class="n">R</span> <span class="o">=</span> <span class="n">unity_sim</span><span class="o">.</span><span class="n">add_monitor</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span><span class="n">dp</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">T_z</span><span class="p">))</span>
+<span class="n">E_field</span> <span class="o">=</span> <span class="n">unity_sim</span><span class="o">.</span><span class="n">add_monitor_field</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span><span class="n">dp</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="n">T_z</span><span class="p">))</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">load_minus_flux_data</span><span class="p">(</span><span class="n">R</span><span class="p">,</span><span class="n">result1</span><span class="p">)</span>
+
+<span class="c1">####第二次运行</span>
+<span class="n">unity_sim</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">pt</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">T_z</span><span class="p">))</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">unity_sim</span><span class="o">.</span><span class="n">get_result_monitor</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+<span class="n">result1</span> <span class="o">=</span> <span class="n">unity_sim</span><span class="o">.</span><span class="n">get_result_monitor</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+
+
+<span class="n">flux_freqs</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;f&quot;</span><span class="p">]</span>
+<span class="n">tran_flux</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;power&quot;</span><span class="p">]</span>
+<span class="n">refl_flux</span> <span class="o">=</span> <span class="n">result1</span><span class="p">[</span><span class="s2">&quot;power&quot;</span><span class="p">]</span>
+
+
+<span class="c1">###提取光谱图</span>
+<span class="n">wls</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">Rs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">Ts</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nfreq</span><span class="p">):</span>
+    <span class="n">wls</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wls</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">flux_freqs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">Rs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Rs</span><span class="p">,</span> <span class="n">refl_flux</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">input_flux</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">Ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Ts</span><span class="p">,</span> <span class="o">-</span><span class="n">tran_flux</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">input_flux</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">wls</span><span class="p">),</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">wls</span> <span class="c1">#</span>
+<span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Rs</span>  <span class="c1">#</span>
+<span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">Ts</span>  <span class="c1">#</span>
+<span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">Rs</span> <span class="o">-</span> <span class="n">Ts</span>  <span class="c1">#</span>
+<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s2">&quot;meep_data_meta_model.txt&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>  <span class="c1">#</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wls</span><span class="p">,</span> <span class="n">Rs</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;reflectance&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wls</span><span class="p">,</span> <span class="n">Ts</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;transmittance&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wls</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">Rs</span> <span class="o">-</span> <span class="n">Ts</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;wavelength (μm)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;meep_meta_model.png&#39;</span><span class="p">)</span>
+<span class="n">device</span><span class="o">.</span><span class="n">save_fig</span><span class="p">(</span><span class="s1">&#39;meep_meta_model&#39;</span><span class="p">,</span> <span class="n">file_path</span><span class="o">=</span><span class="s1">&#39;meep_meta_model.png&#39;</span><span class="p">,</span><span class="n">file_data_path</span><span class="o">=</span><span class="s2">&quot;meep_data_meta_model.txt&quot;</span><span class="p">)</span>
+<span class="n">unityCode</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">wls_meep</span> <span class="o">=</span> <span class="n">wls</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="n">unityCode</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">Rs_meep</span> <span class="o">=</span> <span class="n">Rs</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="n">unityCode</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">Ts_meep</span> <span class="o">=</span> <span class="n">Ts</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="n">sim_end</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;meep&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;meep仿真完毕！！！！！！！！！！！！&quot;</span><span class="p">)</span>
+
+<span class="n">sim_start</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;rcwa&quot;</span><span class="p">)</span>
+<span class="c1"># Import</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">torcwa</span>
+
+<span class="c1">## 创建预览要素</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">ModelTree</span><span class="p">(</span><span class="s1">&#39;Model&#39;</span><span class="p">)</span>
+<span class="c1">######################################################################################################</span>
+<span class="c1">#                      step1：参数设置</span>
+<span class="c1">######################################################################################################</span>
+<span class="c1"># Hardware</span>
+<span class="c1"># If GPU support TF32 tensor core, the matmul operation is faster than FP32 but with less precision.</span>
+<span class="c1"># If you need accurate operation, you have to disable the flag below.</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">matmul</span><span class="o">.</span><span class="n">allow_tf32</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">sim_dtype</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">complex64</span>
+<span class="n">geo_dtype</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">float32</span>
+<span class="n">device0</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
+
+<span class="n">unit</span><span class="o">=</span><span class="mf">1e3</span>   <span class="c1"># 单位：nm</span>
+<span class="n">dp</span><span class="o">=</span><span class="mf">0.66</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">dsub</span><span class="o">=</span><span class="mf">2.5</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">c_r</span><span class="o">=</span><span class="mf">0.206</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">c_h</span><span class="o">=</span><span class="mf">0.22</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">source_z</span><span class="o">=</span><span class="mf">1.8</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">sim_z_span</span><span class="o">=</span><span class="mi">4</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">T_z</span><span class="o">=</span><span class="mf">1.9</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">wl_max</span><span class="o">=</span><span class="mf">1.6</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">wl_min</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="n">unit</span>
+<span class="n">nfreq</span><span class="o">=</span><span class="mi">200</span>
+
+<span class="c1"># Simulation environment</span>
+<span class="c1"># light</span>
+<span class="n">inc_ang</span> <span class="o">=</span> <span class="mf">0.</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span>    <span class="c1"># radian</span>
+<span class="n">azi_ang</span> <span class="o">=</span> <span class="mf">0.</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span>    <span class="c1"># radian</span>
+<span class="c1"># material</span>
+<span class="n">substrate_eps</span> <span class="o">=</span> <span class="mf">1.5</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">silicon_eps</span> <span class="o">=</span><span class="mf">3.4</span><span class="o">**</span><span class="mi">2</span>
+<span class="c1"># geometry</span>
+<span class="n">L</span> <span class="o">=</span> <span class="p">[</span><span class="n">dp</span><span class="p">,</span> <span class="n">dp</span><span class="p">]</span>            <span class="c1"># nm / nm</span>
+<span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa_geo</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="n">geo_dtype</span>
+<span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa_geo</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device0</span>
+<span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa_geo</span><span class="o">.</span><span class="n">Lx</span> <span class="o">=</span> <span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa_geo</span><span class="o">.</span><span class="n">Ly</span> <span class="o">=</span> <span class="n">L</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa_geo</span><span class="o">.</span><span class="n">nx</span> <span class="o">=</span> <span class="mi">1300</span>
+<span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa_geo</span><span class="o">.</span><span class="n">ny</span> <span class="o">=</span> <span class="mi">1300</span>
+<span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa_geo</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+<span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa_geo</span><span class="o">.</span><span class="n">edge_sharpness</span> <span class="o">=</span> <span class="mf">1000.</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2000</span><span class="p">,</span><span class="mi">2000</span><span class="p">,</span><span class="mi">1500</span><span class="p">,</span><span class="n">device</span><span class="o">=</span><span class="n">device0</span><span class="p">)</span>
+<span class="n">x_axis</span> <span class="o">=</span> <span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa_geo</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+<span class="n">y_axis</span> <span class="o">=</span> <span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa_geo</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+<span class="n">z_axis</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+<span class="c1"># layers</span>
+<span class="n">layer0_geometry</span> <span class="o">=</span> <span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa_geo</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">R</span><span class="o">=</span><span class="n">c_r</span><span class="p">,</span><span class="n">Cx</span><span class="o">=</span><span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span><span class="n">Cy</span><span class="o">=</span><span class="n">L</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span>
+<span class="n">layer0_thickness</span> <span class="o">=</span> <span class="n">c_h</span>
+<span class="c1"># Generate and perform simulation</span>
+<span class="n">order_N</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="n">order</span> <span class="o">=</span> <span class="p">[</span><span class="n">order_N</span><span class="p">,</span><span class="n">order_N</span><span class="p">]</span>
+
+<span class="n">lamb0</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">wl_min</span><span class="p">,</span><span class="n">wl_max</span><span class="p">,</span><span class="n">nfreq</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="n">geo_dtype</span><span class="p">,</span><span class="n">device</span><span class="o">=</span><span class="n">device0</span><span class="p">)</span>
+
+<span class="c1">######################################################################################################</span>
+<span class="c1">#                     step2:建立仿真区域</span>
+<span class="c1">######################################################################################################</span>
+<span class="k">def</span> <span class="nf">add_simarea</span><span class="p">(</span><span class="n">freq</span><span class="p">):</span>
+    <span class="c1"># 添加rcwa仿真区域：长宽为L</span>
+    <span class="n">sim</span> <span class="o">=</span> <span class="n">torcwa</span><span class="o">.</span><span class="n">rcwa</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="n">L</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">sim_dtype</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sim</span>
+<span class="n">create_model</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">sim_z_span</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Box&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Orange&#39;</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;Sim Area&#39;</span><span class="p">,</span> <span class="s1">&#39;area&#39;</span><span class="p">)</span>
+
+<span class="c1">######################################################################################################</span>
+<span class="c1">#                      step3：添加光源</span>
+<span class="c1">######################################################################################################</span>
+<span class="k">def</span> <span class="nf">add_source</span><span class="p">(</span><span class="n">sim</span><span class="p">):</span>
+    <span class="c1"># 添加光源，入射角度，相位角,位置默认为第一层结构位置处入射，长宽为L</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">set_incident_angle</span><span class="p">(</span><span class="n">inc_ang</span><span class="o">=</span><span class="n">inc_ang</span><span class="p">,</span> <span class="n">azi_ang</span><span class="o">=</span><span class="n">azi_ang</span><span class="p">)</span> 
+    <span class="k">return</span> <span class="n">source</span>
+<span class="n">create_model</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">source_z</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Box&#39;</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Red&#39;</span><span class="p">)</span>
+<span class="n">create_model</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">source_z</span><span class="p">),</span> <span class="n">target</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">wl_min</span> <span class="k">if</span> <span class="n">source_z</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">],</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Arrow&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Red&#39;</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;Light Source&#39;</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">)</span>
+
+<span class="c1">######################################################################################################</span>
+<span class="c1">#                      step4：添加仿真模型结构</span>
+<span class="c1">######################################################################################################</span>
+<span class="c1">#添加第一层和最后一层</span>
+<span class="k">def</span> <span class="nf">add_first_last_layer</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span><span class="n">eps_in</span><span class="p">,</span><span class="n">eps_out</span><span class="p">):</span>
+    <span class="c1"># 创建最顶层block，厚度为半无限，材料介电常数为eps_in，长宽为L</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_input_layer</span><span class="p">(</span><span class="n">eps</span><span class="o">=</span><span class="n">eps_in</span><span class="p">)</span>
+    <span class="c1"># 创建最底层block，厚度为半无限，材料介电常数为eps_out，长宽为L</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_output_layer</span><span class="p">(</span><span class="n">eps</span><span class="o">=</span><span class="n">eps_out</span><span class="p">)</span>   
+    <span class="k">return</span>
+<span class="n">create_model</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">dsub</span><span class="p">),</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">c_h</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="n">dsub</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Box&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Gray&#39;</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;c1 - Block&#39;</span><span class="p">)</span>
+
+<span class="c1"># 添加中间层</span>
+<span class="k">def</span> <span class="nf">add_cir</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span><span class="n">thickness</span><span class="p">,</span><span class="n">eps</span><span class="p">):</span>
+    <span class="c1"># 创建圆柱，厚度为layer0_thickness=220，半径为：R=206,X中心左标：Cx=L[0]/2.,Y中心坐标：Cy=L[1]/2.单位为nm,材料介电常数为：layer0_eps</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">thickness</span><span class="o">=</span><span class="n">thickness</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="n">eps</span><span class="p">)</span>
+    <span class="k">return</span>
+<span class="n">create_model</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">c_r</span><span class="p">,</span> <span class="n">c_r</span><span class="p">,</span><span class="n">c_h</span><span class="p">,</span><span class="mi">40</span><span class="p">),</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Cylinder&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;c1 - Cylinder&#39;</span><span class="p">)</span>
+
+<span class="c1">######################################################################################################</span>
+<span class="c1">#                      step5： 添加监视器,位置由port决定</span>
+<span class="c1">######################################################################################################</span>
+<span class="k">def</span> <span class="nf">add_monitor</span><span class="p">(</span><span class="n">sim</span><span class="p">,</span><span class="n">direction</span><span class="p">,</span><span class="n">port</span><span class="p">,</span><span class="n">polar</span><span class="p">):</span>
+    <span class="n">monitor</span> <span class="o">=</span> <span class="n">sim</span><span class="o">.</span><span class="n">S_parameters</span><span class="p">(</span><span class="n">orders</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">direction</span><span class="o">=</span><span class="n">direction</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">,</span> <span class="n">polarization</span><span class="o">=</span><span class="n">polar</span><span class="p">,</span>
+                            <span class="n">ref_order</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>   
+    <span class="k">return</span> <span class="n">monitor</span>
+<span class="n">create_model</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">T_z</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Box&#39;</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Red&#39;</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;Monitor&#39;</span><span class="p">,</span> <span class="s1">&#39;area&#39;</span><span class="p">)</span>
+<span class="c1">######################################################################################################</span>
+<span class="c1">#                      step6： 仿真运行</span>
+<span class="c1">######################################################################################################</span>
+<span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="n">sim</span><span class="p">):</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">solve_global_smatrix</span><span class="p">()</span>  <span class="c1"># 运行</span>
+    <span class="k">return</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;rcwa正在运行，请等待............&quot;</span><span class="p">)</span>
+<span class="c1">######################################################################################################</span>
+<span class="c1">#                      step7：多个点仿真运行，输出光谱图数据</span>
+<span class="c1">######################################################################################################</span>
+<span class="n">t</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">r</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">a</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">lamb0_ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lamb0</span><span class="p">)):</span>
+    <span class="n">lamb0_now</span> <span class="o">=</span> <span class="n">lamb0</span><span class="p">[</span><span class="n">lamb0_ind</span><span class="p">]</span>
+    <span class="n">sim</span> <span class="o">=</span> <span class="n">add_simarea</span><span class="p">(</span><span class="n">freq</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="n">lamb0_now</span><span class="p">)</span>
+    <span class="n">add_first_last_layer</span><span class="p">(</span><span class="n">sim</span><span class="o">=</span><span class="n">sim</span><span class="p">,</span><span class="n">eps_in</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">eps_out</span><span class="o">=</span><span class="n">substrate_eps</span><span class="p">)</span>
+    <span class="n">add_source</span><span class="p">(</span><span class="n">sim</span><span class="p">)</span>
+    <span class="n">layer0_eps</span> <span class="o">=</span> <span class="n">layer0_geometry</span> <span class="o">*</span> <span class="n">silicon_eps</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">-</span> <span class="n">layer0_geometry</span><span class="p">)</span>
+    <span class="n">add_cir</span><span class="p">(</span><span class="n">sim</span><span class="o">=</span><span class="n">sim</span><span class="p">,</span><span class="n">thickness</span><span class="o">=</span><span class="n">layer0_thickness</span><span class="p">,</span><span class="n">eps</span><span class="o">=</span><span class="n">layer0_eps</span><span class="p">)</span>
+    <span class="c1"># run(sim)</span>
+    <span class="n">sim</span><span class="o">.</span><span class="n">solve_global_smatrix</span><span class="p">()</span>
+    <span class="n">ss_t</span> <span class="o">=</span> <span class="n">add_monitor</span><span class="p">(</span><span class="n">sim</span><span class="o">=</span><span class="n">sim</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s1">&#39;transmission&#39;</span><span class="p">,</span> <span class="n">polar</span><span class="o">=</span><span class="s1">&#39;ss&#39;</span><span class="p">)</span>
+    <span class="n">ss_r</span> <span class="o">=</span> <span class="n">add_monitor</span><span class="p">(</span><span class="n">sim</span><span class="o">=</span><span class="n">sim</span><span class="p">,</span><span class="n">direction</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s1">&#39;reflection&#39;</span><span class="p">,</span> <span class="n">polar</span><span class="o">=</span><span class="s1">&#39;ss&#39;</span><span class="p">)</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ss_t</span><span class="p">)</span>
+    <span class="n">r</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ss_r</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">lamb0_ind</span><span class="p">)</span>
+<span class="c1">######################################################################################################</span>
+<span class="c1">#                      step8：处理数据</span>
+<span class="c1">######################################################################################################</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">R</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">r</span><span class="p">))</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">wl</span> <span class="o">=</span> <span class="n">lamb0</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">wl</span><span class="p">),</span><span class="mi">4</span><span class="p">))</span>
+<span class="n">data</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">wl</span>
+<span class="n">data</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">R</span>
+<span class="n">data</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">T</span>
+<span class="n">data</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">-</span><span class="n">R</span><span class="o">-</span><span class="n">T</span>
+<span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="s2">&quot;rcwa_unity_AOM.txt&quot;</span><span class="p">,</span><span class="n">data</span><span class="p">)</span>    <span class="c1">####### 需要保存到本地数据txt文件</span>
+
+<span class="c1"># View spectrum</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wl</span><span class="p">,</span><span class="n">T</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;transmission&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wl</span><span class="p">,</span><span class="n">R</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;reflection&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wl</span><span class="p">,</span><span class="mi">1</span><span class="o">-</span><span class="n">R</span><span class="o">-</span><span class="n">T</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Spectrum (order: &#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">order_N</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Wavelength (μm)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;rcwa_unity_AOM.png&quot;</span><span class="p">)</span>        <span class="c1">########   需要展示的数据图</span>
+<span class="n">device</span><span class="o">.</span><span class="n">save_fig</span><span class="p">(</span><span class="s2">&quot;rcwa_unity_AOM&quot;</span><span class="p">,</span><span class="n">file_path</span><span class="o">=</span><span class="s2">&quot;rcwa_unity_AOM.png&quot;</span><span class="p">,</span><span class="n">file_data_path</span><span class="o">=</span><span class="s2">&quot;rcwa_unity_AOM.txt&quot;</span><span class="p">)</span>
+<span class="n">unityCode</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">wls_rcwa</span> <span class="o">=</span> <span class="n">wl</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="n">unityCode</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">Rs_rcwa</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="n">unityCode</span><span class="o">.</span><span class="n">save_data</span><span class="p">(</span><span class="n">Ts_rcwa</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="n">sim_end</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;rcwa&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;rcwa仿真完毕！！！！！！！！！！&quot;</span><span class="p">)</span>
+
+<span class="n">sim_start</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;cst&quot;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">cst</span>
+<span class="kn">from</span> <span class="nn">cst</span> <span class="kn">import</span> <span class="n">interface</span><span class="p">,</span> <span class="n">results</span>
+<span class="kn">from</span> <span class="nn">cst.interface</span> <span class="kn">import</span> <span class="n">Project</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;KMP_DUPLICATE_LIB_OK&#39;</span><span class="p">]</span><span class="o">=</span><span class="s1">&#39;TRUE&#39;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+
+<span class="c1"># step 0</span>
+<span class="k">def</span> <span class="nf">setup_base</span><span class="p">(</span><span class="n">modeler</span><span class="p">):</span>
+    <span class="c1"># setup units</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">       With Units</span>
+<span class="s1">           .Geometry &quot;um&quot;</span>
+<span class="s1">           .Frequency &quot;THz&quot;</span>
+<span class="s1">           .Voltage &quot;V&quot;</span>
+<span class="s1">           .Resistance &quot;Ohm&quot;</span>
+<span class="s1">           .Inductance &quot;H&quot;</span>
+<span class="s1">           .TemperatureUnit  &quot;Kelvin&quot;</span>
+<span class="s1">           .Time &quot;ns&quot;</span>
+<span class="s1">           .Current &quot;A&quot;</span>
+<span class="s1">           .Conductance &quot;Siemens&quot;</span>
+<span class="s1">           .Capacitance &quot;F&quot;</span>
+<span class="s1">       End With</span>
+<span class="s1">       &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;setup units&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="c1"># set the wavelength range</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        Solver.WavelengthRange &quot;4&quot;, &quot;10&quot;</span>
+<span class="s1">        &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;setup frequency range&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="c1"># setup background</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        Plot.DrawBox True</span>
+<span class="s1">        With Background</span>
+<span class="s1">             .Type &quot;Normal&quot;</span>
+<span class="s1">             .Epsilon &quot;1.0&quot;</span>
+<span class="s1">             .Mu &quot;1.0&quot;</span>
+<span class="s1">             .Rho &quot;1.204&quot;</span>
+<span class="s1">             .ThermalType &quot;Normal&quot;</span>
+<span class="s1">             .ThermalConductivity &quot;0.026&quot;</span>
+<span class="s1">             .HeatCapacity &quot;1.005&quot;</span>
+<span class="s1">             .XminSpace &quot;0.0&quot;</span>
+<span class="s1">             .XmaxSpace &quot;0.0&quot;</span>
+<span class="s1">             .YminSpace &quot;0.0&quot;</span>
+<span class="s1">             .YmaxSpace &quot;0.0&quot;</span>
+<span class="s1">             .ZminSpace &quot;0.0&quot;</span>
+<span class="s1">             .ZmaxSpace &quot;0.0&quot;</span>
+<span class="s1">        End With</span>
+<span class="s1">        &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;setup background&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="c1"># define Floquet port boundaries</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        With FloquetPort</span>
+<span class="s1">             .Reset</span>
+<span class="s1">             .SetDialogTheta &quot;0&quot;</span>
+<span class="s1">             .SetDialogPhi &quot;0&quot;</span>
+<span class="s1">             .SetSortCode &quot;+beta/pw&quot;</span>
+<span class="s1">             .SetCustomizedListFlag &quot;False&quot;</span>
+<span class="s1">             .Port &quot;Zmin&quot;</span>
+<span class="s1">             .SetNumberOfModesConsidered &quot;2&quot;</span>
+<span class="s1">             .Port &quot;Zmax&quot;</span>
+<span class="s1">             .SetNumberOfModesConsidered &quot;2&quot;</span>
+<span class="s1">        End With</span>
+<span class="s1">        &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;set Floquet port boundaries&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="c1"># define parameters exist</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        MakeSureParameterExists &quot;theta&quot;, &quot;0&quot;</span>
+<span class="s1">        SetParameterDescription &quot;theta&quot;, &quot;spherical angle of incident plane wave&quot;</span>
+<span class="s1">        MakeSureParameterExists &quot;phi&quot;, &quot;0&quot;</span>
+<span class="s1">        SetParameterDescription &quot;phi&quot;, &quot;spherical angle of incident plane wave&quot;</span>
+<span class="s1">        &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;set parameters exist&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="c1"># define boundaries, the open boundaries define floquet port</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        With Boundary</span>
+<span class="s1">             .Xmin &quot;unit cell&quot;</span>
+<span class="s1">             .Xmax &quot;unit cell&quot;</span>
+<span class="s1">             .Ymin &quot;unit cell&quot;</span>
+<span class="s1">             .Ymax &quot;unit cell&quot;</span>
+<span class="s1">             .Zmin &quot;expanded open&quot;</span>
+<span class="s1">             .Zmax &quot;expanded open&quot;</span>
+<span class="s1">             .Xsymmetry &quot;none&quot;</span>
+<span class="s1">             .Ysymmetry &quot;none&quot;</span>
+<span class="s1">             .Zsymmetry &quot;none&quot;</span>
+<span class="s1">             .XPeriodicShift &quot;0.0&quot;</span>
+<span class="s1">             .YPeriodicShift &quot;0.0&quot;</span>
+<span class="s1">             .ZPeriodicShift &quot;0.0&quot;</span>
+<span class="s1">             .PeriodicUseConstantAngles &quot;False&quot;</span>
+<span class="s1">             .SetPeriodicBoundaryAngles &quot;theta&quot;, &quot;phi&quot;</span>
+<span class="s1">             .SetPeriodicBoundaryAnglesDirection &quot;inward&quot;</span>
+<span class="s1">             .UnitCellFitToBoundingBox &quot;True&quot;</span>
+<span class="s1">             .UnitCellDs1 &quot;0.0&quot;</span>
+<span class="s1">             .UnitCellDs2 &quot;0.0&quot;</span>
+<span class="s1">             .UnitCellAngle &quot;90.0&quot;</span>
+<span class="s1">        End With    </span>
+<span class="s1">        &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;set boundaries&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="c1"># set tet mesh as default</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        With Mesh</span>
+<span class="s1">             .MeshType &quot;Tetrahedral&quot;</span>
+<span class="s1">        End With</span>
+<span class="s1">        &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;set mesh&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="c1"># FD solver excitation with incoming plane wave at Zmax</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        With FDSolver</span>
+<span class="s1">             .Reset</span>
+<span class="s1">             .Stimulation &quot;List&quot;, &quot;List&quot;</span>
+<span class="s1">             .ResetExcitationList</span>
+<span class="s1">             .AddToExcitationList &quot;Zmax&quot;, &quot;TE(0,0);TM(0,0)&quot;</span>
+<span class="s1">             .LowFrequencyStabilization &quot;False&quot;</span>
+<span class="s1">        End With</span>
+<span class="s1">        &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;set FD solver&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="c1"># change problem type</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        ChangeProblemType &quot;Optical&quot;</span>
+<span class="s1">        &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;change problem type&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        With MeshSettings</span>
+<span class="s1">             .SetMeshType &quot;Tet&quot;</span>
+<span class="s1">             .Set &quot;Version&quot;, 1%</span>
+<span class="s1">        End With</span>
+<span class="s1">        &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;MeshSettings&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        With Mesh</span>
+<span class="s1">             .MeshType &quot;Tetrahedral&quot;</span>
+<span class="s1">        End With</span>
+<span class="s1">        &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;cset meshtype&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+    <span class="c1"># set the solver type</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        ChangeSolverType(&quot;HF Frequency Domain&quot;)</span>
+<span class="s1">        &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;set the solver type&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+<span class="c1"># step 2</span>
+<span class="k">def</span> <span class="nf">set_component</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">num</span><span class="p">):</span>
+    <span class="c1"># set component</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        Component.New &quot;component</span><span class="si">{0}</span><span class="s1">&quot; </span>
+<span class="s1">        &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;new component</span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+<span class="c1"># step 2 - material</span>
+<span class="k">def</span> <span class="nf">define_material_general</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">RGB</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="n">transparency</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        With Material </span>
+<span class="s1">         .Reset </span>
+<span class="s1">         .Name &quot;</span><span class="si">{0}</span><span class="s1">&quot;</span>
+<span class="s1">         .Folder &quot;&quot;</span>
+<span class="s1">         .Rho &quot;0.0&quot;</span>
+<span class="s1">         .ThermalType &quot;Normal&quot;</span>
+<span class="s1">         .ThermalConductivity &quot;0&quot;</span>
+<span class="s1">         .SpecificHeat &quot;0&quot;, &quot;J/K/kg&quot;</span>
+<span class="s1">         .DynamicViscosity &quot;0&quot;</span>
+<span class="s1">         .Emissivity &quot;0&quot;</span>
+<span class="s1">         .MetabolicRate &quot;0.0&quot;</span>
+<span class="s1">         .VoxelConvection &quot;0.0&quot;</span>
+<span class="s1">         .BloodFlow &quot;0&quot;</span>
+<span class="s1">         .MechanicsType &quot;Unused&quot;</span>
+<span class="s1">         .FrqType &quot;all&quot;</span>
+<span class="s1">         .Type &quot;Normal&quot;</span>
+<span class="s1">         .MaterialUnit &quot;Frequency&quot;, &quot;THz&quot;</span>
+<span class="s1">         .MaterialUnit &quot;Geometry&quot;, &quot;um&quot;</span>
+<span class="s1">         .MaterialUnit &quot;Time&quot;, &quot;ns&quot;</span>
+<span class="s1">         .MaterialUnit &quot;Temperature&quot;, &quot;Kelvin&quot;</span>
+<span class="s1">         .Epsilon &quot;</span><span class="si">{1}</span><span class="s1">&quot;</span>
+<span class="s1">         .Mu &quot;1&quot;</span>
+<span class="s1">         .Sigma &quot;0&quot;</span>
+<span class="s1">         .TanD &quot;0.0&quot;</span>
+<span class="s1">         .TanDFreq &quot;0.0&quot;</span>
+<span class="s1">         .TanDGiven &quot;False&quot;</span>
+<span class="s1">         .TanDModel &quot;ConstTanD&quot;</span>
+<span class="s1">         .EnableUserConstTanDModelOrderEps &quot;False&quot;</span>
+<span class="s1">         .ConstTanDModelOrderEps &quot;1&quot;</span>
+<span class="s1">         .SetElParametricConductivity &quot;False&quot;</span>
+<span class="s1">         .ReferenceCoordSystem &quot;Global&quot;</span>
+<span class="s1">         .CoordSystemType &quot;Cartesian&quot;</span>
+<span class="s1">         .SigmaM &quot;0&quot;</span>
+<span class="s1">         .TanDM &quot;0.0&quot;</span>
+<span class="s1">         .TanDMFreq &quot;0.0&quot;</span>
+<span class="s1">         .TanDMGiven &quot;False&quot;</span>
+<span class="s1">         .TanDMModel &quot;ConstTanD&quot;</span>
+<span class="s1">         .EnableUserConstTanDModelOrderMu &quot;False&quot;</span>
+<span class="s1">         .ConstTanDModelOrderMu &quot;1&quot;</span>
+<span class="s1">         .SetMagParametricConductivity &quot;False&quot;</span>
+<span class="s1">         .DispModelEps  &quot;None&quot;</span>
+<span class="s1">         .DispModelMu &quot;None&quot;</span>
+<span class="s1">         .DispersiveFittingSchemeEps &quot;Nth Order&quot;</span>
+<span class="s1">         .MaximalOrderNthModelFitEps &quot;10&quot;</span>
+<span class="s1">         .ErrorLimitNthModelFitEps &quot;0.1&quot;</span>
+<span class="s1">         .UseOnlyDataInSimFreqRangeNthModelEps &quot;False&quot;</span>
+<span class="s1">         .DispersiveFittingSchemeMu &quot;Nth Order&quot;</span>
+<span class="s1">         .MaximalOrderNthModelFitMu &quot;10&quot;</span>
+<span class="s1">         .ErrorLimitNthModelFitMu &quot;0.1&quot;</span>
+<span class="s1">         .UseOnlyDataInSimFreqRangeNthModelMu &quot;False&quot;</span>
+<span class="s1">         .UseGeneralDispersionEps &quot;False&quot;</span>
+<span class="s1">         .UseGeneralDispersionMu &quot;False&quot;</span>
+<span class="s1">         .NLAnisotropy &quot;False&quot;</span>
+<span class="s1">         .NLAStackingFactor &quot;1&quot;</span>
+<span class="s1">         .NLADirectionX &quot;1&quot;</span>
+<span class="s1">         .NLADirectionY &quot;0&quot;</span>
+<span class="s1">         .NLADirectionZ &quot;0&quot;</span>
+<span class="s1">         .Colour &quot;</span><span class="si">{2[0]}</span><span class="s1">&quot;, &quot;</span><span class="si">{2[1]}</span><span class="s1">&quot;, &quot;</span><span class="si">{2[2]}</span><span class="s1">&quot; </span>
+<span class="s1">         .Wireframe &quot;False&quot; </span>
+<span class="s1">         .Reflection &quot;False&quot; </span>
+<span class="s1">         .Allowoutline &quot;True&quot; </span>
+<span class="s1">         .Transparentoutline &quot;False&quot; </span>
+<span class="s1">         .Transparency &quot;</span><span class="si">{3}</span><span class="s1">&quot; </span>
+<span class="s1">         .Create</span>
+<span class="s1">        End With</span>
+<span class="s1">        &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">RGB</span><span class="p">,</span> <span class="n">transparency</span><span class="p">)</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;define material: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+<span class="c1"># step 2 - material</span>
+<span class="k">def</span> <span class="nf">set_material_color</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">RGB</span><span class="p">,</span> <span class="n">transparency</span><span class="p">):</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        With Material </span>
+<span class="s1">         .Name &quot;</span><span class="si">{0}</span><span class="s1">&quot;</span>
+<span class="s1">         .Folder &quot;&quot;</span>
+<span class="s1">         .Colour &quot;</span><span class="si">{1[0]}</span><span class="s1">&quot;, &quot;</span><span class="si">{1[1]}</span><span class="s1">&quot;, &quot;</span><span class="si">{1[2]}</span><span class="s1">&quot; </span>
+<span class="s1">         .Wireframe &quot;False&quot; </span>
+<span class="s1">         .Reflection &quot;False&quot; </span>
+<span class="s1">         .Allowoutline &quot;True&quot; </span>
+<span class="s1">         .Transparentoutline &quot;False&quot; </span>
+<span class="s1">         .Transparency &quot;</span><span class="si">{2}</span><span class="s1">&quot; </span>
+<span class="s1">         .ChangeColour </span>
+<span class="s1">    End With</span>
+<span class="s1">    &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">RGB</span><span class="p">,</span> <span class="n">transparency</span><span class="p">)</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;define material: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+<span class="c1"># step 2 - model</span>
+<span class="k">def</span> <span class="nf">brick</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">comp</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">Xrange</span><span class="p">,</span> <span class="n">Yrange</span><span class="p">,</span> <span class="n">Zrange</span><span class="p">):</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    With Brick</span>
+<span class="s1">     .Reset </span>
+<span class="s1">     .Name &quot;</span><span class="si">{0}</span><span class="s1">&quot; </span>
+<span class="s1">     .Component &quot;</span><span class="si">{1}</span><span class="s1">&quot; </span>
+<span class="s1">     .Material &quot;</span><span class="si">{2}</span><span class="s1">&quot; </span>
+<span class="s1">     .Xrange &quot;</span><span class="si">{3[0]}</span><span class="s1">&quot;, &quot;</span><span class="si">{3[1]}</span><span class="s1">&quot; </span>
+<span class="s1">     .Yrange &quot;</span><span class="si">{4[0]}</span><span class="s1">&quot;, &quot;</span><span class="si">{4[1]}</span><span class="s1">&quot; </span>
+<span class="s1">     .Zrange &quot;</span><span class="si">{5[0]}</span><span class="s1">&quot;, &quot;</span><span class="si">{5[1]}</span><span class="s1">&quot; </span>
+<span class="s1">     .Create</span>
+<span class="s1">    End With</span>
+<span class="s1">    &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">comp</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">Xrange</span><span class="p">,</span> <span class="n">Yrange</span><span class="p">,</span> <span class="n">Zrange</span><span class="p">)</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;define brick: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+<span class="c1"># step 2 -model</span>
+<span class="k">def</span> <span class="nf">cylinder</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">comp</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">Rrange</span><span class="p">,</span> <span class="n">Zrange</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">segments</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        With Cylinder </span>
+<span class="s1">         .Reset </span>
+<span class="s1">         .Name &quot;</span><span class="si">{0}</span><span class="s1">&quot; </span>
+<span class="s1">         .Component &quot;</span><span class="si">{1}</span><span class="s1">&quot; </span>
+<span class="s1">         .Material &quot;</span><span class="si">{2}</span><span class="s1">&quot; </span>
+<span class="s1">         .OuterRadius &quot;</span><span class="si">{3[1]}</span><span class="s1">&quot; </span>
+<span class="s1">         .InnerRadius &quot;</span><span class="si">{3[0]}</span><span class="s1">&quot; </span>
+<span class="s1">         .Axis &quot;z&quot; </span>
+<span class="s1">         .Zrange &quot;</span><span class="si">{4[0]}</span><span class="s1">&quot;, &quot;</span><span class="si">{4[1]}</span><span class="s1">&quot; </span>
+<span class="s1">         .Xcenter &quot;</span><span class="si">{5[0]}</span><span class="s1">&quot; </span>
+<span class="s1">         .Ycenter &quot;</span><span class="si">{5[1]}</span><span class="s1">&quot; </span>
+<span class="s1">         .Segments &quot;</span><span class="si">{6}</span><span class="s1">&quot; </span>
+<span class="s1">         .Create </span>
+<span class="s1">    End With</span>
+<span class="s1">    &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">comp</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">Rrange</span><span class="p">,</span> <span class="n">Zrange</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">segments</span><span class="p">)</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;define cylinder: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+<span class="c1"># step 2 - boolean opt</span>
+<span class="k">def</span> <span class="nf">boolean_insert</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">comp1</span><span class="p">,</span> <span class="n">name1</span><span class="p">,</span> <span class="n">comp2</span><span class="p">,</span> <span class="n">name2</span><span class="p">):</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    Solid.Insert &quot;</span><span class="si">{0}</span><span class="s1">:</span><span class="si">{1}</span><span class="s1">&quot;, &quot;</span><span class="si">{2}</span><span class="s1">:</span><span class="si">{3}</span><span class="s1">&quot;</span>
+<span class="s1">    &#39;&#39;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">comp1</span><span class="p">,</span> <span class="n">name1</span><span class="p">,</span> <span class="n">comp2</span><span class="p">,</span> <span class="n">name2</span><span class="p">)</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;boolean insert shape: </span><span class="si">{</span><span class="n">comp1</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">name1</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">comp2</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">name2</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+<span class="c1"># step 3 - port (不含极化角)</span>
+<span class="k">def</span> <span class="nf">set_port_full</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">num</span><span class="p">,</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">mode_no</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        With Port </span>
+<span class="s1">         .Reset </span>
+<span class="s1">         .PortNumber &quot;</span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s1">&quot; </span>
+<span class="s1">         .Label &quot;&quot; </span>
+<span class="s1">         .Folder &quot;&quot; </span>
+<span class="s1">         .NumberOfModes &quot;</span><span class="si">{</span><span class="n">mode_no</span><span class="si">}</span><span class="s1">&quot; </span>
+<span class="s1">         .AdjustPolarization &quot;False&quot; </span>
+<span class="s1">         .PolarizationAngle &quot;0.0&quot; </span>
+<span class="s1">         .ReferencePlaneDistance &quot;0&quot; </span>
+<span class="s1">         .TextSize &quot;50&quot; </span>
+<span class="s1">         .TextMaxLimit &quot;1&quot; </span>
+<span class="s1">         .Coordinates &quot;Full&quot; </span>
+<span class="s1">         .Orientation &quot;</span><span class="si">{</span><span class="n">orientation</span><span class="si">}</span><span class="s1">&quot; </span>
+<span class="s1">         .PortOnBound &quot;True&quot; </span>
+<span class="s1">         .ClipPickedPortToBound &quot;False&quot; </span>
+<span class="s1">         .Xrange &quot;0&quot;, &quot;0&quot; </span>
+<span class="s1">         .Yrange &quot;0&quot;, &quot;0&quot; </span>
+<span class="s1">         .Zrange &quot;0&quot;, &quot;0&quot; </span>
+<span class="s1">         .XrangeAdd &quot;0.0&quot;, &quot;0.0&quot; </span>
+<span class="s1">         .YrangeAdd &quot;0.0&quot;, &quot;0.0&quot; </span>
+<span class="s1">         .ZrangeAdd &quot;0.0&quot;, &quot;0.0&quot; </span>
+<span class="s1">         .SingleEnded &quot;False&quot; </span>
+<span class="s1">         .WaveguideMonitor &quot;False&quot; </span>
+<span class="s1">         .Create </span>
+<span class="s1">    End With </span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;define port: </span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+<span class="c1"># step 4 - boundary</span>
+<span class="k">def</span> <span class="nf">set_boundary</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">x_bc</span><span class="p">,</span> <span class="n">y_bc</span><span class="p">,</span> <span class="n">z_bc</span><span class="p">,</span> <span class="n">symmetry</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">]):</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        With Boundary</span>
+<span class="s1">         .Xmin &quot;</span><span class="si">{</span><span class="n">x_bc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot;</span>
+<span class="s1">         .Xmax &quot;</span><span class="si">{</span><span class="n">x_bc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot;</span>
+<span class="s1">         .Ymin &quot;</span><span class="si">{</span><span class="n">y_bc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot;</span>
+<span class="s1">         .Ymax &quot;</span><span class="si">{</span><span class="n">y_bc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot;</span>
+<span class="s1">         .Zmin &quot;</span><span class="si">{</span><span class="n">z_bc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot;</span>
+<span class="s1">         .Zmax &quot;</span><span class="si">{</span><span class="n">z_bc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot;</span>
+<span class="s1">         .Xsymmetry &quot;</span><span class="si">{</span><span class="n">symmetry</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot;</span>
+<span class="s1">         .Ysymmetry &quot;</span><span class="si">{</span><span class="n">symmetry</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot;</span>
+<span class="s1">         .Zsymmetry &quot;</span><span class="si">{</span><span class="n">symmetry</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot;</span>
+<span class="s1">         .ApplyInAllDirections &quot;False&quot;</span>
+<span class="s1">    End With</span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;define boundary condition&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+<span class="c1"># step 5 - create mesh</span>
+<span class="k">def</span> <span class="nf">create_mesh</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">meshgroup</span><span class="p">):</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    Group.Add &quot;</span><span class="si">{</span><span class="n">meshgroup</span><span class="si">}</span><span class="s1">&quot;, &quot;mesh&quot;</span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;create group: </span><span class="si">{</span><span class="n">meshgroup</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+<span class="c1"># step 5 - set mesh accuracy</span>
+<span class="k">def</span> <span class="nf">mesh_setting</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">meshgroup</span><span class="p">,</span> <span class="n">mesh_size</span><span class="p">):</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        With MeshSettings</span>
+<span class="s1">         With .ItemMeshSettings (&quot;group$</span><span class="si">{</span><span class="n">meshgroup</span><span class="si">}</span><span class="s1">&quot;)</span>
+<span class="s1">              .SetMeshType &quot;Tet&quot;</span>
+<span class="s1">              .Set &quot;LayerStackup&quot;, &quot;Automatic&quot;</span>
+<span class="s1">              .Set &quot;LocalAutomaticEdgeRefinement&quot;, &quot;0&quot;</span>
+<span class="s1">              .Set &quot;LocalAutomaticEdgeRefinementOverwrite&quot;, 0</span>
+<span class="s1">              .Set &quot;MaterialIndependent&quot;, 0</span>
+<span class="s1">              .Set &quot;OctreeSizeFaces&quot;, &quot;0&quot;</span>
+<span class="s1">              .Set &quot;PatchIndependent&quot;, 0</span>
+<span class="s1">              .Set &quot;Size&quot;, &quot;</span><span class="si">{</span><span class="n">mesh_size</span><span class="si">}</span><span class="s1">&quot;</span>
+<span class="s1">         End With</span>
+<span class="s1">    End With</span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;set local mesh properties for : </span><span class="si">{</span><span class="n">meshgroup</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+<span class="c1"># step 5 - add items to group</span>
+<span class="k">def</span> <span class="nf">mesh_add_items</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">comp</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">meshgroup</span><span class="p">):</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    Group.AddItem &quot;solid$</span><span class="si">{</span><span class="n">comp</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s1">&quot;, &quot;</span><span class="si">{</span><span class="n">meshgroup</span><span class="si">}</span><span class="s1">&quot;</span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;add items to group : </span><span class="si">{</span><span class="n">comp</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">meshgroup</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+<span class="c1"># step 6 - wavelength</span>
+<span class="k">def</span> <span class="nf">set_wavelength_range</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">wl_range</span><span class="p">):</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    Solver.WavelengthRange &quot;</span><span class="si">{</span><span class="n">wl_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot;, &quot;</span><span class="si">{</span><span class="n">wl_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot; </span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;define wavelength range&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+<span class="c1"># step 6 - FD solver (equidistant)</span>
+<span class="k">def</span> <span class="nf">set_FD_solver</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">source_type</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">):</span>
+    <span class="n">vba</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        Mesh.SetCreator &quot;High Frequency&quot; </span>
+<span class="s1">    </span>
+<span class="s1">    With FDSolver</span>
+<span class="s1">         .Reset </span>
+<span class="s1">         .SetMethod &quot;Tetrahedral&quot;, &quot;General purpose&quot; </span>
+<span class="s1">         .OrderTet &quot;Second&quot; </span>
+<span class="s1">         .OrderSrf &quot;First&quot; </span>
+<span class="s1">         .Stimulation &quot;</span><span class="si">{</span><span class="n">source_type</span><span class="si">}</span><span class="s1">&quot;, &quot;All&quot; </span>
+<span class="s1">         .ResetExcitationList </span>
+<span class="s1">         .AutoNormImpedance &quot;False&quot; </span>
+<span class="s1">         .NormingImpedance &quot;50&quot; </span>
+<span class="s1">         .ModesOnly &quot;False&quot; </span>
+<span class="s1">         .ConsiderPortLossesTet &quot;True&quot; </span>
+<span class="s1">         .SetShieldAllPorts &quot;False&quot; </span>
+<span class="s1">         .AccuracyHex &quot;1e-6&quot; </span>
+<span class="s1">         .AccuracyTet &quot;1e-4&quot; </span>
+<span class="s1">         .AccuracySrf &quot;1e-3&quot; </span>
+<span class="s1">         .LimitIterations &quot;False&quot; </span>
+<span class="s1">         .MaxIterations &quot;0&quot; </span>
+<span class="s1">         .SetCalcBlockExcitationsInParallel &quot;True&quot;, &quot;True&quot;, &quot;&quot; </span>
+<span class="s1">         .StoreAllResults &quot;False&quot; </span>
+<span class="s1">         .StoreResultsInCache &quot;False&quot; </span>
+<span class="s1">         .UseHelmholtzEquation &quot;True&quot; </span>
+<span class="s1">         .LowFrequencyStabilization &quot;False&quot; </span>
+<span class="s1">         .Type &quot;Auto&quot; </span>
+<span class="s1">         .MeshAdaptionHex &quot;False&quot; </span>
+<span class="s1">         .MeshAdaptionTet &quot;False&quot; </span>
+<span class="s1">         .AcceleratedRestart &quot;True&quot; </span>
+<span class="s1">         .FreqDistAdaptMode &quot;Distributed&quot; </span>
+<span class="s1">         .NewIterativeSolver &quot;True&quot; </span>
+<span class="s1">         .TDCompatibleMaterials &quot;False&quot; </span>
+<span class="s1">         .ExtrudeOpenBC &quot;False&quot; </span>
+<span class="s1">         .SetOpenBCTypeHex &quot;Default&quot; </span>
+<span class="s1">         .SetOpenBCTypeTet &quot;Default&quot; </span>
+<span class="s1">         .AddMonitorSamples &quot;True&quot; </span>
+<span class="s1">         .CalcPowerLoss &quot;True&quot; </span>
+<span class="s1">         .CalcPowerLossPerComponent &quot;False&quot; </span>
+<span class="s1">         .StoreSolutionCoefficients &quot;True&quot; </span>
+<span class="s1">         .UseDoublePrecision &quot;False&quot; </span>
+<span class="s1">         .UseDoublePrecision_ML &quot;True&quot; </span>
+<span class="s1">         .MixedOrderSrf &quot;False&quot; </span>
+<span class="s1">         .MixedOrderTet &quot;False&quot; </span>
+<span class="s1">         .PreconditionerAccuracyIntEq &quot;0.15&quot; </span>
+<span class="s1">         .MLFMMAccuracy &quot;Default&quot; </span>
+<span class="s1">         .MinMLFMMBoxSize &quot;0.3&quot; </span>
+<span class="s1">         .UseCFIEForCPECIntEq &quot;True&quot; </span>
+<span class="s1">         .UseFastRCSSweepIntEq &quot;false&quot; </span>
+<span class="s1">         .UseSensitivityAnalysis &quot;False&quot; </span>
+<span class="s1">         .RemoveAllStopCriteria &quot;Hex&quot;</span>
+<span class="s1">         .AddStopCriterion &quot;All S-Parameters&quot;, &quot;0.01&quot;, &quot;2&quot;, &quot;Hex&quot;, &quot;True&quot;</span>
+<span class="s1">         .AddStopCriterion &quot;Reflection S-Parameters&quot;, &quot;0.01&quot;, &quot;2&quot;, &quot;Hex&quot;, &quot;False&quot;</span>
+<span class="s1">         .AddStopCriterion &quot;Transmission S-Parameters&quot;, &quot;0.01&quot;, &quot;2&quot;, &quot;Hex&quot;, &quot;False&quot;</span>
+<span class="s1">         .RemoveAllStopCriteria &quot;Tet&quot;</span>
+<span class="s1">         .AddStopCriterion &quot;All S-Parameters&quot;, &quot;0.01&quot;, &quot;2&quot;, &quot;Tet&quot;, &quot;True&quot;</span>
+<span class="s1">         .AddStopCriterion &quot;Reflection S-Parameters&quot;, &quot;0.01&quot;, &quot;2&quot;, &quot;Tet&quot;, &quot;False&quot;</span>
+<span class="s1">         .AddStopCriterion &quot;Transmission S-Parameters&quot;, &quot;0.01&quot;, &quot;2&quot;, &quot;Tet&quot;, &quot;False&quot;</span>
+<span class="s1">         .AddStopCriterion &quot;All Probes&quot;, &quot;0.05&quot;, &quot;2&quot;, &quot;Tet&quot;, &quot;True&quot;</span>
+<span class="s1">         .RemoveAllStopCriteria &quot;Srf&quot;</span>
+<span class="s1">         .AddStopCriterion &quot;All S-Parameters&quot;, &quot;0.01&quot;, &quot;2&quot;, &quot;Srf&quot;, &quot;True&quot;</span>
+<span class="s1">         .AddStopCriterion &quot;Reflection S-Parameters&quot;, &quot;0.01&quot;, &quot;2&quot;, &quot;Srf&quot;, &quot;False&quot;</span>
+<span class="s1">         .AddStopCriterion &quot;Transmission S-Parameters&quot;, &quot;0.01&quot;, &quot;2&quot;, &quot;Srf&quot;, &quot;False&quot;</span>
+<span class="s1">         .SweepMinimumSamples &quot;3&quot; </span>
+<span class="s1">         .SetNumberOfResultDataSamples &quot;1001&quot; </span>
+<span class="s1">         .SetResultDataSamplingMode &quot;Automatic&quot; </span>
+<span class="s1">         .SweepWeightEvanescent &quot;1.0&quot; </span>
+<span class="s1">         .AccuracyROM &quot;1e-4&quot; </span>
+<span class="s1">         .AddSampleInterval &quot;&quot;, &quot;&quot;, &quot;</span><span class="si">{</span><span class="n">nfreq</span><span class="si">}</span><span class="s1">&quot;, &quot;Equidistant&quot;, &quot;False&quot; </span>
+<span class="s1">         .AddInactiveSampleInterval &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;Automatic&quot;, &quot;False&quot; </span>
+<span class="s1">         .MPIParallelization &quot;False&quot;</span>
+<span class="s1">         .UseDistributedComputing &quot;False&quot;</span>
+<span class="s1">         .NetworkComputingStrategy &quot;RunRemote&quot;</span>
+<span class="s1">         .NetworkComputingJobCount &quot;3&quot;</span>
+<span class="s1">         .UseParallelization &quot;True&quot;</span>
+<span class="s1">         .MaxCPUs &quot;128&quot;</span>
+<span class="s1">         .MaximumNumberOfCPUDevices &quot;2&quot;</span>
+<span class="s1">    End With</span>
+<span class="s1">    </span>
+<span class="s1">    With IESolver</span>
+<span class="s1">         .Reset </span>
+<span class="s1">         .UseFastFrequencySweep &quot;True&quot; </span>
+<span class="s1">         .UseIEGroundPlane &quot;False&quot; </span>
+<span class="s1">         .SetRealGroundMaterialName &quot;&quot; </span>
+<span class="s1">         .CalcFarFieldInRealGround &quot;False&quot; </span>
+<span class="s1">         .RealGroundModelType &quot;Auto&quot; </span>
+<span class="s1">         .PreconditionerType &quot;Auto&quot; </span>
+<span class="s1">         .ExtendThinWireModelByWireNubs &quot;False&quot; </span>
+<span class="s1">    End With</span>
+<span class="s1">    </span>
+<span class="s1">    With IESolver</span>
+<span class="s1">         .SetFMMFFCalcStopLevel &quot;0&quot; </span>
+<span class="s1">         .SetFMMFFCalcNumInterpPoints &quot;6&quot; </span>
+<span class="s1">         .UseFMMFarfieldCalc &quot;True&quot; </span>
+<span class="s1">         .SetCFIEAlpha &quot;0.500000&quot; </span>
+<span class="s1">         .LowFrequencyStabilization &quot;False&quot; </span>
+<span class="s1">         .LowFrequencyStabilizationML &quot;True&quot; </span>
+<span class="s1">         .Multilayer &quot;False&quot; </span>
+<span class="s1">         .SetiMoMACC_I &quot;0.0001&quot; </span>
+<span class="s1">         .SetiMoMACC_M &quot;0.0001&quot; </span>
+<span class="s1">         .DeembedExternalPorts &quot;True&quot; </span>
+<span class="s1">         .SetOpenBC_XY &quot;True&quot; </span>
+<span class="s1">         .OldRCSSweepDefintion &quot;False&quot; </span>
+<span class="s1">         .SetRCSOptimizationProperties &quot;True&quot;, &quot;100&quot;, &quot;0.00001&quot; </span>
+<span class="s1">         .SetAccuracySetting &quot;Custom&quot; </span>
+<span class="s1">         .CalculateSParaforFieldsources &quot;True&quot; </span>
+<span class="s1">         .ModeTrackingCMA &quot;True&quot; </span>
+<span class="s1">         .NumberOfModesCMA &quot;3&quot; </span>
+<span class="s1">         .StartFrequencyCMA &quot;-1.0&quot; </span>
+<span class="s1">         .SetAccuracySettingCMA &quot;Default&quot; </span>
+<span class="s1">         .FrequencySamplesCMA &quot;0&quot; </span>
+<span class="s1">         .SetMemSettingCMA &quot;Auto&quot; </span>
+<span class="s1">         .CalculateModalWeightingCoefficientsCMA &quot;True&quot; </span>
+<span class="s1">    End With</span>
+<span class="s1">    &#39;&#39;&#39;</span>
+    <span class="n">modeler</span><span class="o">.</span><span class="n">add_to_history</span><span class="p">(</span><span class="s1">&#39;set FD solver&#39;</span><span class="p">,</span> <span class="n">vba</span><span class="p">)</span>
+
+<span class="c1"># step 8 - get S</span>
+<span class="k">def</span> <span class="nf">get_S</span><span class="p">(</span><span class="n">mws</span><span class="p">):</span>
+    <span class="n">project</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">ProjectFile</span><span class="p">(</span><span class="n">mws</span><span class="o">.</span><span class="n">filename</span><span class="p">(),</span> <span class="n">allow_interactive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">wl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">get_3d</span><span class="p">()</span><span class="o">.</span><span class="n">get_result_item</span><span class="p">(</span><span class="s2">&quot;1D Results\S-Parameters\S1,1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_xdata</span><span class="p">())</span>
+    <span class="n">s11</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">get_3d</span><span class="p">()</span><span class="o">.</span><span class="n">get_result_item</span><span class="p">(</span><span class="s2">&quot;1D Results\S-Parameters\S1,1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_ydata</span><span class="p">())</span>
+    <span class="n">s21</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">project</span><span class="o">.</span><span class="n">get_3d</span><span class="p">()</span><span class="o">.</span><span class="n">get_result_item</span><span class="p">(</span><span class="s2">&quot;1D Results\S-Parameters\S2,1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get_ydata</span><span class="p">())</span>
+
+    <span class="n">s11_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">s11</span><span class="p">)</span>
+    <span class="n">s21_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">s21</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">wl</span><span class="p">,</span> <span class="n">s11_norm</span><span class="p">,</span> <span class="n">s21_norm</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="c1">############################################################################</span>
+<span class="c1"># step 0: 初始化</span>
+<span class="c1">############################################################################</span>
+
+<span class="n">save_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>  <span class="c1"># save for cst files</span>
+<span class="n">save_name</span> <span class="o">=</span> <span class="s1">&#39;unity_CST_test.cst&#39;</span>
+<span class="n">save_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">save_name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Working file: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">save_name</span><span class="p">))</span>
+
+<span class="n">cst</span> <span class="o">=</span> <span class="n">interface</span><span class="o">.</span><span class="n">DesignEnvironment</span><span class="p">()</span>  <span class="c1"># create new cst project and save it</span>
+<span class="n">mws</span> <span class="o">=</span> <span class="n">cst</span><span class="o">.</span><span class="n">new_mws</span><span class="p">()</span>
+<span class="c1"># mws.save(path=os.path.join(save_path, save_name))</span>
+<span class="n">mws</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">save_name</span><span class="p">)</span>
+
+<span class="n">mws</span><span class="o">.</span><span class="n">activate</span><span class="p">()</span>
+<span class="n">modeler</span> <span class="o">=</span> <span class="n">mws</span><span class="o">.</span><span class="n">modeler</span>  <span class="c1"># define the modeler to create the unit cell structure</span>
+
+<span class="n">setup_base</span><span class="p">(</span><span class="n">modeler</span><span class="p">)</span>   <span class="c1"># 初始环境</span>
+
+<span class="c1">############################################################################</span>
+<span class="c1"># step 1: 建立坐标需要的变量参数</span>
+<span class="c1">############################################################################</span>
+
+<span class="n">parameter</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;wl_max&#39;</span><span class="p">:</span> <span class="mf">1.6</span><span class="p">,</span>
+             <span class="s1">&#39;wl_min&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+             <span class="s1">&#39;nfreq&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+             <span class="s1">&#39;dp&#39;</span><span class="p">:</span> <span class="mf">0.66</span><span class="p">,</span>        <span class="c1"># sub_len</span>
+             <span class="s1">&#39;dsub&#39;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span>       <span class="c1"># sub_thickness</span>
+             <span class="s1">&#39;c_r&#39;</span><span class="p">:</span><span class="mf">0.206</span><span class="p">,</span>       <span class="c1"># cylinder_r</span>
+             <span class="s1">&#39;c_h&#39;</span><span class="p">:</span><span class="mf">0.22</span><span class="p">,</span>        <span class="c1"># cylinder_h</span>
+             <span class="s1">&#39;source_z&#39;</span><span class="p">:</span> <span class="mf">1.8</span><span class="p">,</span>   <span class="c1"># source_position</span>
+             <span class="s1">&#39;sim_z_span&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>   <span class="c1"># fdtd region</span>
+             <span class="s1">&#39;T_z&#39;</span><span class="p">:</span> <span class="mf">1.9</span><span class="p">,</span>        <span class="c1"># T monitor position</span>
+             <span class="s1">&#39;n1&#39;</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">,</span>         <span class="c1"># sub_n</span>
+             <span class="s1">&#39;n2&#39;</span><span class="p">:</span> <span class="mf">3.4</span><span class="p">,</span>         <span class="c1"># die_n</span>
+             <span class="s1">&#39;resolution&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>  <span class="c1"># mesh</span>
+             <span class="s1">&#39;auto shutoff min&#39;</span><span class="p">:</span> <span class="mf">1e-9</span>   <span class="c1"># CST no need</span>
+             <span class="p">}</span>   <span class="c1">#  统一全局参数变量</span>
+<span class="n">par</span> <span class="o">=</span> <span class="n">parameter</span>
+<span class="n">c</span> <span class="o">=</span> <span class="mf">3e8</span>
+
+<span class="n">dp</span> <span class="o">=</span> <span class="n">par</span><span class="p">[</span><span class="s2">&quot;dp&quot;</span><span class="p">]</span>
+<span class="n">dsub</span> <span class="o">=</span> <span class="n">par</span><span class="p">[</span><span class="s2">&quot;dsub&quot;</span><span class="p">]</span>
+<span class="n">c_r</span> <span class="o">=</span> <span class="n">par</span><span class="p">[</span><span class="s2">&quot;c_r&quot;</span><span class="p">]</span>
+<span class="n">c_h</span> <span class="o">=</span> <span class="n">par</span><span class="p">[</span><span class="s2">&quot;c_h&quot;</span><span class="p">]</span>
+<span class="n">source_z</span> <span class="o">=</span> <span class="n">par</span><span class="p">[</span><span class="s1">&#39;source_z&#39;</span><span class="p">]</span>
+<span class="n">sim_z_span</span> <span class="o">=</span> <span class="n">par</span><span class="p">[</span><span class="s1">&#39;sim_z_span&#39;</span><span class="p">]</span>
+<span class="n">T_z</span> <span class="o">=</span> <span class="n">par</span><span class="p">[</span><span class="s1">&#39;T_z&#39;</span><span class="p">]</span>
+<span class="n">n1</span> <span class="o">=</span> <span class="n">par</span><span class="p">[</span><span class="s2">&quot;n1&quot;</span><span class="p">]</span>
+<span class="n">n2</span> <span class="o">=</span> <span class="n">par</span><span class="p">[</span><span class="s2">&quot;n2&quot;</span><span class="p">]</span>
+<span class="n">wl_min</span> <span class="o">=</span> <span class="n">par</span><span class="p">[</span><span class="s1">&#39;wl_min&#39;</span><span class="p">]</span>
+<span class="n">wl_max</span> <span class="o">=</span> <span class="n">par</span><span class="p">[</span><span class="s1">&#39;wl_max&#39;</span><span class="p">]</span>
+<span class="n">nfreq</span> <span class="o">=</span> <span class="n">par</span><span class="p">[</span><span class="s1">&#39;nfreq&#39;</span><span class="p">]</span>
+
+<span class="n">fmax</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">par</span><span class="p">[</span><span class="s1">&#39;wl_min&#39;</span><span class="p">]</span>
+<span class="n">fmin</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">par</span><span class="p">[</span><span class="s1">&#39;wl_max&#39;</span><span class="p">]</span>
+<span class="n">fcen</span> <span class="o">=</span> <span class="p">(</span><span class="n">fmin</span> <span class="o">+</span> <span class="n">fmax</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+<span class="n">mesh_accuracy</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">par</span><span class="p">[</span><span class="s1">&#39;resolution&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">2</span>
+
+
+<span class="c1">############################################################################</span>
+<span class="c1">#  step 2: 添加模型结构</span>
+<span class="c1">#  ******  CST 需先添加材料(如给定折射率，也需先定义材料)， 设定component</span>
+<span class="c1">############################################################################</span>
+<span class="c1">#前端展示</span>
+<span class="c1">## 创建预览要素</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">ModelTree</span><span class="p">(</span><span class="s1">&#39;Model&#39;</span><span class="p">)</span>
+<span class="n">create_model</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">dsub</span><span class="p">),</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">c_h</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="n">dsub</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Box&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Gray&#39;</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;c1 - Block&#39;</span><span class="p">)</span>
+<span class="n">create_model</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">c_r</span><span class="p">,</span> <span class="n">c_r</span><span class="p">,</span><span class="n">c_h</span><span class="p">,</span><span class="mi">40</span><span class="p">),</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Cylinder&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;c1 - Cylinder&#39;</span><span class="p">)</span>
+<span class="n">create_model</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">source_z</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Box&#39;</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="s1">&#39;true&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Red&#39;</span><span class="p">)</span>
+<span class="n">create_model</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">source_z</span><span class="p">),</span> <span class="n">target</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">wl_min</span> <span class="k">if</span> <span class="n">source_z</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span><span class="p">],</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Arrow&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Red&#39;</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;Light Source&#39;</span><span class="p">,</span> <span class="s1">&#39;source&#39;</span><span class="p">)</span>
+<span class="n">create_model</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">sim_z_span</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Box&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Orange&#39;</span><span class="p">,</span> <span class="n">opacity</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;Sim Area&#39;</span><span class="p">,</span> <span class="s1">&#39;area&#39;</span><span class="p">)</span>
+<span class="n">create_model</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">dp</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">dsub</span><span class="p">),</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">c_h</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="n">dsub</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Box&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Gray&#39;</span><span class="p">)</span>
+<span class="n">tree</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s1">&#39;c1 - Block&#39;</span><span class="p">)</span>
+
+<span class="c1"># add new component</span>
+<span class="c1"># 可以默认本来就有两个 component</span>
+<span class="n">set_component</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>   <span class="c1"># 新建 component1</span>
+<span class="n">set_component</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>   <span class="c1"># 新建 component2</span>
+
+<span class="c1"># add material</span>
+<span class="n">define_material_general</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="s1">&#39;sub_material&#39;</span><span class="p">,</span> <span class="n">n1</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">RGB</span><span class="o">=</span><span class="p">[</span><span class="mf">0.752941</span><span class="p">,</span> <span class="mf">0.752941</span><span class="p">,</span> <span class="mf">0.752941</span><span class="p">])</span>
+<span class="n">define_material_general</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="s1">&#39;die_material&#39;</span><span class="p">,</span> <span class="n">n2</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">set_material_color</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="s1">&#39;Vacuum&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="mi">60</span><span class="p">)</span>
+
+<span class="c1"># add substrate</span>
+<span class="c1"># **** 结构统一参数：center, span</span>
+<span class="n">center</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">dsub</span><span class="o">/</span><span class="mi">2</span><span class="o">-</span><span class="n">c_h</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">span</span> <span class="o">=</span> <span class="p">[</span><span class="n">dp</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">dsub</span><span class="p">]</span>
+
+<span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;substrate&#39;</span>
+<span class="n">comp</span> <span class="o">=</span> <span class="s1">&#39;component1&#39;</span>
+<span class="n">material</span> <span class="o">=</span> <span class="s1">&#39;sub_material&#39;</span>
+<span class="n">x_range</span> <span class="o">=</span> <span class="p">[</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">span</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">span</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">y_range</span> <span class="o">=</span> <span class="p">[</span><span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">span</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">span</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">z_range</span> <span class="o">=</span> <span class="p">[</span><span class="n">center</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">span</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">center</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">span</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">brick</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">comp</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">x_range</span><span class="p">,</span> <span class="n">y_range</span><span class="p">,</span> <span class="n">z_range</span><span class="p">)</span>
+
+<span class="c1"># add dielectric</span>
+<span class="c1"># **** 结构统一参数：center, radius, height</span>
+<span class="n">center</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">radius</span> <span class="o">=</span> <span class="n">c_r</span>
+<span class="n">height</span> <span class="o">=</span> <span class="n">c_h</span>
+
+<span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;dielectric&#39;</span>
+<span class="n">comp</span> <span class="o">=</span> <span class="s1">&#39;component2&#39;</span>
+<span class="n">material</span> <span class="o">=</span> <span class="s1">&#39;die_material&#39;</span>
+<span class="n">R_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">radius</span><span class="p">]</span>
+<span class="n">z_range</span> <span class="o">=</span> <span class="p">[</span><span class="n">center</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="n">height</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">center</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">+</span><span class="n">height</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">cylinder</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">comp</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">R_range</span><span class="p">,</span> <span class="n">z_range</span><span class="p">)</span>
+
+<span class="c1"># add vacuum</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;vacuum&#39;</span>
+<span class="n">comp</span> <span class="o">=</span> <span class="s1">&#39;component2&#39;</span>
+<span class="n">material</span> <span class="o">=</span> <span class="s1">&#39;Vacuum&#39;</span>
+<span class="n">center</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sim_z_span</span><span class="o">/</span><span class="mi">4</span> <span class="o">-</span> <span class="n">c_h</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">span</span> <span class="o">=</span> <span class="p">[</span><span class="n">dp</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">sim_z_span</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">x_range</span> <span class="o">=</span> <span class="p">[</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">span</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">span</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">y_range</span> <span class="o">=</span> <span class="p">[</span><span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">span</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">span</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">z_range</span> <span class="o">=</span> <span class="p">[</span><span class="n">center</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">span</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">center</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">span</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">brick</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">comp</span><span class="p">,</span> <span class="n">material</span><span class="p">,</span> <span class="n">x_range</span><span class="p">,</span> <span class="n">y_range</span><span class="p">,</span> <span class="n">z_range</span><span class="p">)</span>
+
+<span class="c1"># boolean insert</span>
+<span class="n">boolean_insert</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="s1">&#39;component2&#39;</span><span class="p">,</span> <span class="s1">&#39;vacuum&#39;</span><span class="p">,</span> <span class="s1">&#39;component2&#39;</span><span class="p">,</span> <span class="s1">&#39;dielectric&#39;</span><span class="p">)</span>
+
+<span class="c1">############################################################################</span>
+<span class="c1">#  step 3: 添加源</span>
+<span class="c1">#  ******  CST 频域仿真无需单独设源，port可作源，这一步设置端口</span>
+<span class="c1">############################################################################</span>
+
+<span class="c1"># **** 结构统一参数：center</span>
+<span class="n">center</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">T_z</span><span class="p">]</span>
+<span class="k">if</span> <span class="n">center</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">port_pos</span> <span class="o">=</span> <span class="s1">&#39;zmax&#39;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">port_pos</span> <span class="o">=</span> <span class="s1">&#39;zmin&#39;</span>
+
+<span class="n">set_port_full</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">port_pos</span><span class="p">)</span>
+
+<span class="n">source_type</span> <span class="o">=</span> <span class="s1">&#39;1&#39;</span>        <span class="c1"># choose &#39;1/2/All&#39; , used in step 6</span>
+
+<span class="c1">############################################################################</span>
+<span class="c1">#  step 4: 仿真设置</span>
+<span class="c1">#  ******  CST: 边界条件</span>
+<span class="c1">############################################################################</span>
+<span class="n">x_bc</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;magnetic&#39;</span><span class="p">,</span> <span class="s1">&#39;magnetic&#39;</span><span class="p">]</span>
+<span class="n">y_bc</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;electric&#39;</span><span class="p">,</span> <span class="s1">&#39;electric&#39;</span><span class="p">]</span>
+<span class="n">z_bc</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;open&#39;</span><span class="p">,</span> <span class="s1">&#39;open&#39;</span><span class="p">]</span>
+<span class="n">symmetry</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;magnetic&#39;</span><span class="p">,</span> <span class="s1">&#39;electric&#39;</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">]</span>
+<span class="n">set_boundary</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">x_bc</span><span class="p">,</span> <span class="n">y_bc</span><span class="p">,</span> <span class="n">z_bc</span><span class="p">,</span> <span class="n">symmetry</span><span class="o">=</span><span class="n">symmetry</span><span class="p">)</span>
+
+<span class="c1">############################################################################</span>
+<span class="c1">#  step 5: 网格设置</span>
+<span class="c1">#          CST 需指定加 mesh 的 body，精度可与meep统一为 resolution</span>
+<span class="c1">############################################################################</span>
+<span class="c1"># create_mesh(modeler, &#39;meshgroup1&#39;)</span>
+<span class="c1"># mesh_setting(modeler, &#39;meshgroup1&#39;, mesh_accuracy)</span>
+<span class="c1"># mesh_add_items(modeler, &#39;component2&#39;, &#39;dielectric&#39;, &#39;meshgroup1&#39;)</span>
+
+<span class="c1">############################################################################</span>
+<span class="c1">#  step 6: 设置监视器</span>
+<span class="c1">#          CST中的 port既可当源，又可作监视器，pos 无需再设，设置采样点数与波长范围即可</span>
+<span class="c1">#          设置采样点数，通过求解器设置</span>
+<span class="c1">############################################################################</span>
+<span class="c1"># **** 结构统一参数：center</span>
+<span class="n">center</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">,</span><span class="o">-</span><span class="n">T_z</span><span class="p">]</span>
+
+<span class="k">if</span> <span class="n">center</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">monitor_pos</span> <span class="o">=</span> <span class="s1">&#39;zmax&#39;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">monitor_pos</span> <span class="o">=</span> <span class="s1">&#39;zmin&#39;</span>
+
+<span class="n">set_port_full</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">monitor_pos</span><span class="p">)</span>
+
+<span class="n">wl_range</span> <span class="o">=</span> <span class="p">[</span><span class="n">wl_min</span><span class="p">,</span> <span class="n">wl_max</span><span class="p">]</span>
+<span class="n">set_wavelength_range</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">wl_range</span><span class="p">)</span>
+
+<span class="n">set_FD_solver</span><span class="p">(</span><span class="n">modeler</span><span class="p">,</span> <span class="n">source_type</span><span class="p">,</span> <span class="n">nfreq</span><span class="p">)</span>
+
+<span class="c1">############################################################################</span>
+<span class="c1">#  step 7: 仿真运行</span>
+<span class="c1">############################################################################</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;cst正在运行，请等待........................&quot;</span><span class="p">)</span>
+<span class="n">modeler</span><span class="o">.</span><span class="n">run_solver</span><span class="p">()</span>
+
+<span class="c1">############################################################################</span>
+<span class="c1">#  step 8: 数据提取</span>
+<span class="c1">############################################################################</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">get_S</span><span class="p">(</span><span class="n">mws</span><span class="p">)</span>
+
+<span class="n">freq</span> <span class="o">=</span> <span class="n">result</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">result</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">R</span> <span class="o">=</span> <span class="n">result</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;已提取数据&#39;</span><span class="p">)</span>
+
+<span class="c1">############################################################################</span>
+<span class="c1">#  step 9: 数据处理</span>
+<span class="c1">############################################################################</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="mf">1e8</span> <span class="o">/</span> <span class="n">freq</span> <span class="o">/</span> <span class="mf">1e6</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">),</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;reflectance&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="mf">1e8</span> <span class="o">/</span> <span class="n">freq</span> <span class="o">/</span> <span class="mf">1e6</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">R</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;transmittance&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="mf">1e8</span> <span class="o">/</span> <span class="n">freq</span> <span class="o">/</span> <span class="mf">1e6</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">R</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">),</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;wavelength (μm)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+<span class="c1"># np.savetxt(&quot;meta_T.txt&quot;, T)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;cst_unity_AOM.png&quot;</span><span class="p">)</span>
+<span class="n">device</span><span class="o">.</span><span class="n">save_fig</span><span class="p">(</span><span class="s2">&quot;cst_unity_AOM.png&quot;</span><span class="p">,</span><span class="n">file_path</span><span class="o">=</span><span class="s2">&quot;cst_unity_AOM.png&quot;</span><span class="p">)</span>
+<span class="n">wl</span><span class="o">=</span> <span class="mi">3</span><span class="o">*</span> <span class="mf">1e8</span> <span class="o">/</span> <span class="n">freq</span> <span class="o">/</span> <span class="mf">1e6</span>
+<span class="n">R</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">R</span><span class="p">)</span>
+<span class="n">T</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+<span class="c1">#unityCode.save_data(wls_cst = wl.tolist())</span>
+<span class="c1">#unityCode.save_data(Rs_cst = np.multiply(R, R).tolist())</span>
+<span class="c1">#unityCode.save_data(Ts_cst = np.multiply(R, R).tolist())</span>
+<span class="n">wls_cst</span> <span class="o">=</span> <span class="n">wl</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">Rs_cst</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">Ts_cst</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+<span class="n">wl</span> <span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">wls_rcwa</span><span class="p">)):</span>
+    <span class="n">wl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wls_rcwa</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="mi">1000</span><span class="p">)</span>
+<span class="c1"># 画四类环境下的对比光谱图</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wls_lum</span><span class="p">,</span><span class="n">Ts_lum</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;lum&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wls_meep</span><span class="p">,</span><span class="n">Ts_meep</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;meep&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wl</span><span class="p">,</span><span class="n">Ts_rcwa</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;rcwa&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wls_cst</span><span class="p">,</span><span class="n">Ts_cst</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;cst&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;transmission&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Wavelength (μm)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;transmission_四类环境对比.png&quot;</span><span class="p">)</span>        <span class="c1">########   需要展示的数据图</span>
+<span class="n">device</span><span class="o">.</span><span class="n">save_fig</span><span class="p">(</span><span class="s2">&quot;transmission_四类环境对比&quot;</span><span class="p">,</span><span class="n">file_path</span><span class="o">=</span><span class="s2">&quot;transmission_四类环境对比.png&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wls_lum</span><span class="p">,</span><span class="n">Rs_lum</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;lum&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wls_meep</span><span class="p">,</span><span class="n">Rs_meep</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;meep&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wl</span><span class="p">,</span><span class="n">Rs_rcwa</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;rcwa&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wls_cst</span><span class="p">,</span><span class="n">Rs_cst</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;cst&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;reflection&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Wavelength (μm)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;reflection_四类环境对比.png&quot;</span><span class="p">)</span>        <span class="c1">########   需要展示的数据图</span>
+<span class="n">device</span><span class="o">.</span><span class="n">save_fig</span><span class="p">(</span><span class="s2">&quot;reflection_四类环境对比&quot;</span><span class="p">,</span><span class="n">file_path</span><span class="o">=</span><span class="s2">&quot;reflection_四类环境对比.png&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wls_lum</span><span class="p">,</span><span class="mi">1</span><span class="o">-</span><span class="n">Rs_lum</span><span class="o">-</span><span class="n">Ts_lum</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;lum&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wls_meep</span><span class="p">,</span><span class="mi">1</span><span class="o">-</span><span class="n">Rs_meep</span><span class="o">-</span><span class="n">Ts_meep</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;meep&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wls_lum</span><span class="p">,</span><span class="mi">1</span><span class="o">-</span><span class="n">Rs_rcwa</span><span class="o">-</span><span class="n">Ts_rcwa</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;rcwa&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">wls_cst</span><span class="p">,</span><span class="mi">1</span><span class="o">-</span><span class="n">Rs_cst</span><span class="o">-</span><span class="n">Ts_cst</span><span class="p">,</span> <span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;cst&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;loss&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Wavelength (μm)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;loss_四类环境对比.png&quot;</span><span class="p">)</span>        <span class="c1">########   需要展示的数据图</span>
+<span class="n">device</span><span class="o">.</span><span class="n">save_fig</span><span class="p">(</span><span class="s2">&quot;loss_四类环境对比&quot;</span><span class="p">,</span><span class="n">file_path</span><span class="o">=</span><span class="s2">&quot;loss_四类环境对比.png&quot;</span><span class="p">)</span>
+
+
+
+<span class="n">sim_end</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s2">&quot;cst&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;仿真完毕&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 
