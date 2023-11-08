@@ -37,7 +37,7 @@ extensions = [
      'sphinx_markdown_tables' ]
 
 # inside conf.py
-latex_engine = 'xelatex'
+latex_engine = 'pdflatex'
 latex_elements = {
     'fontpkg': r'''
 \setmainfont{DejaVu Serif}
