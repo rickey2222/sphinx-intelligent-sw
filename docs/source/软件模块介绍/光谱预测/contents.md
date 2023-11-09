@@ -47,7 +47,7 @@ file_path = 'generative_models.py'
 
 ## 光谱预测使用实例
 
-本节以自由形状结构超表面的[VAE模型](https://intelligent-software-design.readthedocs.io/zh_CN/latest/%E8%BD%AF%E4%BB%B6%E6%A8%A1%E5%9D%97%E4%BB%8B%E7%BB%8D/%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9D%97/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B.html)。
+本节以自由形状结构超表面的 **[VAE模型](https://intelligent-photonic-design.readthedocs.io/zh-cn/latest/%E7%AE%80%E4%BB%8B/%E6%A0%B8%E5%BF%83%E8%AE%BE%E8%AE%A1%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9D%97/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%9E%8B.html)**。
 
 **Step1: 选择模型**
 <span><div style="text-align: center;">
