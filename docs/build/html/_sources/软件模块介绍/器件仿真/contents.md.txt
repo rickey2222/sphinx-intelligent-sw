@@ -10,7 +10,7 @@
 
 <center> 图1 器件仿真模块页面展示 </center>
 
-现阶段软件可提供**FDTD底层算法结构**以及**与Lumerical、CST商业软件联动算法背景**，需要用户切换算法环境。具体的API接口使用方法及示例详见：**[软件API接口及示例](https://intelligent-software-design.readthedocs.io/zh_CN/latest/%E8%BD%AF%E4%BB%B6API%E6%8E%A5%E5%8F%A3/contents.html)**。
+现阶段软件可提供**FDTD底层算法结构**以及**与Lumerical、CST商业软件联动算法背景**，需要用户切换算法环境。具体的API接口使用方法及示例详见：**[软件API接口及示例](https://intelligent-photonic-design.readthedocs.io/zh-cn/latest/%E8%BD%AF%E4%BB%B6API%E6%8E%A5%E5%8F%A3/contents.html)**。
 
 软件数据库中提供多种光学器件模型，点击加号即可加载器件，用户可在基础模型上进行修改。代码区显示的按钮从左到右依次表示：
 + 加号按钮：加载器件，器件存储于模型库中
